@@ -1,9 +1,9 @@
-# Nugurang
+# Nugurang - Teammate matchmaking application
 
 [![GitHub version](https://badge.fury.io/gh/nugurang%2Fnugurang.svg)](https://badge.fury.io/gh/nugurang%2Fnugurang)
+[![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
-Nugurang is a teammate matchmaking service for students who have troubles finding teammates. Nugurand can help you recruiting members and executing projects. Users can leave feedback for other teammates at the end of the project, and this data is used for suggesting well-matched teammates for each users.
-
+Nugurang is a teammate matchmaking service for students who have trouble finding teammates. Nugurang can help you to recruit members and execute projects. Users can leave feedback for other teammates at the end of the project, and this data is used for optimal teammate-recommendation for each user.
 
 ## Development stack
 Front end framework
