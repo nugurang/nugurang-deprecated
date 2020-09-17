@@ -1,10 +1,15 @@
 version: '3.7'
+
 services:
-  db:
+
+  mysql:
+    user: ${CUR_UID}
+    networks:
+      - nugurang-net
     image: mysql
     container_name: nugurang-mysql
     volumes:
-      - "mysql_data:/var/lib/mysql"
+      - /var/lib/files:/var/lib/files
     restart: always
     ports:
       - "3306:3306"
@@ -14,5 +19,18 @@ services:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
 
+  nextjs:
+    user: ${CUR_UID}
+    networks:
+      - nugurang-net
+    build: ./nugurang
+    container_name: nugurang-nextjs
+    volumes:
+      - /var/lib/files:/var/lib/files
+
+
 volumes:
-    mysql_data:
+  nugurang-data:
+
+networks:
+  nugurang-net: {}
