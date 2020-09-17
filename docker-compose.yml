@@ -11,8 +11,6 @@ services:
     volumes:
       - /var/lib/files:/var/lib/files
     restart: always
-    ports:
-      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: "nugurang"
     command:
@@ -27,6 +25,8 @@ services:
     container_name: nugurang-nextjs
     volumes:
       - /var/lib/files:/var/lib/files
+        ports:
+      - "8080:3000"
 
 
 volumes:
