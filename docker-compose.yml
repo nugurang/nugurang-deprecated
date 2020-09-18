@@ -2,15 +2,14 @@ version: '3.7'
 
 services:
 
-  mysql:
+  mariadb:
     user: ${CUR_UID}
     networks:
       - nugurang-net
-    image: mysql
-    container_name: nugurang-mysql
+    image: mariadb
+    container_name: nugurang-db
     volumes:
-      - /var/lib/files:/var/lib/files
-    restart: always
+      - ./sql:/docker-entrypoint-initdb.d
     environment:
       MYSQL_ROOT_PASSWORD: "nugurang"
     command:
@@ -22,9 +21,7 @@ services:
     networks:
       - nugurang-net
     build: ./nugurang
-    container_name: nugurang-nextjs
-    volumes:
-      - /var/lib/files:/var/lib/files
+    container_name: nugurang-front
     ports:
       - "8080:3000"
 
