@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "test": "echo no tests yet",
     "dev": "next dev",
     "build": "eslint . && next build",
     "start": "next start"
