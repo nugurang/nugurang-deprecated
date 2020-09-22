@@ -26,7 +26,7 @@ services:
     build: ./nugurang-front
     container_name: nugurang-front
     ports:
-      - "8080:3000"
+      - "8000:3000"
 
   nugurang-back:
     user: ${CUR_UID}
@@ -34,6 +34,17 @@ services:
       - nugurang-net
     build: ./nugurang-back
     container_name: nugurang-back
+    ports:
+      - "8001:8080"
+
+  sonarqube:
+    user: ${CUR_UID}
+    networks:
+      - nugurang-net
+    image: sonarqube
+    container_name: sonarqube
+    ports:
+      - "8002:9000"
 
 volumes:
   nugurang-data:
