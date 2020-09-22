@@ -9,4 +9,4 @@ WORKDIR ${APP_ROOT}
 RUN ./gradlew --info wrapper
 RUN ./gradlew --info build
 WORKDIR ${APP_ROOT}
-ENTRYPOINT ["./gradlew", "bootRun"]
+ENTRYPOINT ./gradlew bootRun --args='--spring.profiles.active=rel'
