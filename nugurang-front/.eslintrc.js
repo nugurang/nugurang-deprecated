@@ -37,6 +37,8 @@ module.exports = {
     "react/display-name": "warn",
     "react/prop-types": "warn",
     "react/jsx-props-no-spreading": "warn",
-    "react/jsx-one-expression-per-line": "warn"
+    "react/jsx-one-expression-per-line": "warn",
+    "react/jsx-fragments": "warn",
+    "react/forbid-prop-types": "warn"
   }
 };
