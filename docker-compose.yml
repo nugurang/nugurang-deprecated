@@ -11,7 +11,10 @@ services:
     volumes:
       - ./sql:/docker-entrypoint-initdb.d
     environment:
-      MYSQL_ROOT_PASSWORD: "nugurang"
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: "nugurang"
+      MYSQL_USER: "nugurang"
+      MYSQL_PASSWORD: "nugurang"
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
@@ -24,6 +27,13 @@ services:
     container_name: nugurang-front
     ports:
       - "8080:3000"
+
+  nugurang-back:
+    user: ${CUR_UID}
+    networks:
+      - nugurang-net
+    build: ./nugurang-back
+    container_name: nugurang-back
 
 volumes:
   nugurang-data:

@@ -1,5 +1,3 @@
-CREATE DATABASE `nugurang`;
-
 USE `nugurang`;
 
 CREATE TABLE `article`
