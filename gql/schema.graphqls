@@ -1,0 +1,131 @@
+"""Query"""
+type Query {
+	getArticles: [Article]!
+}
+
+"""Custom Scalar"""
+scalar DateTime
+
+"""Enum"""
+enum VoteType {
+	UPVOTE
+	DOWNVOTE
+}
+
+"""Type"""
+type Article {
+	id: ID!
+	thread: [Thread]!
+	parent: Article
+	title: String
+	content: String!
+	vcount: Int!
+	ctime: DateTime!
+	mtine: DateTime!
+	star: [Star]!
+}
+
+type Board {
+	id: ID!
+	name: String!
+}
+
+type Event {
+	id: ID!
+	board: Board!
+	image: [Image]!
+	name: String!
+	rstart: DateTime!
+	rend: DateTime!
+	estart: DateTime!
+	eend: DateTime!
+}
+
+type Honor {
+	id: ID!
+	user: User!
+	task: Task!
+	honor: Int!
+}
+
+type Image {
+	id: ID!
+	address: String!
+}
+
+type Noti {
+	id: ID!
+	from_user: User!
+	to_user: User!
+	article: Article!
+	at: DateTime!
+}
+
+type Position {
+	id: ID!
+	name: String!
+}
+
+type Progress {
+	id: ID!
+	name: String!
+}
+
+type Project {
+	id: ID!
+	team: Team!
+	event: [Event]!
+	name: String!
+}
+
+type Star {
+	id: ID!
+	user: User!
+}
+
+type Tag {
+	id: ID!
+	name: String!
+}
+
+type Task {
+	id: ID!
+	work: [Work]!
+	name: String!
+	order: Int!
+	progress: Progress!
+}
+
+type Team {
+	id: ID!
+	name: String!
+}
+
+type Thread {
+	id: ID!
+	user: [User]!
+	user_team: [xref_user_team]!
+	board: [Board]!
+	event: [Event]!
+	name: String!
+}
+
+type User {
+	id: ID!
+	pw: String!
+	image: [Image]
+	blog: board
+}
+
+type Vote {
+	id: ID!
+	user: User!
+	name: VoteType!
+}
+
+type Work {
+	id: ID!
+	project: Project!
+	name: String!
+	order: Int!
+}
