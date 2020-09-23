@@ -1,6 +1,83 @@
-"""Query"""
+"""Query: SELECT"""
 type Query {
-	getArticles: [Article]!
+    getArticle(id: ID): Article!
+	getArticle(start: Int=0 end: Int=10): [Article]!
+	getBoard(id: ID): Board!
+	getEvent(id: ID): Event!
+	getHonor(id: ID): Honor!
+	getImage(id: ID): Image!
+	getNoti(id: ID): Noti!
+	getPosition(id: ID): Position!
+	getProgress(id: ID): Progress!
+	getProject(id: ID): Project!
+	getStar(id: ID): Star!
+	getTag(id: ID): Tag!
+	getTask(id: ID): Task!
+	getTeam(id: ID): Team!
+	getThread(id: ID): Thread!
+	getUser(id: ID): User!
+	getVote(id: ID): Vote!
+	getWork(id: ID): Work!
+}
+
+"""Mutation: INSERT, UPDATE, DELETE"""
+type Mutation {
+    """CREATE"""
+	createArticle(content: String): Article
+	createBoard(name: String): Board
+	createEvent(board: Board, name: String): Event
+	createHonor(user: User, task: Task): Honor
+	createImage(address: String): Image
+    createNoti(from_user: User, to_user: User, article: Article): Noti
+	createPosition(name: String): Position
+	createProgress(name: String): Position
+	createProject(team: Team, name: String): Position
+	createStar(user: User): Star
+	createTag(name: String): Tag
+	createTask(name: String): Task
+	createTeam(name: String): Team
+	createThread(user: User, board: Board, event: Event, name: String): Thread
+	createUser(pw: String, salt: String): User
+	createVote(user: User, type: VoteType)
+	createWork(project: Project, name: String): Work
+    """UPDATE"""
+	updateArticle(title: String): Boolean
+	updateArticle(content: String): Boolean
+	updateArticle(vcount: Int): Boolean
+	updateBoard
+	updateEvent
+    updateHonor
+    updateImage
+    updateNoti
+    updatePosition
+    updateProgress
+    updateProject
+    updateStar
+    updateTag
+    updateTask
+    updateTeam
+    updateThread
+    updateUser
+    updateVote
+    updateWork
+    """DELETE"""
+	deleteArticle(id: ID): Boolean
+	deleteBoard(id: ID): Boolean
+	deleteEvent(id: ID): Boolean
+    deleteHonor(id: ID): Boolean
+    deleteImage(id: ID): Boolean
+    deleteNoti(id: ID): Boolean
+    deletePosition(id: ID): Boolean
+    deleteProgress(id: ID): Boolean
+    deleteProject(id: ID): Boolean
+    deleteStar(id: ID): Boolean
+    deleteTag(id: ID): Boolean
+    deleteTask(id: ID): Boolean
+    deleteTeam(id: ID): Boolean
+    deleteThread(id: ID): Boolean
+    deleteUser(id: ID): Boolean
+    deleteVote(id: ID): Boolean
+    deleteWork(id: ID): Boolean
 }
 
 """Custom Scalar"""
@@ -120,7 +197,7 @@ type User {
 type Vote {
 	id: ID!
 	user: User!
-	name: VoteType!
+	type: VoteType!
 }
 
 type Work {
