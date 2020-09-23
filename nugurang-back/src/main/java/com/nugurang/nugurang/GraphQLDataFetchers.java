@@ -2,11 +2,10 @@ package com.nugurang.nugurang;
 
 import com.google.common.collect.ImmutableMap;
 import graphql.schema.DataFetcher;
-import org.springframework.stereotype.Component;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import org.springframework.stereotype.Component;
 
 @Component
 public class GraphQLDataFetchers {
