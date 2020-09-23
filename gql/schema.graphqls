@@ -1,51 +1,51 @@
+scalar DateTime
 """Query: SELECT"""
 type Query {
     getArticle(id: ID): Article!
-	getArticle(start: Int=0 end: Int=10): [Article]!
-	getBoard(id: ID): Board!
-	getEvent(id: ID): Event!
-	getHonor(id: ID): Honor!
-	getImage(id: ID): Image!
-	getNoti(id: ID): Noti!
-	getPosition(id: ID): Position!
-	getProgress(id: ID): Progress!
-	getProject(id: ID): Project!
-	getStar(id: ID): Star!
-	getTag(id: ID): Tag!
-	getTask(id: ID): Task!
-	getTeam(id: ID): Team!
-	getThread(id: ID): Thread!
-	getUser(id: ID): User!
-	getVote(id: ID): Vote!
-	getWork(id: ID): Work!
+    getBoard(id: ID): Board!
+    getEvent(id: ID): Event!
+    getHonor(id: ID): Honor!
+    getImage(id: ID): Image!
+    getNoti(id: ID): Noti!
+    getPosition(id: ID): Position!
+    getProgress(id: ID): Progress!
+    getProject(id: ID): Project!
+    getStar(id: ID): Star!
+    getTag(id: ID): Tag!
+    getTask(id: ID): Task!
+    getTeam(id: ID): Team!
+    getThread(id: ID): Thread!
+    getUser(id: ID): User!
+    getVote(id: ID): Vote!
+    getWork(id: ID): Work!
 }
 
 """Mutation: INSERT, UPDATE, DELETE"""
 type Mutation {
     """CREATE"""
-	createArticle(content: String): Article
-	createBoard(name: String): Board
-	createEvent(board: Board, name: String): Event
-	createHonor(user: User, task: Task): Honor
-	createImage(address: String): Image
+    createArticle(content: String): Article
+    createBoard(name: String): Board
+    createEvent(board: Board, name: String): Event
+    createHonor(user: User, task: Task): Honor
+    createImage(address: String): Image
     createNoti(from_user: User, to_user: User, article: Article): Noti
-	createPosition(name: String): Position
-	createProgress(name: String): Position
-	createProject(team: Team, name: String): Position
-	createStar(user: User): Star
-	createTag(name: String): Tag
-	createTask(name: String): Task
-	createTeam(name: String): Team
-	createThread(user: User, board: Board, event: Event, name: String): Thread
-	createUser(pw: String, salt: String): User
-	createVote(user: User, type: VoteType)
-	createWork(project: Project, name: String): Work
+    createPosition(name: String): Position
+    createProgress(name: String): Position
+    createProject(team: Team, name: String): Position
+    createStar(user: User): Star
+    createTag(name: String): Tag
+    createTask(name: String): Task
+    createTeam(name: String): Team
+    createThread(user: User, board: Board, event: Event, name: String): Thread
+    createUser(pw: String, salt: String): User
+    createVote(user: User, type: VoteType)
+    createWork(project: Project, name: String): Work
     """UPDATE"""
-	updateArticle(title: String): Boolean
-	updateArticle(content: String): Boolean
-	updateArticle(vcount: Int): Boolean
-	updateBoard
-	updateEvent
+    updateArticle(title: String): Boolean
+    updateArticle(content: String): Boolean
+    updateArticle(vcount: Int): Boolean
+    updateBoard
+    updateEvent
     updateHonor
     updateImage
     updateNoti
@@ -61,9 +61,9 @@ type Mutation {
     updateVote
     updateWork
     """DELETE"""
-	deleteArticle(id: ID): Boolean
-	deleteBoard(id: ID): Boolean
-	deleteEvent(id: ID): Boolean
+    deleteArticle(id: ID): Boolean
+    deleteBoard(id: ID): Boolean
+    deleteEvent(id: ID): Boolean
     deleteHonor(id: ID): Boolean
     deleteImage(id: ID): Boolean
     deleteNoti(id: ID): Boolean
@@ -85,124 +85,126 @@ scalar DateTime
 
 """Enum"""
 enum VoteType {
-	UPVOTE
-	DOWNVOTE
+    UPVOTE
+    DOWNVOTE
 }
 
 """Type"""
 type Article {
-	id: ID!
-	thread: [Thread]!
-	parent: Article
-	title: String
-	content: String!
-	vcount: Int!
-	ctime: DateTime!
-	mtine: DateTime!
-	star: [Star]!
+    id: ID!
+    thread: [Thread]!
+    parent: Article
+    title: String
+    content: String!
+    vcount: Int!
+    ctime: DateTime!
+    mtine: DateTime!
+    star: [Star]!
 }
 
 type Board {
-	id: ID!
-	name: String!
+    id: ID!
+    name: String!
 }
 
 type Event {
-	id: ID!
-	board: Board!
-	image: [Image]!
-	name: String!
-	rstart: DateTime!
-	rend: DateTime!
-	estart: DateTime!
-	eend: DateTime!
+    id: ID!
+    board: Board!
+    image: [Image]!
+    name: String!
+    rstart: DateTime!
+    rend: DateTime!
+    estart: DateTime!
+    eend: DateTime!
 }
 
 type Honor {
-	id: ID!
-	user: User!
-	task: Task!
-	honor: Int!
+    id: ID!
+    user: User!
+    task: Task!
+    honor: Int!
 }
 
 type Image {
-	id: ID!
-	address: String!
+    id: ID!
+    address: String!
 }
 
 type Noti {
-	id: ID!
-	from_user: User!
-	to_user: User!
-	article: Article!
-	at: DateTime!
+    id: ID!
+    from_user: User!
+    to_user: User!
+    article: Article!
+    at: DateTime!
 }
 
 type Position {
-	id: ID!
-	name: String!
+    id: ID!
+    name: String!
 }
 
 type Progress {
-	id: ID!
-	name: String!
+    id: ID!
+    name: String!
 }
 
 type Project {
-	id: ID!
-	team: Team!
-	event: [Event]!
-	name: String!
+    id: ID!
+    team: Team!
+    event: [Event]!
+    name: String!
 }
 
 type Star {
-	id: ID!
-	user: User!
+    id: ID!
+    user: User!
 }
 
 type Tag {
-	id: ID!
-	name: String!
+    id: ID!
+    name: String!
 }
 
 type Task {
-	id: ID!
-	work: [Work]!
-	name: String!
-	order: Int!
-	progress: Progress!
+    id: ID!
+    work: [Work]!
+    name: String!
+    order: Int!
+    progress: Progress!
 }
 
 type Team {
-	id: ID!
-	name: String!
+    id: ID!
+    name: String!
 }
 
 type Thread {
-	id: ID!
-	user: [User]!
-	user_team: [xref_user_team]!
-	board: [Board]!
-	event: [Event]!
-	name: String!
+    id: ID!
+    user: [User]!
+    userTeams: [Team]!
+    board: Board!
+    event: Event!
+    name: String!
+    getArticles(title: String, content: String, uname: String, page: Int = 1, pageSize: Int = 20): [Article]!
 }
 
 type User {
-	id: ID!
-	pw: String!
-	image: [Image]
-	blog: board
+    id: ID!
+    pw: String!
+    uname: String!
+    image: [Image]
+    blog: board
 }
 
 type Vote {
-	id: ID!
-	user: User!
-	type: VoteType!
+    id: ID!
+    user: User!
+    type: VoteType!
 }
 
 type Work {
-	id: ID!
-	project: Project!
-	name: String!
-	order: Int!
+    id: ID!
+    project: Project!
+    name: String!
+    order: Int!
 }
