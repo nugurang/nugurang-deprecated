@@ -34,7 +34,23 @@ services:
       - nugurang-net
     build: ./nugurang-back
     container_name: nugurang-back
+    ports:
       - "8001:8080"
+
+  nugurang-dbadmin:
+    depends_on:
+      - nugurang-db
+    user: ${CUR_UID}
+    networks:
+      - nugurang-net
+    image: phpmyadmin
+    container_name: nugurang-dbadmin
+    environment:
+      PMA_HOST: "nugurang-db"
+      PMA_USER: "nugurang"
+      PMA_PASSWORD: "nugurang"
+    ports:
+      - "8002:80"
 
 volumes:
   nugurang-data:
