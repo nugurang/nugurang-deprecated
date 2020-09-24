@@ -1,4 +1,5 @@
 plugins {
+    id 'pmd'
     id 'checkstyle'
     id 'org.springframework.boot' version '2.3.4.RELEASE'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
@@ -6,6 +7,7 @@ plugins {
 }
 
 def checkstyleVersion = '8.+'
+def pmdVersion = '6.21.0'
 
 group = 'com.nugurang'
 version = '0.0.1-SNAPSHOT'
@@ -70,3 +72,17 @@ tasks.withType(Checkstyle) {
     }
 }
 
+pmd {
+    toolVersion = pmdVersion
+    consoleOutput = true
+    ignoreFailures = true
+    reportsDir = file("${buildDir}/pmd-output")
+}
+ 
+tasks.withType(Pmd) {
+    reports {
+        xml.destination = file("${pmd.reportsDir}/pmd-report.xml")
+        html.enabled = false
+        xml.enabled = true
+    }
+}
