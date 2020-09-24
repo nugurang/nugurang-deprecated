@@ -1,105 +1,75 @@
 scalar DateTime
 """Query: SELECT"""
 type Query {
-    getArticle(id: ID): Article!
     getBoard(id: ID): Board!
-    getEvent(id: ID): Event!
-    getHonor(id: ID): Honor!
-    getImage(id: ID): Image!
-    getNoti(id: ID): Noti!
-    getPosition(id: ID): Position!
-    getProgress(id: ID): Progress!
     getProject(id: ID): Project!
-    getStar(id: ID): Star!
-    getTag(id: ID): Tag!
-    getTask(id: ID): Task!
     getTeam(id: ID): Team!
-    getThread(id: ID): Thread!
     getUser(id: ID): User!
-    getVote(id: ID): Vote!
-    getWork(id: ID): Work!
 }
 
 """Mutation: INSERT, UPDATE, DELETE"""
 type Mutation {
     """CREATE"""
-    createArticle(content: String): Article
-    createBoard(name: String): Board
-    createEvent(board: Board, name: String): Event
-    createHonor(user: User, task: Task): Honor
-    createImage(address: String): Image
-    createNoti(from_user: User, to_user: User, article: Article): Noti
-    createPosition(name: String): Position
-    createProgress(name: String): Position
-    createProject(team: Team, name: String): Position
-    createStar(user: User): Star
-    createTag(name: String): Tag
-    createTask(name: String): Task
-    createTeam(name: String): Team
-    createThread(user: User, board: Board, event: Event, name: String): Thread
-    createUser(pw: String, salt: String): User
-    createVote(user: User, type: VoteType)
-    createWork(project: Project, name: String): Work
+    createArticle(title: String!, content: String!): Article
+    createBoard(name: String!): Board
+    createEvent(board: Board!, name: String!, image: [Image]): Event
+    createImage(address: String!): Image
+    createNoti(fromUser: User!, toUser: User!, article: Article!): Noti
+    createProject(team: Team!, name: String!, event: Event!): Position
+    createTag(name: String!): Tag
+    createTask(work: Work!, name: String!, difficulty: Int!): Task
+    createTeam(name: String!): Team
+    createThread(board: Board!, title: String!, user: User!, userTeams: Team!, event: Event!): Thread
+    createUser(pw: String!, uname: String!, image: Image): User
+    createWork(project: Project!, name: String!): Work
     """UPDATE"""
-    updateArticle(title: String): Boolean
-    updateArticle(content: String): Boolean
-    updateArticle(vcount: Int): Boolean
-    updateBoard
-    updateEvent
-    updateHonor
-    updateImage
-    updateNoti
-    updatePosition
-    updateProgress
-    updateProject
-    updateStar
-    updateTag
-    updateTask
-    updateTeam
-    updateThread
-    updateUser
-    updateVote
-    updateWork
+    updateArticle(id: ID!, thread: Thread, parent: Article, title: String, content: String): Article
+    updateBoard(id: ID!, name: String): Board
+    updateEvent(id: ID!, board: Board, name: String, image: [Image]!, rsrart: DateTime, rend: DateTime, estart: DateTime, eend: DateTime): Event
+    updateProject(id: ID!, team: Team, name: String, event: Event): Project
+    updateTag(id: ID!, name: String): Tag
+    updateTask(id: ID!, work: Work, name: String, users: [User]!, order: Int, difficulty: Int, positions: [Position]!): Task
+    updateTeam(id: ID!, name: String): Team
+    updateThread(id: ID!, board: Board, title: String, event: Event): Thread
+    updateUser(id: ID!, pw: String, uname: String, image: [image]!): User
+    updateWork(id: ID!, project: Project, name: String, order: Int): Work
     """DELETE"""
-    deleteArticle(id: ID): Boolean
-    deleteBoard(id: ID): Boolean
-    deleteEvent(id: ID): Boolean
-    deleteHonor(id: ID): Boolean
-    deleteImage(id: ID): Boolean
-    deleteNoti(id: ID): Boolean
-    deletePosition(id: ID): Boolean
-    deleteProgress(id: ID): Boolean
-    deleteProject(id: ID): Boolean
-    deleteStar(id: ID): Boolean
-    deleteTag(id: ID): Boolean
-    deleteTask(id: ID): Boolean
-    deleteTeam(id: ID): Boolean
-    deleteThread(id: ID): Boolean
-    deleteUser(id: ID): Boolean
-    deleteVote(id: ID): Boolean
-    deleteWork(id: ID): Boolean
+    deleteArticle(id: ID!): Boolean!
+    deleteBoard(id: ID!): Boolean!
+    deleteEvent(id: ID!): Boolean!
+    deleteImage(id: ID!): Boolean!
+    deleteNoti(id: ID!): Boolean!
+    deleteProject(id: ID!): Boolean!
+    deleteTag(id: ID!): Boolean!
+    deleteTask(id: ID!): Boolean!
+    deleteTeam(id: ID!): Boolean!
+    deleteThread(id: ID!): Boolean!
+    deleteUser(id: ID!): Boolean!
+    deleteWork(id: ID!): Boolean!
 }
 
 """Custom Scalar"""
 scalar DateTime
 
 """Enum"""
-enum VoteType {
-    UPVOTE
-    DOWNVOTE
+enum ProgressType {
+    TODO
+    DOING
+    DONE
 }
 
 """Type"""
 type Article {
     id: ID!
-    thread: [Thread]!
+    thread: Thread!
     parent: Article
     title: String
     content: String!
-    vcount: Int!
+    starredCount: Int!
+    upvotedCount: Int!
+    downvotedCount: Int!
     ctime: DateTime!
-    mtine: DateTime!
-    star: [Star]!
+    mtime: DateTime!
 }
 
 type Board {
@@ -110,8 +80,8 @@ type Board {
 type Event {
     id: ID!
     board: Board!
-    image: [Image]!
     name: String!
+    image: [Image]!
     rstart: DateTime!
     rend: DateTime!
     estart: DateTime!
@@ -132,10 +102,10 @@ type Image {
 
 type Noti {
     id: ID!
-    from_user: User!
-    to_user: User!
-    article: Article!
+    fromUser: User!
+    toUser: [User!]!
     at: DateTime!
+    article: Article!
 }
 
 type Position {
@@ -151,13 +121,8 @@ type Progress {
 type Project {
     id: ID!
     team: Team!
-    event: [Event]!
     name: String!
-}
-
-type Star {
-    id: ID!
-    user: User!
+    event: Event!
 }
 
 type Tag {
@@ -167,10 +132,13 @@ type Tag {
 
 type Task {
     id: ID!
-    work: [Work]!
+    work: Work!
     name: String!
+    users: [User]!
     order: Int!
+    difficulty: Int!
     progress: Progress!
+    positions: [Position]!
 }
 
 type Team {
@@ -180,11 +148,11 @@ type Team {
 
 type Thread {
     id: ID!
-    user: [User]!
-    userTeams: [Team]!
     board: Board!
+    title: String!
+    user: User!
+    userTeams: Team!
     event: Event!
-    name: String!
     getArticles(title: String, content: String, uname: String, page: Int = 1, pageSize: Int = 20): [Article]!
 }
 
@@ -192,14 +160,8 @@ type User {
     id: ID!
     pw: String!
     uname: String!
-    image: [Image]
+    image: [Image]!
     blog: board
-}
-
-type Vote {
-    id: ID!
-    user: User!
-    type: VoteType!
 }
 
 type Work {
