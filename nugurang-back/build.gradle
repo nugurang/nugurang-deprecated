@@ -1,8 +1,11 @@
 plugins {
+    id 'checkstyle'
     id 'org.springframework.boot' version '2.3.4.RELEASE'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'java'
 }
+
+def checkstyleVersion = '8.+'
 
 group = 'com.nugurang'
 version = '0.0.1-SNAPSHOT'
@@ -12,6 +15,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    checkstyleConfig
 }
 
 repositories {
@@ -35,8 +39,34 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+    checkstyleConfig("com.puppycrawl.tools:checkstyle:${checkstyleVersion}") {
+        transitive = false
+    }
 }
 
 test {
     useJUnitPlatform()
 }
+
+checkstyle {
+    toolVersion = checkstyleVersion
+    //config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, 'sun_checks.xml')
+    //configFile = project(':').file("config/checkstyle/checkstyle.xml")
+    //configProperties = [ "suppressionFile" : project(':').file('config/checkstyle/suppressions.xml')]
+    showViolations = true
+    ignoreFailures = false
+    maxWarnings = 0
+    maxErrors = 0
+}
+
+checkstyleTest {
+    enabled = false
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.enabled false
+        html.enabled true
+    }
+}
+
