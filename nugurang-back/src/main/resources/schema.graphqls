@@ -1,16 +1,172 @@
+scalar DateTime
+"""Query: SELECT"""
 type Query {
-    bookById(id: ID): Book
+    getBoard(id: ID): Board!
+    getProject(id: ID): Project!
+    getTeam(id: ID): Team!
+    getUser(id: ID): User!
 }
 
-type Book {
-    id: ID
-    name: String
-    pageCount: Int
-    author: Author
+"""Mutation: INSERT, UPDATE, DELETE"""
+type Mutation {
+    """CREATE"""
+    createArticle(title: String!, content: String!): Article
+    createBoard(name: String!): Board
+    createEvent(board: Board!, name: String!, image: [Image]): Event
+    createImage(address: String!): Image
+    createNoti(fromUser: User!, toUser: User!, article: Article!): Noti
+    createProject(team: Team!, name: String!, event: Event!): Position
+    createTag(name: String!): Tag
+    createTask(work: Work!, name: String!, difficulty: Int!): Task
+    createTeam(name: String!): Team
+    createThread(board: Board!, title: String!, user: User!, userTeams: Team!, event: Event!): Thread
+    createUser(pw: String!, uname: String!, image: Image): User
+    createWork(project: Project!, name: String!): Work
+    """UPDATE"""
+    updateArticle(id: ID!, thread: Thread, parent: Article, title: String, content: String): Article
+    updateBoard(id: ID!, name: String): Board
+    updateEvent(id: ID!, board: Board, name: String, image: [Image]!, rsrart: DateTime, rend: DateTime, estart: DateTime, eend: DateTime): Event
+    updateProject(id: ID!, team: Team, name: String, event: Event): Project
+    updateTag(id: ID!, name: String): Tag
+    updateTask(id: ID!, work: Work, name: String, users: [User]!, order: Int, difficulty: Int, positions: [Position]!): Task
+    updateTeam(id: ID!, name: String): Team
+    updateThread(id: ID!, board: Board, title: String, event: Event): Thread
+    updateUser(id: ID!, pw: String, uname: String, image: [image]!): User
+    updateWork(id: ID!, project: Project, name: String, order: Int): Work
+    """DELETE"""
+    deleteArticle(id: ID!): Boolean!
+    deleteBoard(id: ID!): Boolean!
+    deleteEvent(id: ID!): Boolean!
+    deleteImage(id: ID!): Boolean!
+    deleteNoti(id: ID!): Boolean!
+    deleteProject(id: ID!): Boolean!
+    deleteTag(id: ID!): Boolean!
+    deleteTask(id: ID!): Boolean!
+    deleteTeam(id: ID!): Boolean!
+    deleteThread(id: ID!): Boolean!
+    deleteUser(id: ID!): Boolean!
+    deleteWork(id: ID!): Boolean!
 }
 
-type Author {
-    id: ID
-    firstName: String
-    lastName: String
+"""Custom Scalar"""
+scalar DateTime
+
+"""Enum"""
+enum ProgressType {
+    TODO
+    DOING
+    DONE
+}
+
+"""Type"""
+type Article {
+    id: ID!
+    thread: Thread!
+    parent: Article
+    title: String
+    content: String!
+    starredCount: Int!
+    upvotedCount: Int!
+    downvotedCount: Int!
+    ctime: DateTime!
+    mtime: DateTime!
+}
+
+type Board {
+    id: ID!
+    name: String!
+}
+
+type Event {
+    id: ID!
+    board: Board!
+    name: String!
+    image: [Image]!
+    rstart: DateTime!
+    rend: DateTime!
+    estart: DateTime!
+    eend: DateTime!
+}
+
+type Honor {
+    id: ID!
+    user: User!
+    task: Task!
+    honor: Int!
+}
+
+type Image {
+    id: ID!
+    address: String!
+}
+
+type Noti {
+    id: ID!
+    fromUser: User!
+    toUser: [User!]!
+    at: DateTime!
+    article: Article!
+}
+
+type Position {
+    id: ID!
+    name: String!
+}
+
+type Progress {
+    id: ID!
+    name: String!
+}
+
+type Project {
+    id: ID!
+    team: Team!
+    name: String!
+    event: Event!
+}
+
+type Tag {
+    id: ID!
+    name: String!
+}
+
+type Task {
+    id: ID!
+    work: Work!
+    name: String!
+    users: [User]!
+    order: Int!
+    difficulty: Int!
+    progress: Progress!
+    positions: [Position]!
+}
+
+type Team {
+    id: ID!
+    name: String!
+}
+
+type Thread {
+    id: ID!
+    board: Board!
+    title: String!
+    user: User!
+    userTeams: Team!
+    event: Event!
+    getArticles(title: String, content: String, uname: String, page: Int = 1, pageSize: Int = 20): [Article]!
+}
+
+type User {
+    id: ID!
+    pw: String!
+    uname: String!
+    image: [Image]!
+    blog: board
+}
+
+type Work {
+    id: ID!
+    project: Project!
+    name: String!
+    order: Int!
 }
