@@ -7,7 +7,7 @@ plugins {
 }
 
 def checkstyleVersion = '8.+'
-def pmdVersion = '6.21.0'
+def pmdVersion = '6.+'
 
 group = 'com.nugurang'
 version = '0.0.1-SNAPSHOT'
@@ -52,9 +52,6 @@ test {
 
 checkstyle {
     toolVersion = checkstyleVersion
-    //config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, 'sun_checks.xml')
-    //configFile = project(':').file("config/checkstyle/checkstyle.xml")
-    //configProperties = [ "suppressionFile" : project(':').file('config/checkstyle/suppressions.xml')]
     showViolations = true
     ignoreFailures = false
     maxWarnings = 0
@@ -76,13 +73,12 @@ pmd {
     toolVersion = pmdVersion
     consoleOutput = true
     ignoreFailures = true
-    reportsDir = file("${buildDir}/pmd-output")
+    reportsDir = file("${buildDir}/reports/pmd")
 }
  
 tasks.withType(Pmd) {
     reports {
-        xml.destination = file("${pmd.reportsDir}/pmd-report.xml")
-        html.enabled = false
-        xml.enabled = true
+        xml.enabled false
+        html.enabled true
     }
 }
