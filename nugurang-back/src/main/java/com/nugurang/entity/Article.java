@@ -19,7 +19,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Article implements Serializable {
+public class Article extends DateAudit implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -31,18 +31,6 @@ public class Article implements Serializable {
 
     @NotNull
     private Long vcount;
-
-    /*
-    @Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreatedDate
-    private Date ctime;
-
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @LastModifiedDate
-    private Date utime;
-    */
 
     public Article(String title, String content) {
         this.title = title;
