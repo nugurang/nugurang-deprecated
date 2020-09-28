@@ -7,9 +7,9 @@ CREATE TABLE `article`
   `parent` INT,
   `title` VARCHAR(255),
   `content` TEXT NOT NULL,
-  `vcount` INT NOT NULL DEFAULT 0,
-  `ctime` DATETIME NOT NULL DEFAULT NOW(),
-  `mtime` DATETIME NOT NULL DEFAULT NOW(),
+  `view_count` INT NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT NOW(),
+  `modified_at` DATETIME NOT NULL DEFAULT NOW(),
   PRIMARY KEY (`id`)
 );
 
@@ -26,11 +26,12 @@ CREATE TABLE `event`
   `id` INT NOT NULL AUTO_INCREMENT,
   `board` INT NOT NULL,
   `image` INT,
-  `name` VARCHAR(255) NOT NULL,
-  `rstart` DATETIME NOT NULL,
-  `rend` DATETIME NOT NULL,
-  `estart` DATETIME NOT NULL,
-  `eend` DATETIME NOT NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `content` VARCHAR(255) NOT NULL,
+  `recruiting_start` DATETIME NOT NULL,
+  `recruiting_end` DATETIME NOT NULL,
+  `event_start` DATETIME NOT NULL,
+  `event_end` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE (`name`)
 );
@@ -84,6 +85,7 @@ CREATE TABLE `task`
   `name` VARCHAR(255) NOT NULL,
   `order` INT NOT NULL,
   `progress` INT NOT NULL,
+  `difficulty` INT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE (`work`, `name`),
   UNIQUE (`work`, `name`, `order`)
@@ -111,10 +113,13 @@ CREATE TABLE `thread`
 CREATE TABLE `user`
 (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `pw` BINARY(60) NOT NULL,
   `image` INT,
   `blog` INT,
+  `name` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `password` BINARY(60) NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE (`name`),
   UNIQUE (`blog`)
 );
 

@@ -1,7 +1,7 @@
 package com.nugurang.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,31 +18,34 @@ import org.springframework.data.annotation.LastModifiedDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Article extends DateAudit implements Serializable {
+public class Event implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
 
-    private String title;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Board board;
+
+    @ManyToOne
+    @JoinColumn(name = "image")
+    private Image image;
 
     @Column(nullable = false)
+    private String title;
+
+    @Column
     private String content;
 
     @Column(nullable = false)
-    private Long viewCount;
+    private LocalDateTime recruitingStart;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private Thread thread;
+    @Column(nullable = false)
+    private LocalDateTime recruitingEnd;
+    
+    @Column(nullable = false)
+    private LocalDateTime eventStart;
 
-    @ManyToOne
-    @JoinColumn
-    private Article parent;
-
-    public Article(String title, String content, Thread thread) {
-        this.title = title;
-        this.content = content;
-        this.viewCount = Long.valueOf(0);
-        this.thread = thread;
-    }
+    @Column(nullable = false)
+    private LocalDateTime eventEnd;
 }

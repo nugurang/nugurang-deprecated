@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,31 +20,28 @@ import org.springframework.data.annotation.LastModifiedDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Article extends DateAudit implements Serializable {
+@Table(uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"project", "name"}),
+    @UniqueConstraint(columnNames = {"project", "name", "order"})
+}) 
+public class Work implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
 
-    private String title;
+    @Column(nullable = false)
+    private String name;
 
     @Column(nullable = false)
-    private String content;
-
-    @Column(nullable = false)
-    private Long viewCount;
+    private Integer order;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
-    private Thread thread;
+    @JoinColumn(name = "project", nullable = false)
+    private Project project;
 
-    @ManyToOne
-    @JoinColumn
-    private Article parent;
-
-    public Article(String title, String content, Thread thread) {
-        this.title = title;
-        this.content = content;
-        this.viewCount = Long.valueOf(0);
-        this.thread = thread;
+    public Work(String name, Integer order, Project project) {
+        this.name = name;
+        this.order = order;
+        this.project = project;
     }
 }

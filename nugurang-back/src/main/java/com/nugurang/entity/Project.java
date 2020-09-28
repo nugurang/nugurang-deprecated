@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,31 +20,29 @@ import org.springframework.data.annotation.LastModifiedDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Article extends DateAudit implements Serializable {
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"team", "name"}))
+public class Project implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
 
-    private String title;
-
     @Column(nullable = false)
-    private String content;
-
-    @Column(nullable = false)
-    private Long viewCount;
+    private String name;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
-    private Thread thread;
+    @JoinColumn(name = "team", nullable = false)
+    private Team team;
 
     @ManyToOne
-    @JoinColumn
-    private Article parent;
+    private Event event;
 
-    public Article(String title, String content, Thread thread) {
-        this.title = title;
-        this.content = content;
-        this.viewCount = Long.valueOf(0);
-        this.thread = thread;
+    public Project(Team team, String name) {
+        this.team = team;
+        this.name = name;
+    }
+
+    public Project(Team team, String name, Event event) {
+        this(team, name);
+        this.event = event;
     }
 }
