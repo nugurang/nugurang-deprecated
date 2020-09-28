@@ -6,7 +6,7 @@ COPY . ${APP_ROOT}
 RUN chmod -R a+w ${APP_ROOT}
 USER spring:spring
 WORKDIR ${APP_ROOT}
-RUN ./gradlew --info wrapper
-RUN ./gradlew --info build
+RUN ./gradlew wrapper --info
+RUN ./gradlew build --info -P rel
 WORKDIR ${APP_ROOT}
 ENTRYPOINT ./gradlew bootRun --args='--spring.profiles.active=rel'
