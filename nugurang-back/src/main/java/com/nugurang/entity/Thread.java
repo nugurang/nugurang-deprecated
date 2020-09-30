@@ -1,18 +1,18 @@
 package com.nugurang.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
 @NoArgsConstructor
@@ -30,7 +30,9 @@ public class Thread implements Serializable {
     @JoinColumn(name = "user", nullable = false)
     private User user;
 
-    //UserTeam userTeam;
+    @ManyToOne
+    @JoinColumn(name = "xref_user_team", nullable = false)
+    private XrefUserTeam xrefUserTeam;
 
     @ManyToOne
     @JoinColumn(name = "board", nullable = false)
@@ -39,6 +41,9 @@ public class Thread implements Serializable {
     @ManyToOne
     @JoinColumn(name = "event")
     private Event event;
+
+    @OneToMany(mappedBy = "thread")
+    private List<Article> article = new ArrayList<Article>();
 
     public Thread(String name, User user, Board board) {
         this.name = name;

@@ -4,6 +4,7 @@ CREATE TABLE `article`
 (
   `id` INT NOT NULL AUTO_INCREMENT,
   `thread` INT NOT NULL,
+  `user` INT NOT NULL,
   `parent` INT,
   `title` VARCHAR(255),
   `content` TEXT NOT NULL,
@@ -24,7 +25,6 @@ CREATE TABLE `board`
 CREATE TABLE `event`
 (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `board` INT NOT NULL,
   `image` INT,
   `title` VARCHAR(255) NOT NULL,
   `content` VARCHAR(255) NOT NULL,
@@ -36,12 +36,31 @@ CREATE TABLE `event`
   UNIQUE (`name`)
 );
 
+CREATE TABLE `following`
+(
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `from_user` INT NOT NULL,
+  `to_user` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE (`from_user`, `to_user`)
+);
+
 CREATE TABLE `image`
 (
   `id` INT NOT NULL AUTO_INCREMENT,
   `address` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE (`address`)
+);
+
+CREATE TABLE `notification`
+(
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `user` INT NOT NULL,
+  `at` DATETIME NOT NULL DEFAULT NOW(),
+  `article` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE (`user`, `article`)
 );
 
 CREATE TABLE `position`
@@ -68,6 +87,23 @@ CREATE TABLE `project`
   `name` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE (`team`, `name`)
+);
+
+CREATE TABLE `role`
+(
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+   PRIMARY KEY (`id`),
+  UNIQUE (`name`)
+);
+
+CREATE TABLE `star`
+(
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `user` INT NOT NULL,
+  `article` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE (`user`, `article`)
 );
 
 CREATE TABLE `tag`
@@ -123,6 +159,16 @@ CREATE TABLE `user`
   UNIQUE (`blog`)
 );
 
+CREATE TABLE `vote`
+(
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `user` INT NOT NULL,
+  `article` INT NOT NULL,
+  `vote_type` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE (`user`, `article`)
+);
+
 CREATE TABLE `vote_type`
 (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -160,33 +206,13 @@ CREATE TABLE `xref_event_tag`
   UNIQUE (`event`, `tag`)
 );
 
-CREATE TABLE `xref_following`
+CREATE TABLE `xref_task_position`
 (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `from_user` INT NOT NULL,
-  `to_user` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE (`from_user`, `to_user`)
-);
-
-CREATE TABLE `xref_noti`
-(
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `from_user` INT NOT NULL,
-  `to_user` INT NOT NULL,
-  `at` DATETIME NOT NULL DEFAULT NOW(),
-  `article` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE (`from_user`, `to_user`, `article`)
-);
-
-CREATE TABLE `xref_star`
-(
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `user` INT NOT NULL,
-  `article` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE (`user`, `article`)
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `task` INT NOT NULL,
+    `position` INT NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE (`task`, `position`)
 );
 
 CREATE TABLE `xref_thread_tag`
@@ -203,6 +229,7 @@ CREATE TABLE `xref_user_board`
   `id` INT NOT NULL AUTO_INCREMENT,
   `user` INT NOT NULL,
   `board` INT NOT NULL,
+  `role` INT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE (`user`, `board`)
 );
@@ -236,18 +263,9 @@ CREATE TABLE `xref_user_position`
   UNIQUE (`user`, `position`)
 );
 
-CREATE TABLE `xref_vote`
-(
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `user` INT NOT NULL,
-  `article` INT NOT NULL,
-  `type` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE (`user`, `article`)
-);
-
 ALTER TABLE `article`
   ADD FOREIGN KEY (`thread`) REFERENCES `thread`(`id`) ON DELETE CASCADE,
+  ADD FOREIGN KEY (`user`) REFERENCES `user`(`id`) ON DELETE CASCADE,
   ADD FOREIGN KEY (`parent`) REFERENCES `article`(`id`) ON DELETE CASCADE
 ;
 
@@ -256,9 +274,24 @@ ALTER TABLE `event`
   ADD FOREIGN KEY (`image`) REFERENCES `image`(`id`) ON DELETE SET NULL
 ;
 
+ALTER TABLE `following`
+  ADD FOREIGN KEY(`from_user`) REFERENCES `user`(`id`) ON DELETE CASCADE,
+  ADD FOREIGN KEY(`to_user`) REFERENCES `user`(`id`) ON DELETE CASCADE
+;
+
+ALTER TABLE `notification`
+  ADD FOREIGN KEY (`user`) REFERENCES `user`(`id`) ON DELETE CASCADE,
+  ADD FOREIGN KEY (`article`) REFERENCES `article`(`id`) ON DELETE CASCADE
+;
+
 ALTER TABLE `project`
   ADD FOREIGN KEY (`team`) REFERENCES `team`(`id`) ON DELETE CASCADE,
   ADD FOREIGN KEY (`event`) REFERENCES `event`(`id`) ON DELETE SET NULL
+;
+
+ALTER TABLE `star`
+  ADD FOREIGN KEY (`user`) REFERENCES `user`(`id`) ON DELETE CASCADE,
+  ADD FOREIGN KEY (`article`) REFERENCES `article`(`id`) ON DELETE CASCADE
 ;
 
 ALTER TABLE `task`
@@ -278,6 +311,12 @@ ALTER TABLE `user`
   ADD FOREIGN KEY (`blog`) REFERENCES `board`(`id`) ON DELETE SET NULL
 ;
 
+ALTER TABLE `vote`
+  ADD FOREIGN KEY (`user`) REFERENCES `user`(`id`) ON DELETE CASCADE,
+  ADD FOREIGN KEY (`article`) REFERENCES `article`(`id`) ON DELETE CASCADE,
+  ADD FOREIGN KEY (`vote_type`) REFERENCES `vote_type`(`id`) ON DELETE CASCADE
+;
+
 ALTER TABLE `work`
   ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON DELETE CASCADE
 ;
@@ -292,20 +331,9 @@ ALTER TABLE `xref_event_tag`
   ADD FOREIGN KEY (`tag`) REFERENCES `tag`(`id`) ON DELETE CASCADE
 ;
 
-ALTER TABLE `xref_following`
-  ADD FOREIGN KEY(`from_user`) REFERENCES `user`(`id`) ON DELETE CASCADE,
-  ADD FOREIGN KEY(`to_user`) REFERENCES `user`(`id`) ON DELETE CASCADE
-;
-
-ALTER TABLE `xref_noti`
-  ADD FOREIGN KEY (`from_user`) REFERENCES `user`(`id`) ON DELETE CASCADE,
-  ADD FOREIGN KEY (`to_user`) REFERENCES `user`(`id`) ON DELETE CASCADE,
-  ADD FOREIGN KEY (`article`) REFERENCES `article`(`id`) ON DELETE CASCADE
-;
-
-ALTER TABLE `xref_star`
-  ADD FOREIGN KEY (`user`) REFERENCES `user`(`id`) ON DELETE CASCADE,
-  ADD FOREIGN KEY (`article`) REFERENCES `article`(`id`) ON DELETE CASCADE
+ALTER TABLE `xref_task_position`
+  ADD FOREIGN KEY (`task`) REFERENCES `task`(`id`) ON DELETE CASCADE,
+  ADD FOREIGN kEY (`position`) REFERENCES `position`(`id`) ON DELETE CASCADE
 ;
 
 ALTER TABLE `xref_thread_tag`
@@ -316,6 +344,7 @@ ALTER TABLE `xref_thread_tag`
 ALTER TABLE `xref_user_board`
   ADD FOREIGN KEY (`user`) REFERENCES `user`(`id`) ON DELETE CASCADE,
   ADD FOREIGN KEY (`board`) REFERENCES `board`(`id`) ON DELETE CASCADE
+  ADD FOREIGN KEY (`role`) REFERENCES `role`(`id`) ON DELETE CASCADE
 ;
 
 ALTER TABLE `xref_user_task`
@@ -333,8 +362,3 @@ ALTER TABLE `xref_user_position`
   ADD FOREIGN KEY (`position`) REFERENCES `position`(`id`) ON DELETE CASCADE
 ;
 
-ALTER TABLE `xref_vote`
-  ADD FOREIGN KEY (`user`) REFERENCES `user`(`id`) ON DELETE CASCADE,
-  ADD FOREIGN KEY (`article`) REFERENCES `article`(`id`) ON DELETE CASCADE,
-  ADD FOREIGN KEY (`type`) REFERENCES `vote_type`(`id`) ON DELETE CASCADE
-;
