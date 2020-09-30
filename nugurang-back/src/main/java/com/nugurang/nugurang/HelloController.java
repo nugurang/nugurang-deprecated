@@ -14,6 +14,7 @@ public class HelloController {
 
     @RequestMapping("/")
     public String index() {
+        /*
         articleRepository.save(new Article("test", "this is test article"));
         Iterable<Article> articles = articleRepository.findAll();
         LinkedList<String> strings = new LinkedList<>();
@@ -22,5 +23,7 @@ public class HelloController {
             strings.add(title == null ? "" : title);
         }
         return "Hello Spring Boot<br/>" + String.join("<br/>", strings);
+        */
+        return "Hello Spring Boot";
     }
 }

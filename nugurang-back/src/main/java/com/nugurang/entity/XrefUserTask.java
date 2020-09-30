@@ -1,15 +1,12 @@
 package com.nugurang.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import lombok.Getter;
@@ -21,27 +18,27 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"project", "name"}),
-    @UniqueConstraint(columnNames = {"project", "name", "order"})
-}) 
-public class Work implements Serializable {
+    @UniqueConstraint(columnNames = {"user", "task"})
+})
+public class XrefUserTask implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
 
     @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
-    private Integer order;
+    private Integer honor;
 
     @ManyToOne
-    @JoinColumn(name = "project", nullable = false)
-    private Project project;
+    @JoinColumn(name = "user", nullable = false)
+    private User user;
 
-    public Work(String name, Integer order, Project project) {
-        this.name = name;
-        this.order = order;
-        this.project = project;
+    @ManyToOne
+    @JoinColumn(name = "task", nullable = false)
+    private Task task;
+
+    public XrefUserTask(Integer honor, User user, Task task) {
+        this.honor = honor;
+        this.user = user;
+        this.task = task;
     }
 }
