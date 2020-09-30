@@ -361,4 +361,3 @@ ALTER TABLE `xref_user_position`
   ADD FOREIGN KEY (`user`) REFERENCES `user`(`id`) ON DELETE CASCADE,
   ADD FOREIGN KEY (`position`) REFERENCES `position`(`id`) ON DELETE CASCADE
 ;
-
