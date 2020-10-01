@@ -10,41 +10,50 @@ type Query {
 """Mutation: INSERT, UPDATE, DELETE"""
 type Mutation {
     """CREATE"""
-    createArticle(title: String!, content: String!): Article
+    createArticle(user: User!, thread: Thread!, parent: Article, title: String!, content: String!): Article
     createBoard(name: String!): Board
-    createEvent(board: Board!, name: String!, image: [Image]): Event
+    createEvent(board: Board!, name: String!, content: String, image: [Image]!): Event
+    createFollowing(fromUser: User!, toUser: User!): Following
     createImage(address: String!): Image
-    createNoti(fromUser: User!, toUser: User!, article: Article!): Noti
+    createNotification(user: User!, article: Article!): Notification
     createProject(team: Team!, name: String!, event: Event!): Position
+    createRole(name: String!): Role
+    createStar(user: User!, article: Article!): Star
     createTag(name: String!): Tag
     createTask(work: Work!, name: String!, difficulty: Int!): Task
     createTeam(name: String!): Team
-    createThread(board: Board!, title: String!, user: User!, userTeams: Team!, event: Event!): Thread
-    createUser(pw: String!, uname: String!, image: Image): User
+    createThread(board: Board!, name: String!, user: User!, userTeam: Team!, event: Event!): Thread
+    createUser(password: String!, name: String!, email: String!, image: Image): User
+    createVote(user: User!, article: Article!, voteType: [VoteType]!): Vote
+    createVoteType(name: String!): VoteType
     createWork(project: Project!, name: String!): Work
     """UPDATE"""
-    updateArticle(id: ID!, thread: Thread, parent: Article, title: String, content: String): Article
-    updateBoard(id: ID!, name: String): Board
-    updateEvent(id: ID!, board: Board, name: String, image: [Image]!, rsrart: DateTime, rend: DateTime, estart: DateTime, eend: DateTime): Event
-    updateProject(id: ID!, team: Team, name: String, event: Event): Project
-    updateTag(id: ID!, name: String): Tag
-    updateTask(id: ID!, work: Work, name: String, users: [User]!, order: Int, difficulty: Int, positions: [Position]!): Task
-    updateTeam(id: ID!, name: String): Team
-    updateThread(id: ID!, board: Board, title: String, event: Event): Thread
-    updateUser(id: ID!, pw: String, uname: String, image: [image]!): User
-    updateWork(id: ID!, project: Project, name: String, order: Int): Work
+    updateArticle(id: ID!, thread: Thread!, parent: Article!, title: String, content: String!): Article
+    updateBoard(id: ID!, name: String!): Board
+    updateEvent(id: ID!, title: String!, content: String!, image: [Image]!, recrutingStart: DateTime!, recrutingEnd: DateTime!, eventStart: DateTime!, eventEnd: DateTime!): Event
+    updateProject(id: ID!, team: Team!, name: String!, event: Event): Project
+    updateTask(id: ID!, work: Work!, name: String!, users: [User]!, order: Int!, progress: Int!, difficulty: Int!, positions: [Position]!): Task
+    updateTeam(id: ID!, name: String!, users: [User]!): Team
+    updateThread(id: ID!, board: Board!, name: String, event: Event): Thread
+    updateUser(id: ID!, password: String!, name: String!, email: String!, image: image!): User
+    updateVote(id: ID!, voteType: [VoteType]!): Vote
+    updateWork(id: ID!, project: Project!, name: String!, order: Int!): Work
     """DELETE"""
     deleteArticle(id: ID!): Boolean!
     deleteBoard(id: ID!): Boolean!
     deleteEvent(id: ID!): Boolean!
+    deleteFollowing(id: ID!): Boolean!
     deleteImage(id: ID!): Boolean!
-    deleteNoti(id: ID!): Boolean!
+    deleteNotification(id: ID!): Boolean!
     deleteProject(id: ID!): Boolean!
+    deleteRole(id: ID!): Boolean!
     deleteTag(id: ID!): Boolean!
     deleteTask(id: ID!): Boolean!
     deleteTeam(id: ID!): Boolean!
     deleteThread(id: ID!): Boolean!
     deleteUser(id: ID!): Boolean!
+    deleteVote(id: ID!): Boolean!
+    deleteVoteType(id: ID!): Boolean!
     deleteWork(id: ID!): Boolean!
 }
 
@@ -62,14 +71,13 @@ enum ProgressType {
 type Article {
     id: ID!
     thread: Thread!
+    user: User!
     parent: Article
     title: String
     content: String!
-    starredCount: Int!
-    upvotedCount: Int!
-    downvotedCount: Int!
-    ctime: DateTime!
-    mtime: DateTime!
+    viewCount: Int!
+    createdAt: DateTime!
+    modifiedAt: DateTime!
 }
 
 type Board {
@@ -80,19 +88,19 @@ type Board {
 type Event {
     id: ID!
     board: Board!
-    name: String!
+    title: String!
+    content: String!
     image: [Image]!
-    rstart: DateTime!
-    rend: DateTime!
-    estart: DateTime!
-    eend: DateTime!
+    recruitingStart: DateTime!
+    recruitingEnd: DateTime!
+    eventStart: DateTime!
+    eventEnd: DateTime!
 }
 
-type Honor {
+type Following {
     id: ID!
-    user: User!
-    task: Task!
-    honor: Int!
+    fromUser: User!
+    toUser: User!
 }
 
 type Image {
@@ -100,10 +108,9 @@ type Image {
     address: String!
 }
 
-type Noti {
+type Notification {
     id: ID!
-    fromUser: User!
-    toUser: [User!]!
+    user: User!
     at: DateTime!
     article: Article!
 }
@@ -113,16 +120,22 @@ type Position {
     name: String!
 }
 
-type Progress {
-    id: ID!
-    name: String!
-}
-
 type Project {
     id: ID!
     team: Team!
     name: String!
     event: Event!
+}
+
+type Role {
+    id: ID!
+    name: String!
+}
+
+type Star {
+    id: ID!
+    user: User!
+    article: Article!
 }
 
 type Tag {
@@ -136,32 +149,45 @@ type Task {
     name: String!
     users: [User]!
     order: Int!
+    progress: ProgressType!
     difficulty: Int!
-    progress: Progress!
     positions: [Position]!
 }
 
 type Team {
     id: ID!
     name: String!
+    Users: [User]!
 }
 
 type Thread {
     id: ID!
     board: Board!
-    title: String!
+    name: String!
     user: User!
-    userTeams: Team!
+    userTeam: Team!
     event: Event!
-    getArticles(title: String, content: String, uname: String, page: Int = 1, pageSize: Int = 20): [Article]!
 }
 
 type User {
     id: ID!
-    pw: String!
-    uname: String!
-    image: [Image]!
-    blog: board
+    password: String!
+    name: String!
+    email: String!
+    image: Image
+    blog: Board
+}
+
+type Vote {
+    id: ID!
+    user: User!
+    article: Article!
+    voteType: [VoteType]!
+}
+
+type VoteType {
+    id: ID!
+    name: String!
 }
 
 type Work {
