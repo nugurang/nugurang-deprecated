@@ -34,4 +34,10 @@ public class Image implements Serializable {
     public Image(String address) {
         this.address = address;
     }
+
+    @PreRemove
+    public void nullify() {
+        events.forEach(event -> event.setImage(null));
+        users.forEach(user -> user.setImage(null));
+    }
 }

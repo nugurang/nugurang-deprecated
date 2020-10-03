@@ -17,7 +17,8 @@ CREATE TABLE `article`
 CREATE TABLE `board`
 (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `user` INT,
   PRIMARY KEY (`id`),
   UNIQUE (`name`)
 );
@@ -138,11 +139,11 @@ CREATE TABLE `team`
 CREATE TABLE `thread`
 (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
   `user` INT NOT NULL,
   `user_team` INT NOT NULL,
   `board` INT NOT NULL,
   `event` INT,
-  `name` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -156,6 +157,7 @@ CREATE TABLE `user`
   `password` BINARY(60) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE (`name`),
+  UNIQUE (`email`),
   UNIQUE (`blog`)
 );
 
@@ -270,7 +272,6 @@ ALTER TABLE `article`
 ;
 
 ALTER TABLE `event`
-  ADD FOREIGN KEY (`board`) REFERENCES `board`(`id`) ON DELETE CASCADE,
   ADD FOREIGN KEY (`image`) REFERENCES `image`(`id`) ON DELETE SET NULL
 ;
 
