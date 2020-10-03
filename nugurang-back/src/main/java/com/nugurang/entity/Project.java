@@ -37,7 +37,7 @@ public class Project implements Serializable {
     @JoinColumn(name = "event")
     private Event event;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", orphanRemoval = true)
     private List<Work> works = new ArrayList<>();
 
     public Project(Team team, String name) {

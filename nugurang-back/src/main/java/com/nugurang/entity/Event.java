@@ -29,7 +29,7 @@ public class Event implements Serializable {
     @Column(nullable = false)
     private String title;
 
-    @Column
+    @Column(nullable = false)
     private String content;
 
     @Column(nullable = false)
@@ -46,6 +46,7 @@ public class Event implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "image")
+    @OnDelete(action=OnDeleteAction.CASCADE)
     private Image image;
 
     @OneToMany(mappedBy = "event")
@@ -64,5 +65,11 @@ public class Event implements Serializable {
         this.recruitingEnd = recruitingEnd;
         this.eventStart = eventStart;
         this.eventEnd = eventEnd;
+    }
+
+    @PreRemove
+    public void nullify() {
+        projects.forEach(project -> project.setEvent(null));
+        threads.forEach(thread -> thread.setEvent(null));
     }
 }

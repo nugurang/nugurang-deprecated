@@ -24,7 +24,7 @@ public class Team implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", orphanRemoval = true)
     private List<Project> projects = new ArrayList<>();
 
     public Team(String name) {

@@ -32,7 +32,7 @@ public class Work implements Serializable {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, nullable = false)
     private Integer order;
 
     @ManyToOne
