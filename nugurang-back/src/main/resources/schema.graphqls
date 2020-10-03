@@ -1,63 +1,4 @@
-scalar DateTime
-"""Query: SELECT"""
-type Query {
-    getBoard(id: ID): Board!
-    getProject(id: ID): Project!
-    getTeam(id: ID): Team!
-    getUser(id: ID): User!
-}
-
-"""Mutation: INSERT, UPDATE, DELETE"""
-type Mutation {
-    """CREATE"""
-    createArticle(user: User!, thread: Thread!, parent: Article, title: String!, content: String!): Article
-    createBoard(name: String!): Board
-    createEvent(board: Board!, name: String!, content: String, image: [Image]!): Event
-    createFollowing(fromUser: User!, toUser: User!): Following
-    createImage(address: String!): Image
-    createNotification(user: User!, article: Article!): Notification
-    createProject(team: Team!, name: String!, event: Event!): Position
-    createRole(name: String!): Role
-    createStar(user: User!, article: Article!): Star
-    createTag(name: String!): Tag
-    createTask(work: Work!, name: String!, difficulty: Int!): Task
-    createTeam(name: String!): Team
-    createThread(board: Board!, name: String!, user: User!, userTeam: Team!, event: Event!): Thread
-    createUser(password: String!, name: String!, email: String!, image: Image): User
-    createVote(user: User!, article: Article!, voteType: [VoteType]!): Vote
-    createVoteType(name: String!): VoteType
-    createWork(project: Project!, name: String!): Work
-    """UPDATE"""
-    updateArticle(id: ID!, thread: Thread!, parent: Article!, title: String, content: String!): Article
-    updateBoard(id: ID!, name: String!): Board
-    updateEvent(id: ID!, title: String!, content: String!, image: [Image]!, recrutingStart: DateTime!, recrutingEnd: DateTime!, eventStart: DateTime!, eventEnd: DateTime!): Event
-    updateProject(id: ID!, team: Team!, name: String!, event: Event): Project
-    updateTask(id: ID!, work: Work!, name: String!, users: [User]!, order: Int!, progress: Int!, difficulty: Int!, positions: [Position]!): Task
-    updateTeam(id: ID!, name: String!, users: [User]!): Team
-    updateThread(id: ID!, board: Board!, name: String, event: Event): Thread
-    updateUser(id: ID!, password: String!, name: String!, email: String!, image: image!): User
-    updateVote(id: ID!, voteType: [VoteType]!): Vote
-    updateWork(id: ID!, project: Project!, name: String!, order: Int!): Work
-    """DELETE"""
-    deleteArticle(id: ID!): Boolean!
-    deleteBoard(id: ID!): Boolean!
-    deleteEvent(id: ID!): Boolean!
-    deleteFollowing(id: ID!): Boolean!
-    deleteImage(id: ID!): Boolean!
-    deleteNotification(id: ID!): Boolean!
-    deleteProject(id: ID!): Boolean!
-    deleteRole(id: ID!): Boolean!
-    deleteTag(id: ID!): Boolean!
-    deleteTask(id: ID!): Boolean!
-    deleteTeam(id: ID!): Boolean!
-    deleteThread(id: ID!): Boolean!
-    deleteUser(id: ID!): Boolean!
-    deleteVote(id: ID!): Boolean!
-    deleteVoteType(id: ID!): Boolean!
-    deleteWork(id: ID!): Boolean!
-}
-
-"""Custom Scalar"""
+"""Scalar"""
 scalar DateTime
 
 """Enum"""
@@ -90,7 +31,7 @@ type Event {
     board: Board!
     title: String!
     content: String!
-    image: [Image]!
+    images: [Image]!
     recruitingStart: DateTime!
     recruitingEnd: DateTime!
     eventStart: DateTime!
@@ -182,7 +123,7 @@ type Vote {
     id: ID!
     user: User!
     article: Article!
-    voteType: [VoteType]!
+    voteTypes: [VoteType]!
 }
 
 type VoteType {
@@ -195,4 +136,62 @@ type Work {
     project: Project!
     name: String!
     order: Int!
+}
+
+"""Query: SELECT"""
+type Query {
+    getBoard(id: ID): Board!
+    getProject(id: ID): Project!
+    getTeam(id: ID): Team!
+    getUser(id: ID): User!
+}
+
+"""Mutation: INSERT, UPDATE, DELETE"""
+type Mutation {
+    """CREATE"""
+    createArticle(user: ID!, thread: ID!, parent: ID!, title: String!, content: String!): Article
+    createBoard(name: String!): Board
+    createEvent(board: ID!, name: String!, content: String, images: [ID]!): Event
+    createFollowing(fromUser: ID!, toUser: ID!): Following
+    createImage(address: String!): Image
+    createNotification(user: ID!, article: ID!): Notification
+    createProject(team: ID!, name: String!, event: ID!): Position
+    createRole(name: String!): Role
+    createStar(user: ID!, article: ID!): Star
+    createTag(name: String!): Tag
+    createTask(work: ID!, name: String!, difficulty: Int!): Task
+    createTeam(name: String!): Team
+    createThread(board: ID!, name: String!, user: ID!, userTeam: ID!, event: ID!): Thread
+    createUser(password: String!, name: String!, email: String!, image: ID): User
+    createVote(user: ID!, article: ID!, voteTypes: [ID]!): Vote
+    createVoteType(name: String!): VoteType
+    createWork(project: ID!, name: String!): Work
+    """UPDATE"""
+    updateArticle(id: ID!, thread: ID!, parent: ID!, title: String, content: String!): Article
+    updateBoard(id: ID!, name: String!): Board
+    updateEvent(id: ID!, title: String!, content: String!, images: [ID]!, recrutingStart: DateTime!, recrutingEnd: DateTime!, eventStart: DateTime!, eventEnd: DateTime!): Event
+    updateProject(id: ID!, team: ID!, name: String!, event: ID): Project
+    updateTask(id: ID!, work: ID!, name: String!, users: [ID]!, order: Int!, progress: Int!, difficulty: Int!, positions: [ID]!): Task
+    updateTeam(id: ID!, name: String!, users: [ID]!): Team
+    updateThread(id: ID!, board: ID!, name: String, event: ID): Thread
+    updateUser(id: ID!, password: String!, name: String!, email: String!, image: ID!): User
+    updateVote(id: ID!, voteTypes: [ID]!): Vote
+    updateWork(id: ID!, project: ID!, name: String!, order: Int!): Work
+    """DELETE"""
+    deleteArticle(id: ID!): Boolean!
+    deleteBoard(id: ID!): Boolean!
+    deleteEvent(id: ID!): Boolean!
+    deleteFollowing(id: ID!): Boolean!
+    deleteImage(id: ID!): Boolean!
+    deleteNotification(id: ID!): Boolean!
+    deleteProject(id: ID!): Boolean!
+    deleteRole(id: ID!): Boolean!
+    deleteTag(id: ID!): Boolean!
+    deleteTask(id: ID!): Boolean!
+    deleteTeam(id: ID!): Boolean!
+    deleteThread(id: ID!): Boolean!
+    deleteUser(id: ID!): Boolean!
+    deleteVote(id: ID!): Boolean!
+    deleteVoteType(id: ID!): Boolean!
+    deleteWork(id: ID!): Boolean!
 }
