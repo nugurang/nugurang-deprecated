@@ -29,7 +29,7 @@ public class Task implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private Integer order;
 
     @Column(nullable = false)
@@ -46,6 +46,7 @@ public class Task implements Serializable {
     public Task(String name, Integer order, Integer difficulty, Work work, Progress progress) {
         this.name = name;
         this.order = order;
+        this.difficulty = difficulty;
         this.work = work;
         this.progress = progress;
     }

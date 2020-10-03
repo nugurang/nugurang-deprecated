@@ -24,10 +24,22 @@ public class Board implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "board")
+    @OneToOne(mappedBy = "blog")
+    private User user;
+
+    @OneToMany(mappedBy = "board", orphanRemoval = true)
     private List<Thread> threads = new ArrayList<>();
 
     public Board(String name) {
         this.name = name;
     }
+
+    public Board(User user, String name) {
+        this(name);
+        this.user = user;
+    }
+
+    @PreRemove
+    public void nullify() {
+        user.setBlog(null);
 }

@@ -42,7 +42,7 @@ public class Thread implements Serializable {
     @JoinColumn(name = "event")
     private Event event;
 
-    @OneToMany(mappedBy = "thread")
+    @OneToMany(mappedBy = "thread", orphanRemoval = true)
     private List<Article> article = new ArrayList<Article>();
 
     public Thread(String name, User user, Board board) {

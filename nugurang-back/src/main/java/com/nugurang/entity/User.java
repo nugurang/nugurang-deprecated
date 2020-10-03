@@ -41,21 +41,20 @@ public class User implements Serializable {
     @JoinColumn(name = "blog", unique = true)
     private Board blog;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Thread> threads = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Article> articles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "fromUser")
+    @OneToMany(mappedBy = "fromUser", orphanRemoval = true)
     private List<Following> follwings = new ArrayList<>();
 
-    @OneToMany(mappedBy = "toUser")
+    @OneToMany(mappedBy = "toUser", orphanRemoval = true)
     private List<Following> followers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Notification> notifications = new ArrayList<>();
-
 
     public User(String name, String email, String password) {
         this.name = name;
