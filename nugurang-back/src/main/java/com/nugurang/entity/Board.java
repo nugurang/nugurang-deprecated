@@ -27,7 +27,7 @@ public class Board implements Serializable {
     @OneToOne(mappedBy = "blog")
     private User user;
 
-    @OneToMany(mappedBy = "board", orphanRemoval = true)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.PERSIST, CascadeType.REMOVE)
     private List<Thread> threads = new ArrayList<>();
 
     public Board(String name) {
@@ -42,4 +42,5 @@ public class Board implements Serializable {
     @PreRemove
     public void nullify() {
         user.setBlog(null);
+    }
 }
