@@ -43,13 +43,13 @@ public class Article extends DateAudit implements Serializable {
     @JoinColumn(name = "parent")
     private Article parent;
 
-    @OneToMany(mappedBy = "parent", orphanRemoval = true)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.PERSIST, CascadeType.REMOVE)
     private List<Article> children = new ArrayList<>();
 
-    @OneToMany(mappedBy = "article", orphanRemoval = true)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST, CascadeType.REMOVE)
     private List<Notification> notifications = new ArrayList<>();
 
-    @OneToMany(mappedBy = "article", orphanRemoval = true)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST, CascadeType.REMOVE)
     private List<Star> stars = new ArrayList<>();
 
     public Article(String title, String content, Thread thread, User user) {
