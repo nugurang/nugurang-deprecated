@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +25,7 @@ public class Tag implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Builder
     public Tag(String name) {
         this.name = name;
     }

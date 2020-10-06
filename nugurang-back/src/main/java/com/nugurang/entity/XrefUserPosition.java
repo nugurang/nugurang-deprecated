@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,6 +37,7 @@ public class XrefUserPosition implements Serializable {
     @JoinColumn(name = "position", nullable = false)
     private Position position;
 
+    @Builder
     public XrefUserPosition(Integer honor, User user, Position position) {
         this.honor = honor;
         this.user = user;

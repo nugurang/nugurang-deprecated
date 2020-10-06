@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,6 +34,7 @@ public class XrefThreadTag implements Serializable {
     @JoinColumn(name = "tag", nullable = false)
     private Tag tag;
 
+    @Builder
     public XrefThreadTag(Thread thread, Tag tag) {
         this.thread = thread;
         this.tag = tag;

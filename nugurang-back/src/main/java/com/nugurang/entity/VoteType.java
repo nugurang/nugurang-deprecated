@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +23,7 @@ public class VoteType implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Builder
     public VoteType(String name) {
         this.name = name;
     }

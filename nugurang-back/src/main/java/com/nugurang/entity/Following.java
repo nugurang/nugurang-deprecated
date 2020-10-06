@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,6 +34,7 @@ public class Following implements Serializable {
     @JoinColumn(name = "to_user", nullable = false)
     private User toUser;
 
+    @Builder
     public Following(User fromUser, User toUser) {
         this.fromUser = fromUser;
         this.toUser = toUser;

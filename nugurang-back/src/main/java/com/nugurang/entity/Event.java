@@ -11,7 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -46,7 +48,6 @@ public class Event implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "image")
-    @OnDelete(action=OnDeleteAction.CASCADE)
     private Image image;
 
     @OneToMany(mappedBy = "event")
@@ -55,6 +56,7 @@ public class Event implements Serializable {
     @OneToMany(mappedBy = "event")
     private List<Thread> threads = new ArrayList<>();
 
+    @Builder
     public Event(
         String title, String content,
         LocalDateTime recruitingStart, LocalDateTime recruitingEnd,
@@ -69,7 +71,7 @@ public class Event implements Serializable {
 
     @PreRemove
     public void nullify() {
-        projects.forEach(project -> project.setEvent(null));
-        threads.forEach(thread -> thread.setEvent(null));
+        this.projects.forEach(project -> project.setEvent(null));
+        this.threads.forEach(thread -> thread.setEvent(null));
     }
 }
