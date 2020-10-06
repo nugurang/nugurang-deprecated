@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,6 +34,7 @@ public class XrefArticleImage implements Serializable {
     @JoinColumn(name = "image", nullable = false)
     private Image image;
 
+    @Builder
     public XrefArticleImage(Article article, Image image) {
         this.article = article;
         this.image = image;

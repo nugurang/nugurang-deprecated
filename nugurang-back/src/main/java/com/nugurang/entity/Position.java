@@ -5,6 +5,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +22,7 @@ public class Position implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Builder
     public Position(String name) {
         this.name = name;
     }

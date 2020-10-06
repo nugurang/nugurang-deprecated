@@ -3,11 +3,15 @@ package com.nugurang.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PreRemove;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,20 +31,17 @@ public class Board implements Serializable {
     @OneToOne(mappedBy = "blog")
     private User user;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.PERSIST, CascadeType.REMOVE)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Thread> threads = new ArrayList<>();
 
-    public Board(String name) {
-        this.name = name;
-    }
-
+    @Builder
     public Board(User user, String name) {
-        this(name);
+        this.name = name;
         this.user = user;
     }
 
     @PreRemove
     public void nullify() {
-        user.setBlog(null);
+        this.user.setBlog(null);
     }
 }

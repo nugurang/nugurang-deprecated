@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,6 +38,7 @@ public class XrefUserBoard implements Serializable {
     @JoinColumn(name = "board", nullable = false)
     private Board board;
 
+    @Builder
     public XrefUserBoard(Role role, User user, Board board) {
         this.role = role;
         this.user = user;

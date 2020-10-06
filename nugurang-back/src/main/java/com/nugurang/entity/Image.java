@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,13 +33,14 @@ public class Image implements Serializable {
     @OneToMany(mappedBy = "image")
     private List<User> users = new ArrayList<>();
 
+    @Builder
     public Image(String address) {
         this.address = address;
     }
 
     @PreRemove
     public void nullify() {
-        events.forEach(event -> event.setImage(null));
-        users.forEach(user -> user.setImage(null));
+        this.events.forEach(event -> event.setImage(null));
+        this.users.forEach(user -> user.setImage(null));
     }
 }

@@ -3,6 +3,7 @@ package com.nugurang.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -43,13 +44,13 @@ public class Article extends DateAudit implements Serializable {
     @JoinColumn(name = "parent")
     private Article parent;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.PERSIST, CascadeType.REMOVE)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private List<Article> children = new ArrayList<>();
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST, CascadeType.REMOVE)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<Notification> notifications = new ArrayList<>();
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST, CascadeType.REMOVE)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<Star> stars = new ArrayList<>();
 
     public Article(String title, String content, Thread thread, User user) {

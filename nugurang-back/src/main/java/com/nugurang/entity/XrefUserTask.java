@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,6 +37,7 @@ public class XrefUserTask implements Serializable {
     @JoinColumn(name = "task", nullable = false)
     private Task task;
 
+    @Builder
     public XrefUserTask(Integer honor, User user, Task task) {
         this.honor = honor;
         this.user = user;

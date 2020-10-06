@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,6 +44,7 @@ public class Task implements Serializable {
     @JoinColumn(name = "progress", nullable = false)
     private Progress progress;
 
+    @Builder
     public Task(String name, Integer order, Integer difficulty, Work work, Progress progress) {
         this.name = name;
         this.order = order;

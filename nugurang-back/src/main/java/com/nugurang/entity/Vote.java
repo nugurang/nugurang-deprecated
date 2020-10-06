@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,6 +38,7 @@ public class Vote implements Serializable {
     @JoinColumn(name = "vote_type", nullable = false)
     private VoteType voteType;
 
+    @Builder
     public Vote(User user, Article article, VoteType voteType) {
         this.user = user;
         this.article = article;

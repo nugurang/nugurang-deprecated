@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,13 +33,14 @@ public class Work implements Serializable {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, nullable = false)
+    @Column(nullable = false)
     private Integer order;
 
     @ManyToOne
     @JoinColumn(name = "project", nullable = false)
     private Project project;
 
+    @Builder
     public Work(String name, Integer order, Project project) {
         this.name = name;
         this.order = order;
