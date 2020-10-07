@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
     private final ArticleRepository articleRepository;
     private final OAuth2AuthorizedClientService authorizedClientService;
-
 
     @RequestMapping("/")
     public String index() {
@@ -41,8 +41,9 @@ public class HelloController {
             authentication.getAuthorizedClientRegistrationId(),
             authentication.getName()
         );
-        OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
-        String id = String.valueOf(oauth2User.getAttributes().get("id"));
+        OAuth2User oauth2User = authentication.getPrincipal();
+        String name = String.valueOf(oauth2User.getAttributes().get("login"));
+        /*
         String name = (String) (
             (HashMap) (
                 (HashMap) oauth2User
@@ -50,15 +51,17 @@ public class HelloController {
             )
             .get("profile")
         ).get("nickname");
+        */
 
         if (client == null) {
             return "authorized client is null "
                 + authentication.getAuthorizedClientRegistrationId()
                 + " " + authentication.getName() + " " + name;
         }
+        OAuth2AccessToken accessToken = client.getAccessToken();
         return client.getPrincipalName()
-            + " "
-            + authentication.getAuthorizedClientRegistrationId()
+            + " " + accessToken
+            + " " + authentication.getAuthorizedClientRegistrationId()
             + " " + authentication.getName() + " " + name;
     }
 }
