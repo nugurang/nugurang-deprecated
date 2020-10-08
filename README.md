@@ -4,7 +4,10 @@
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 ![nugurang-front](https://github.com/nugurang/nugurang/workflows/nugurang-front/badge.svg?branch=dev&event=push)
 ![nugurang-back](https://github.com/nugurang/nugurang/workflows/nugurang-back/badge.svg?branch=dev&event=push)
-<center><img src="https://user-images.githubusercontent.com/33483938/95417164-4b0b8c80-096f-11eb-952f-862991cf4317.png" width= "70%"></center>
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/33483938/95417164-4b0b8c80-096f-11eb-952f-862991cf4317.png" width = "60%" />
+</p>
 
 
 Nugurang is a teammate matchmaking service for students who have trouble finding teammates. Nugurang can help you to recruit members and execute projects. Users can leave feedback for other teammates at the end of the project, and this data is used for optimal teammate-recommendation for each user.
