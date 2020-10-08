@@ -6,7 +6,7 @@
 ![nugurang-back](https://github.com/nugurang/nugurang/workflows/nugurang-back/badge.svg?branch=dev&event=push)
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/33483938/95418283-206f0300-0972-11eb-900e-0e9dc7486bee.png" width = "576" height = "324">
+  <img src="https://user-images.githubusercontent.com/33483938/95418678-fff37880-0972-11eb-805c-1b598dbf47cf.jpg" width = "70%">
 </p>
 
 
