@@ -18,25 +18,28 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"task", "position"})
-})
-public class XrefTaskPosition implements Serializable {
+@Table(
+    name = "xref_article_image",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"article", "image"})
+    }
+)
+public class XrefArticleImageEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "task", nullable = false)
-    private Task task;
+    @JoinColumn(name = "article", nullable = false)
+    private ArticleEntity article;
 
     @ManyToOne
-    @JoinColumn(name = "position", nullable = false)
-    private Position position;
+    @JoinColumn(name = "image", nullable = false)
+    private ImageEntity image;
 
     @Builder
-    public XrefTaskPosition(Task task, Position position) {
-        this.task = task;
-        this.position = position;
+    public XrefArticleImageEntity(ArticleEntity article, ImageEntity image) {
+        this.article = article;
+        this.image = image;
     }
 }

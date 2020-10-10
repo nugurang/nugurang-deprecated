@@ -1,7 +1,6 @@
 package com.nugurang.entity;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,29 +18,33 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"user", "article"})
-})
-public class Notification implements Serializable {
+@Table(
+    name = "xref_user_board",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user", "board"})
+    }
+)
+public class XrefUserBoardEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false)
-    private LocalDateTime at;
+    @ManyToOne
+    @JoinColumn(name = "role", nullable = false)
+    private RoleEntity role;
 
     @ManyToOne
     @JoinColumn(name = "user", nullable = false)
-    private User user;
+    private UserEntity user;
 
     @ManyToOne
-    @JoinColumn(name = "article", nullable = false)
-    private Article article;
+    @JoinColumn(name = "board", nullable = false)
+    private BoardEntity board;
 
     @Builder
-    public Notification(User user, Article article) {
-        this.at = LocalDateTime.now();
+    public XrefUserBoardEntity(RoleEntity role, UserEntity user, BoardEntity board) {
+        this.role = role;
         this.user = user;
-        this.article = article;
+        this.board = board;
     }
 }

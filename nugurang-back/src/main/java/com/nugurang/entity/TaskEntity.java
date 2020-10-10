@@ -14,15 +14,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"work", "name"}),
-    @UniqueConstraint(columnNames = {"work", "name", "order"})
-}) 
-public class Task implements Serializable {
+@Entity
+@Table(
+    name = "task",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"work", "name"}),
+        @UniqueConstraint(columnNames = {"work", "name", "order"})
+    }
+) 
+public class TaskEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -38,14 +41,17 @@ public class Task implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "work", nullable = false)
-    private Work work;
+    private WorkEntity work;
 
     @ManyToOne
     @JoinColumn(name = "progress", nullable = false)
-    private Progress progress;
+    private ProgressEntity progress;
 
     @Builder
-    public Task(String name, Integer order, Integer difficulty, Work work, Progress progress) {
+    public TaskEntity(
+        String name, Integer order, Integer difficulty,
+        WorkEntity work, ProgressEntity progress
+    ) {
         this.name = name;
         this.order = order;
         this.difficulty = difficulty;

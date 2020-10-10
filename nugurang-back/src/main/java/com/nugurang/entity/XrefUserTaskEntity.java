@@ -18,25 +18,32 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"thread", "tag"})
-})
-public class XrefThreadTag implements Serializable {
+@Table(
+    name = "xref_user_task",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user", "task"})
+    }
+)
+public class XrefUserTaskEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "thread", nullable = false)
-    private Thread thread;
+    @Column(nullable = false)
+    private Integer honor;
 
     @ManyToOne
-    @JoinColumn(name = "tag", nullable = false)
-    private Tag tag;
+    @JoinColumn(name = "user", nullable = false)
+    private UserEntity user;
+
+    @ManyToOne
+    @JoinColumn(name = "task", nullable = false)
+    private TaskEntity task;
 
     @Builder
-    public XrefThreadTag(Thread thread, Tag tag) {
-        this.thread = thread;
-        this.tag = tag;
+    public XrefUserTaskEntity(Integer honor, UserEntity user, TaskEntity task) {
+        this.honor = honor;
+        this.user = user;
+        this.task = task;
     }
 }

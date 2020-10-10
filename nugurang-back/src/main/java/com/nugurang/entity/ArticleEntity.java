@@ -11,15 +11,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class Article extends DateAudit implements Serializable {
+@Entity
+@Table(name = "article")
+public class ArticleEntity extends DateAudit implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -34,26 +37,27 @@ public class Article extends DateAudit implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "thread", nullable = false)
-    private Thread thread;
+    private ThreadEntity thread;
 
     @ManyToOne
     @JoinColumn(name = "user", nullable = false)
-    private User user;
+    private UserEntity user;
 
     @ManyToOne
     @JoinColumn(name = "parent")
-    private Article parent;
+    private ArticleEntity parent;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
-    private List<Article> children = new ArrayList<>();
+    private List<ArticleEntity> children = new ArrayList<>();
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
-    private List<Notification> notifications = new ArrayList<>();
+    private List<NotificationEntity> notifications = new ArrayList<>();
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
-    private List<Star> stars = new ArrayList<>();
+    private List<StarEntity> stars = new ArrayList<>();
 
-    public Article(String title, String content, Thread thread, User user) {
+    @Builder
+    public ArticleEntity(String title, String content, ThreadEntity thread, UserEntity user) {
         this.title = title;
         this.content = content;
         this.viewCount = Long.valueOf(0);

@@ -1,14 +1,12 @@
 package com.nugurang.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +16,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Progress implements Serializable {
+@Table(name = "vote_type")
+public class VoteTypeEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -26,11 +25,8 @@ public class Progress implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "progress", cascade = CascadeType.ALL)
-    private List<Task> tasks = new ArrayList<>();
-
     @Builder
-    public Progress(String name) {
+    public VoteTypeEntity(String name) {
         this.name = name;
     }
 }

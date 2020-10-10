@@ -1,24 +1,25 @@
 package com.nugurang.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class Team implements Serializable {
+@Entity
+@Table(name = "tag")
+public class TagEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -26,11 +27,8 @@ public class Team implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
-    private List<Project> projects = new ArrayList<>();
-
     @Builder
-    public Team(String name) {
+    public TagEntity(String name) {
         this.name = name;
     }
 }

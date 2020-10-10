@@ -3,7 +3,6 @@ package com.nugurang.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,8 +21,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"team", "name"}))
-public class Project implements Serializable {
+@Table(
+    name = "work",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"project", "name"}),
+        @UniqueConstraint(columnNames = {"project", "name", "order"})
+    }
+)
+public class WorkEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -31,21 +36,17 @@ public class Project implements Serializable {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "team", nullable = false)
-    private Team team;
+    @Column(nullable = false)
+    private Integer order;
 
     @ManyToOne
-    @JoinColumn(name = "event")
-    private Event event;
-
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<Work> works = new ArrayList<>();
+    @JoinColumn(name = "project", nullable = false)
+    private ProjectEntity project;
 
     @Builder
-    public Project(Team team, String name, Event event) {
-        this.team = team;
+    public WorkEntity(String name, Integer order, ProjectEntity project) {
         this.name = name;
-        this.event = event;
+        this.order = order;
+        this.project = project;
     }
 }

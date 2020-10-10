@@ -18,30 +18,32 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"user", "article"})
-})
-public class Vote implements Serializable {
+@Table(
+    name = "xref_user_position",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user", "position"})
+    }
+)
+public class XrefUserPositionEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
 
+    @Column(nullable = false)
+    private Integer honor;
+
     @ManyToOne
     @JoinColumn(name = "user", nullable = false)
-    private User user;
+    private UserEntity user;
 
     @ManyToOne
-    @JoinColumn(name = "article", nullable = false)
-    private Article article;
-
-    @ManyToOne
-    @JoinColumn(name = "vote_type", nullable = false)
-    private VoteType voteType;
+    @JoinColumn(name = "position", nullable = false)
+    private PositionEntity position;
 
     @Builder
-    public Vote(User user, Article article, VoteType voteType) {
+    public XrefUserPositionEntity(Integer honor, UserEntity user, PositionEntity position) {
+        this.honor = honor;
         this.user = user;
-        this.article = article;
-        this.voteType = voteType;
+        this.position = position;
     }
 }

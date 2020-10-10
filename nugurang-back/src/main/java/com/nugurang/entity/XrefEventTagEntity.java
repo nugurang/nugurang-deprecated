@@ -18,25 +18,28 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"from_user", "to_user"})
-})
-public class Following implements Serializable {
+@Table(
+    name = "xref_event_tag",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"event", "tag"})
+    }
+)
+public class XrefEventTagEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "from_user", nullable = false)
-    private User fromUser;
+    @JoinColumn(name = "event", nullable = false)
+    private EventEntity event;
 
     @ManyToOne
-    @JoinColumn(name = "to_user", nullable = false)
-    private User toUser;
+    @JoinColumn(name = "tag", nullable = false)
+    private TagEntity tag;
 
     @Builder
-    public Following(User fromUser, User toUser) {
-        this.fromUser = fromUser;
-        this.toUser = toUser;
+    public XrefEventTagEntity(EventEntity event, TagEntity tag) {
+        this.event = event;
+        this.tag = tag;
     }
 }

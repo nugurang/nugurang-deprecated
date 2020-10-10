@@ -1,10 +1,10 @@
 package com.nugurang.repository;
 
-import com.nugurang.entity.Progress;
+import com.nugurang.entity.ProgressEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProgressRepository extends JpaRepository<Progress, Long> {
+public interface ProgressRepository extends JpaRepository<ProgressEntity, Long> {
 
 }

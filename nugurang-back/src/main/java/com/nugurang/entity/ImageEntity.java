@@ -10,16 +10,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.PreRemove;
+import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class Image implements Serializable {
+@Entity
+@Table(name = "image")
+public class ImageEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -28,13 +30,13 @@ public class Image implements Serializable {
     private String address;
 
     @OneToMany(mappedBy = "image")
-    private List<Event> events = new ArrayList<>();
+    private List<EventEntity> events = new ArrayList<>();
 
     @OneToMany(mappedBy = "image")
-    private List<User> users = new ArrayList<>();
+    private List<UserEntity> users = new ArrayList<>();
 
     @Builder
-    public Image(String address) {
+    public ImageEntity(String address) {
         this.address = address;
     }
 
