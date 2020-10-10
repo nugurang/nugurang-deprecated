@@ -37,7 +37,7 @@ public class BoardEntity implements Serializable {
     private List<ThreadEntity> threads = new ArrayList<>();
 
     @Builder
-    public BoardEntity(UserEntity user, String name) {
+    public BoardEntity(String name, UserEntity user) {
         this.name = name;
         this.user = user;
     }

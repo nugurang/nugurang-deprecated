@@ -140,10 +140,10 @@ type Work {
 
 """Query: SELECT"""
 type Query {
-    getBoard(id: ID): Board!
-    getProject(id: ID): Project!
-    getTeam(id: ID): Team!
-    getUser(id: ID): User!
+    getBoard(id: ID): Board
+    getProject(id: ID): Project
+    getTeam(id: ID): Team
+    getUser(id: ID): User
 }
 
 """Mutation: INSERT, UPDATE, DELETE"""
