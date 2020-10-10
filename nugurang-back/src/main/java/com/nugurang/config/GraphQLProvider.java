@@ -1,7 +1,5 @@
 package com.nugurang.nugurang;
 
-import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
-
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import graphql.GraphQL;
@@ -20,10 +18,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class GraphQLProvider {
-
-
-    @Autowired
-    GraphQLDataFetchers graphQLDataFetchers;
 
     private GraphQL graphQL;
 
@@ -45,10 +39,6 @@ public class GraphQLProvider {
     private RuntimeWiring buildWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .scalar(ExtendedScalars.DateTime)
-                /*.type(newTypeWiring("Query")
-                        .dataFetcher("bookById", graphQLDataFetchers.getBookByIdDataFetcher()))
-                .type(newTypeWiring("Book")
-                        .dataFetcher("author", graphQLDataFetchers.getAuthorDataFetcher()))*/
                 .build();
     }
 
@@ -56,5 +46,4 @@ public class GraphQLProvider {
     public GraphQL graphQL() {
         return graphQL;
     }
-
 }
