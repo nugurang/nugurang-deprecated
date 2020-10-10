@@ -5,6 +5,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -13,11 +14,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class Tag implements Serializable {
+@Entity
+@Table(name = "tag")
+public class TagEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -26,7 +28,7 @@ public class Tag implements Serializable {
     private String name;
 
     @Builder
-    public Tag(String name) {
+    public TagEntity(String name) {
         this.name = name;
     }
 }

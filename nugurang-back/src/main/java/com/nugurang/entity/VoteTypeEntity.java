@@ -5,6 +5,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class VoteType implements Serializable {
+@Table(name = "vote_type")
+public class VoteTypeEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -24,7 +26,7 @@ public class VoteType implements Serializable {
     private String name;
 
     @Builder
-    public VoteType(String name) {
+    public VoteTypeEntity(String name) {
         this.name = name;
     }
 }

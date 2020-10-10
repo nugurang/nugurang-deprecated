@@ -11,16 +11,18 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PreRemove;
+import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class Board implements Serializable {
+@Entity
+@Table(name = "board")
+public class BoardEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -29,13 +31,13 @@ public class Board implements Serializable {
     private String name;
 
     @OneToOne(mappedBy = "blog")
-    private User user;
+    private UserEntity user;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
-    private List<Thread> threads = new ArrayList<>();
+    private List<ThreadEntity> threads = new ArrayList<>();
 
     @Builder
-    public Board(User user, String name) {
+    public BoardEntity(UserEntity user, String name) {
         this.name = name;
         this.user = user;
     }

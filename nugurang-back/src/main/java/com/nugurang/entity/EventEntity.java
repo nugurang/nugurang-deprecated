@@ -22,8 +22,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table
-public class Event implements Serializable {
+@Table(name = "event")
+public class EventEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -48,16 +48,16 @@ public class Event implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "image")
-    private Image image;
+    private ImageEntity image;
 
     @OneToMany(mappedBy = "event")
-    private List<Project> projects = new ArrayList<>();
+    private List<ProjectEntity> projects = new ArrayList<>();
 
     @OneToMany(mappedBy = "event")
-    private List<Thread> threads = new ArrayList<>();
+    private List<ThreadEntity> threads = new ArrayList<>();
 
     @Builder
-    public Event(
+    public EventEntity(
         String title, String content,
         LocalDateTime recruitingStart, LocalDateTime recruitingEnd,
         LocalDateTime eventStart, LocalDateTime eventEnd) {

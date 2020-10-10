@@ -18,28 +18,31 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"user", "board"})
-})
-public class XrefUserBoard implements Serializable {
+@Table(
+    name = "xref_user_board",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user", "board"})
+    }
+)
+public class XrefUserBoardEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "role", nullable = false)
-    private Role role;
+    private RoleEntity role;
 
     @ManyToOne
     @JoinColumn(name = "user", nullable = false)
-    private User user;
+    private UserEntity user;
 
     @ManyToOne
     @JoinColumn(name = "board", nullable = false)
-    private Board board;
+    private BoardEntity board;
 
     @Builder
-    public XrefUserBoard(Role role, User user, Board board) {
+    public XrefUserBoardEntity(RoleEntity role, UserEntity user, BoardEntity board) {
         this.role = role;
         this.user = user;
         this.board = board;

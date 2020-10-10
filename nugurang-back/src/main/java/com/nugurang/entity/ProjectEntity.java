@@ -18,12 +18,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"team", "name"}))
-public class Project implements Serializable {
+@Entity
+@Table(
+    name = "project",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"team", "name"})
+)
+public class ProjectEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -33,17 +36,17 @@ public class Project implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "team", nullable = false)
-    private Team team;
+    private TeamEntity team;
 
     @ManyToOne
     @JoinColumn(name = "event")
-    private Event event;
+    private EventEntity event;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<Work> works = new ArrayList<>();
+    private List<WorkEntity> works = new ArrayList<>();
 
     @Builder
-    public Project(Team team, String name, Event event) {
+    public ProjectEntity(TeamEntity team, String name, EventEntity event) {
         this.team = team;
         this.name = name;
         this.event = event;

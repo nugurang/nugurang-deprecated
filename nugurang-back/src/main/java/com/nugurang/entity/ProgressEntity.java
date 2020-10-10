@@ -9,16 +9,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class Progress implements Serializable {
+@Entity
+@Table(name = "progress")
+public class ProgressEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -27,10 +29,10 @@ public class Progress implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "progress", cascade = CascadeType.ALL)
-    private List<Task> tasks = new ArrayList<>();
+    private List<TaskEntity> tasks = new ArrayList<>();
 
     @Builder
-    public Progress(String name) {
+    public ProgressEntity(String name) {
         this.name = name;
     }
 }

@@ -11,16 +11,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class Thread implements Serializable {
+@Entity
+@Table(name = "thread")
+public class ThreadEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -30,25 +32,25 @@ public class Thread implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "user", nullable = false)
-    private User user;
+    private UserEntity user;
 
     @ManyToOne
     @JoinColumn(name = "xref_user_team", nullable = false)
-    private XrefUserTeam xrefUserTeam;
+    private XrefUserTeamEntity xrefUserTeamEntity;
 
     @ManyToOne
     @JoinColumn(name = "board", nullable = false)
-    private Board board;
+    private BoardEntity board;
 
     @ManyToOne
     @JoinColumn(name = "event")
-    private Event event;
+    private EventEntity event;
 
     @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL)
-    private List<Article> article = new ArrayList<Article>();
+    private List<ArticleEntity> article = new ArrayList<ArticleEntity>();
 
     @Builder
-    public Thread(String name, User user, Board board, Event event) {
+    public ThreadEntity(String name, UserEntity user, BoardEntity board, EventEntity event) {
         this.name = name;
         this.user = user;
         this.board = board;

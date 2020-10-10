@@ -5,16 +5,18 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class Role implements Serializable {
+@Entity
+@Table(name = "role")
+public class RoleEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -23,7 +25,7 @@ public class Role implements Serializable {
     private String name;
 
     @Builder
-    public Role(String name) {
+    public RoleEntity(String name) {
         this.name = name;
     }
 }

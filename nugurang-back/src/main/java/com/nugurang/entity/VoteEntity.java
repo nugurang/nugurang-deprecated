@@ -18,28 +18,31 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"user", "article"})
-})
-public class Vote implements Serializable {
+@Table(
+    name = "vote",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user", "article"})
+    }
+)
+public class VoteEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user", nullable = false)
-    private User user;
+    private UserEntity user;
 
     @ManyToOne
     @JoinColumn(name = "article", nullable = false)
-    private Article article;
+    private ArticleEntity article;
 
     @ManyToOne
     @JoinColumn(name = "vote_type", nullable = false)
-    private VoteType voteType;
+    private VoteTypeEntity voteType;
 
     @Builder
-    public Vote(User user, Article article, VoteType voteType) {
+    public VoteEntity(UserEntity user, ArticleEntity article, VoteTypeEntity voteType) {
         this.user = user;
         this.article = article;
         this.voteType = voteType;

@@ -21,11 +21,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"project", "name"}),
-    @UniqueConstraint(columnNames = {"project", "name", "order"})
-}) 
-public class Work implements Serializable {
+@Table(
+    name = "work",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"project", "name"}),
+        @UniqueConstraint(columnNames = {"project", "name", "order"})
+    }
+)
+public class WorkEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -38,10 +41,10 @@ public class Work implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "project", nullable = false)
-    private Project project;
+    private ProjectEntity project;
 
     @Builder
-    public Work(String name, Integer order, Project project) {
+    public WorkEntity(String name, Integer order, ProjectEntity project) {
         this.name = name;
         this.order = order;
         this.project = project;

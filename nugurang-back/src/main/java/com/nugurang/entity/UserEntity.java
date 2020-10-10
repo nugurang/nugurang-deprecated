@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class User implements Serializable {
+@Table(name = "user")
+public class UserEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -37,29 +39,31 @@ public class User implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "image")
-    private Image image;
+    private ImageEntity image;
 
     @OneToOne
     @JoinColumn(name = "blog", unique = true)
-    private Board blog;
+    private BoardEntity blog;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Thread> threads = new ArrayList<>();
+    private List<ThreadEntity> threads = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Article> articles = new ArrayList<>();
+    private List<ArticleEntity> articles = new ArrayList<>();
 
     @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL)
-    private List<Following> follwings = new ArrayList<>();
+    private List<FollowingEntity> follwings = new ArrayList<>();
 
     @OneToMany(mappedBy = "toUser", cascade = CascadeType.ALL)
-    private List<Following> followers = new ArrayList<>();
+    private List<FollowingEntity> followers = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Notification> notifications = new ArrayList<>();
+    private List<NotificationEntity> notifications = new ArrayList<>();
 
     @Builder
-    public User(String name, String email, String password, Image image, Board blog) {
+    public UserEntity(
+        String name, String email, String password, ImageEntity image, BoardEntity blog
+    ) {
         this.name = name;
         this.email = email;
         this.password = new byte[60];

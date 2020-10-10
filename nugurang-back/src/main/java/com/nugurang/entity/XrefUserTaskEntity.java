@@ -18,10 +18,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"user", "task"})
-})
-public class XrefUserTask implements Serializable {
+@Table(
+    name = "xref_user_task",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user", "task"})
+    }
+)
+public class XrefUserTaskEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -31,14 +34,14 @@ public class XrefUserTask implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "user", nullable = false)
-    private User user;
+    private UserEntity user;
 
     @ManyToOne
     @JoinColumn(name = "task", nullable = false)
-    private Task task;
+    private TaskEntity task;
 
     @Builder
-    public XrefUserTask(Integer honor, User user, Task task) {
+    public XrefUserTaskEntity(Integer honor, UserEntity user, TaskEntity task) {
         this.honor = honor;
         this.user = user;
         this.task = task;

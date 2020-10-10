@@ -15,14 +15,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"user", "article"})
-})
-public class Notification implements Serializable {
+@Entity
+@Table(
+    name = "notification",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user", "article"})
+    }
+)
+public class NotificationEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -32,14 +35,14 @@ public class Notification implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "user", nullable = false)
-    private User user;
+    private UserEntity user;
 
     @ManyToOne
     @JoinColumn(name = "article", nullable = false)
-    private Article article;
+    private ArticleEntity article;
 
     @Builder
-    public Notification(User user, Article article) {
+    public NotificationEntity(UserEntity user, ArticleEntity article) {
         this.at = LocalDateTime.now();
         this.user = user;
         this.article = article;

@@ -1,6 +1,6 @@
 package com.nugurang.nugurang;
 
-import com.nugurang.entity.Article;
+import com.nugurang.entity.ArticleEntity;
 import com.nugurang.repository.ArticleRepository;
 import java.util.HashMap;
 import java.util.LinkedList;

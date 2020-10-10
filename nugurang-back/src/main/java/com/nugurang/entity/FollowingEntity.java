@@ -14,28 +14,28 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @NoArgsConstructor
 @Getter
 @Setter
+@Entity
 @Table(uniqueConstraints = {
     @UniqueConstraint(columnNames = {"from_user", "to_user"})
 })
-public class Following implements Serializable {
+public class FollowingEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "from_user", nullable = false)
-    private User fromUser;
+    private UserEntity fromUser;
 
     @ManyToOne
     @JoinColumn(name = "to_user", nullable = false)
-    private User toUser;
+    private UserEntity toUser;
 
     @Builder
-    public Following(User fromUser, User toUser) {
+    public FollowingEntity(UserEntity fromUserEntity, UserEntity toUserEntity) {
         this.fromUser = fromUser;
         this.toUser = toUser;
     }

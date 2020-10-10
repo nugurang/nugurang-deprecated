@@ -5,16 +5,18 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class Position implements Serializable {
+@Entity
+@Table(name = "position")
+public class PositionEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -23,7 +25,7 @@ public class Position implements Serializable {
     private String name;
 
     @Builder
-    public Position(String name) {
+    public PositionEntity(String name) {
         this.name = name;
     }
 }

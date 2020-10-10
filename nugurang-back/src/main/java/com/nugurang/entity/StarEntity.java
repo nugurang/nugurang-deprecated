@@ -18,24 +18,27 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"user", "article"})
-})
-public class Star implements Serializable {
+@Table(
+    name = "star",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user", "article"})
+    }
+)
+public class StarEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user", nullable = false)
-    private User user;
+    private UserEntity user;
 
     @ManyToOne
     @JoinColumn(name = "article", nullable = false)
-    private Article article;
+    private ArticleEntity article;
 
     @Builder
-    public Star(User user, Article article) {
+    public StarEntity(UserEntity user, ArticleEntity article) {
         this.user = user;
         this.article = article;
     }
