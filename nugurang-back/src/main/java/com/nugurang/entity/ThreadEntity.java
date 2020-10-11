@@ -36,7 +36,7 @@ public class ThreadEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "xref_user_team", nullable = false)
-    private XrefUserTeamEntity xrefUserTeamEntity;
+    private XrefUserTeamEntity xrefUserTeam;
 
     @ManyToOne
     @JoinColumn(name = "board", nullable = false)
