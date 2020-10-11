@@ -1,10 +1,10 @@
-package com.nugurang.repository;
+package com.nugurang.dao;
 
 import com.nugurang.entity.StarEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StarRepository extends JpaRepository<StarEntity, Long> {
+public interface StarDao extends JpaRepository<StarEntity, Long> {
 
 }
