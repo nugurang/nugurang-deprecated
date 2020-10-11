@@ -4,6 +4,10 @@ import com.nugurang.dao.BoardDao;
 import com.nugurang.dao.ProjectDao;
 import com.nugurang.dao.TeamDao;
 import com.nugurang.dao.UserDao;
+import com.nugurang.dto.BoardDto;
+import com.nugurang.dto.ProjectDto;
+import com.nugurang.dto.TeamDto;
+import com.nugurang.dto.UserDto;
 import com.nugurang.entity.BoardEntity;
 import com.nugurang.entity.ProjectEntity;
 import com.nugurang.entity.TeamEntity;
@@ -21,19 +25,47 @@ class Query implements GraphQLQueryResolver {
     private final TeamDao teamDao;
     private final UserDao userDao;
 
-    Optional<BoardEntity> getBoard(Long id) {
-        return boardDao.findById(id);
+    Optional<BoardDto> getBoard(Long id) {
+        return boardDao
+            .findById(id)
+            .map((boardEntity) -> 
+                BoardDto.builder()
+                .id(boardEntity.getId())
+                .name(boardEntity.getName())
+                .build()
+            );
     }
 
-    Optional<ProjectEntity> getProject(Long id) {
-        return projectDao.findById(id);
+    Optional<ProjectDto> getProject(Long id) {
+        return projectDao
+            .findById(id)
+            .map((projectEntity) -> 
+                ProjectDto.builder()
+                .id(projectEntity.getId())
+                .name(projectEntity.getName())
+                .build()
+            );
     }
 
-    Optional<TeamEntity> getTeam(Long id) {
-        return teamDao.findById(id);
+    Optional<TeamDto> getTeam(Long id) {
+        return teamDao
+            .findById(id)
+            .map((teamEntity) -> 
+                TeamDto.builder()
+                .id(teamEntity.getId())
+                .name(teamEntity.getName())
+                .build()
+            );
     }
 
-    Optional<UserEntity> getUser(Long id) {
-        return userDao.findById(id);
+    Optional<UserDto> getUser(Long id) {
+        return userDao
+            .findById(id)
+            .map((userEntity) -> 
+                UserDto.builder()
+                .id(userEntity.getId())
+                .name(userEntity.getName())
+                .build()
+            );
     }
 }

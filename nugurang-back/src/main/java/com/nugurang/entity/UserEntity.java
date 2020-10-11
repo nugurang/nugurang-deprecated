@@ -34,6 +34,8 @@ public class UserEntity implements Serializable {
     @Column(nullable = false, unique = true)
     private String email;
 
+    private String biography;
+
     @Column(nullable = false)
     byte[] password;
 
