@@ -1,13 +1,13 @@
 package com.nugurang.graphql;
 
+import com.nugurang.dao.BoardDao;
+import com.nugurang.dao.ProjectDao;
+import com.nugurang.dao.TeamDao;
+import com.nugurang.dao.UserDao;
 import com.nugurang.entity.BoardEntity;
 import com.nugurang.entity.ProjectEntity;
 import com.nugurang.entity.TeamEntity;
 import com.nugurang.entity.UserEntity;
-import com.nugurang.repository.BoardRepository;
-import com.nugurang.repository.ProjectRepository;
-import com.nugurang.repository.TeamRepository;
-import com.nugurang.repository.UserRepository;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -16,24 +16,24 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 class Query implements GraphQLQueryResolver {
-    private final BoardRepository boardRepository;
-    private final ProjectRepository projectRepository;
-    private final TeamRepository teamRepository;
-    private final UserRepository userRepository;
+    private final BoardDao boardDao;
+    private final ProjectDao projectDao;
+    private final TeamDao teamDao;
+    private final UserDao userDao;
 
     Optional<BoardEntity> getBoard(Long id) {
-        return boardRepository.findById(id);
+        return boardDao.findById(id);
     }
 
     Optional<ProjectEntity> getProject(Long id) {
-        return projectRepository.findById(id);
+        return projectDao.findById(id);
     }
 
     Optional<TeamEntity> getTeam(Long id) {
-        return teamRepository.findById(id);
+        return teamDao.findById(id);
     }
 
     Optional<UserEntity> getUser(Long id) {
-        return userRepository.findById(id);
+        return userDao.findById(id);
     }
 }

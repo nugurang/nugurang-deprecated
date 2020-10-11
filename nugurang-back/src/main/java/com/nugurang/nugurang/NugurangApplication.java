@@ -9,9 +9,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EnableJpaAuditing
-@EnableJpaRepositories("com.nugurang.repository")
+@EnableJpaRepositories("com.nugurang.dao")
 @EntityScan("com.nugurang.entity")
-//@ComponentScan({"com.nugurang.graphql"})
 @SpringBootApplication(scanBasePackages = {"com.nugurang.*"})
 public class NugurangApplication implements CommandLineRunner {
 

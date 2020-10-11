@@ -1,7 +1,7 @@
 package com.nugurang.nugurang;
 
+import com.nugurang.dao.ArticleDao;
 import com.nugurang.entity.ArticleEntity;
-import com.nugurang.repository.ArticleRepository;
 import java.util.HashMap;
 import java.util.LinkedList;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 public class HelloController {
-    private final ArticleRepository articleRepository;
+    private final ArticleDao articleDao;
     private final OAuth2AuthorizedClientService authorizedClientService;
 
     @RequestMapping("/")
     public String index() {
         /*
-        articleRepository.save(new Article("test", "this is test article"));
-        Iterable<Article> articles = articleRepository.findAll();
+        articleDao.save(new Article("test", "this is test article"));
+        Iterable<Article> articles = articleDao.findAll();
         LinkedList<String> strings = new LinkedList<>();
         for (Article article : articles) {
             String title = article.getTitle();
