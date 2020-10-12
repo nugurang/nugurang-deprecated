@@ -35,6 +35,9 @@ public class ImageEntity implements Serializable {
     @OneToMany(mappedBy = "image")
     private List<UserEntity> users = new ArrayList<>();
 
+    @OneToMany(mappedBy = "image", cascade = CascadeType.ALL)
+    private List<XrefArticleImageEntity> xrefArticles = new ArrayList<>();
+
     @Builder
     public ImageEntity(String address) {
         this.address = address;

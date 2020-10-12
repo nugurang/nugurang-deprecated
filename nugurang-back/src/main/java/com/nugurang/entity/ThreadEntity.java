@@ -49,6 +49,9 @@ public class ThreadEntity implements Serializable {
     @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL)
     private List<ArticleEntity> article = new ArrayList<ArticleEntity>();
 
+    @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL)
+    private List<XrefThreadTagEntity> xrefTags = new ArrayList<>();
+
     @Builder
     public ThreadEntity(String name, UserEntity user, BoardEntity board, EventEntity event) {
         this.name = name;

@@ -62,6 +62,21 @@ public class UserEntity implements Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<NotificationEntity> notifications = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<StarEntity> stars = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<XrefUserBoardEntity> xrefBoards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<XrefUserPositionEntity> xrefPositions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<XrefUserTaskEntity> xrefTasks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<XrefUserTeamEntity> xrefTeams = new ArrayList<>();
+
     @Builder
     public UserEntity(
         String name, String email, String password, ImageEntity image, BoardEntity blog

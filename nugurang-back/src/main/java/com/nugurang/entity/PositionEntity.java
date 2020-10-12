@@ -24,6 +24,12 @@ public class PositionEntity implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @OneToMany(mappedBy = "position", cascade = CascadeType.ALL)
+    private List<XrefTaskPositionEntity> xrefTasks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "position", cascade = CascadeType.ALL)
+    private List<XrefUserPositionEntity> xrefUsers= new ArrayList<>();
+
     @Builder
     public PositionEntity(String name) {
         this.name = name;
