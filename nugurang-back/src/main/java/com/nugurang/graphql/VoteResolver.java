@@ -1,30 +1,35 @@
+package com.nugurang.graphql;
+
+import com.nugurang.dao.ArticleDao;
+import com.nugurang.dao.UserDao;
+import com.nugurang.dao.VoteTypeDao;
+import com.nugurang.dto.ArticleDto;
+import com.nugurang.dto.UserDto;
+import com.nugurang.dto.VoteDto;
+import com.nugurang.dto.VoteTypeDto;
+import graphql.kickstart.tools.GraphQLResolver;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
 @RequiredArgsConstructor
 @Service
-public class VoteResolver implements GraphQLResolver<Vote> {
+public class VoteResolver implements GraphQLResolver<VoteDto> {
 
-    private final UserRepository userRepository;
-    private final ArticleRepository articledRepository;
-    private final VoteTypeRepository voteTypeRepository;
+    private final UserDao userDao;
+    private final ArticleDao articledDao;
+    private final VoteTypeDao voteTypeDao;
 
-
-    public VoteResolver(UserRepository userRepository,
-            ArticleRepository articledRepository,
-            VoteTypeRepository voteTypeRepository) {
-        this.userRepository = userRepository;
-        this.articledRepository = articledRepository;
-        this.voteTypeRepository = voteTypeRepository;
+    public UserDto user(VoteDto voteDto) {
+        return null;
     }
 
-    public User user(Vote vote) {
-        return userRepository.findById(thread.getUserId());
+    public ArticleDto article(VoteDto voteDto) {
+        return null;
     }
 
-    public Article article(Vote vote) {
-        return articledRepository.findById(thread.getArticleId());
-    }
-
-    public VoteType voteType(Vote vote) {
-        return voteTypeRepository.findById(thread.getVoteTypeId());
+    public VoteTypeDto voteType(VoteDto voteDto) {
+        return null;
     }
 
 }

@@ -1,28 +1,27 @@
+package com.nugurang.graphql;
+
+import com.nugurang.dao.ThreadDao;
+import com.nugurang.dao.UserDao;
+import com.nugurang.dto.BoardDto;
+import com.nugurang.dto.ThreadDto;
+import com.nugurang.dto.UserDto;
+import graphql.kickstart.tools.GraphQLResolver;
+import java.util.List;
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
 @RequiredArgsConstructor
 @Service
-public class BoardResolver implements GraphQLResolver<Board> {
+public class BoardResolver implements GraphQLResolver<BoardDto> {
+    private final UserDao userDao;
+    private final ThreadDao threadDao;
 
-    private final UserRepository userRepository;
-    private final ThreadRepository threadRepository;
-
-    public BoardResolver(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public List<UserDto> users(BoardDto boardDto) {
+        return null;
     }
 
-    public User user(Board board) {
-        return userRepository.findById(board.getUserId());
-    }
-
-    public List<Thread> threads(Board board, int page, int pageSize) {
-        int pageStart = page * pageSize;
-        int pageEnd = pageStart + pageSize - 1;
-        return threadRepository.findAll(PageRequest.of(page, pageSize))
-            .stream()
-            .map(Thread::new)
-            .collect(Collectors.toList());
-    }
-
-    public Thread thread(Board board, int id) {
-        return threadRepository.findById(id);
+    public List<ThreadDto> threads(BoardDto boardDto, int page, int pageSize) {
+        return null;
     }
 }

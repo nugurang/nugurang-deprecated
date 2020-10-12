@@ -1,37 +1,25 @@
+package com.nugurang.graphql;
+
+import com.nugurang.dao.UserDao;
+import com.nugurang.dto.FollowingDto;
+import com.nugurang.dto.UserDto;
+import graphql.kickstart.tools.GraphQLResolver;
+import java.util.List;
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
 @RequiredArgsConstructor
 @Service
-public class FollowingResolver implements GraphQLResolver<Following> {
+public class FollowingResolver implements GraphQLResolver<FollowingDto> {
 
-    private final UserRepository fromUserRepository;
-    private final UserRepository toUserRepository;
+    private final UserDao userDao;
 
-    public FollowingResolver() {
-
+    public UserDto fromUser(FollowingDto followingDto) {
+        return null;
     }
 
-    public List<User> fromUsers(Following following, int page, int pageSize) {
-        int pageStart = page * pageSize;
-        int pageEnd = pageStart + pageSize - 1;
-        return fromUserRepository.findAll(PageRequest.of(page, pageSize))
-            .stream()
-            .map(Thread::new)
-            .collect(Collectors.toList());
-    }
-
-    public User fromUser(Following following, int id) {
-        return fromUserRepository.findById(id);
-    }
-
-    public List<User> toUsers(Following following, int page, int pageSize) {
-        int pageStart = page * pageSize;
-        int pageEnd = pageStart + pageSize - 1;
-        return toUserRepository.findAll(PageRequest.of(page, pageSize))
-            .stream()
-            .map(Thread::new)
-            .collect(Collectors.toList());
-    }
-
-    public User toUser(Following following, int id) {
-        return toUserRepository.findById(id);
+    public UserDto toUser(FollowingDto followingDto) {
+        return null;
     }
 }

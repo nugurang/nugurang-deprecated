@@ -15,5 +15,7 @@ public class WorkDto {
     private String name;
     @NotNull
     private Integer order;
+    @NotNull
+    private Boolean opened;
     //project
 }

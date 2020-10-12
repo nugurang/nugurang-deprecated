@@ -13,6 +13,9 @@ public class NotificationDto {
     @NotNull
     private Long id;
     @NotNull
+    private String title;
+    private String content;
+    @NotNull
     private LocalDateTime at;
     // user
     // article
