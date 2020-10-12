@@ -57,7 +57,7 @@ public class ArticleEntity extends DateAudit implements Serializable {
     private List<StarEntity> stars = new ArrayList<>();
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
-    private List<XrefArticleImageEntity> xrefImages= new ArrayList<>();
+    private List<XrefArticleImageEntity> xrefImages = new ArrayList<>();
 
     @Builder
     public ArticleEntity(String title, String content, ThreadEntity thread, UserEntity user) {

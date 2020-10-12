@@ -1,34 +1,34 @@
+package com.nugurang.graphql;
+
+import com.nugurang.dao.EventDao;
+import com.nugurang.dao.TeamDao;
+import com.nugurang.dao.WorkDao;
+import com.nugurang.dto.EventDto;
+import com.nugurang.dto.ProjectDto;
+import com.nugurang.dto.TeamDto;
+import com.nugurang.dto.WorkDto;
+import graphql.kickstart.tools.GraphQLResolver;
+import java.util.List;
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
 @RequiredArgsConstructor
 @Service
-public class ProjectResolver implements GraphQLResolver<Project> {
+public class ProjectResolver implements GraphQLResolver<ProjectDto> {
+    private final TeamDao teamDao;
+    private final EventDao eventDao;
+    private final WorkDao workDao;
 
-    private final TeamRepository teamRepository;
-    private final EventRepository eventRepository;
-    private final WorkRepository workRepository;
-
-    public ProjectResolver(TeamRepository teamRepository, EventRepository eventRepository) {
-        this.teamRepository = teamRepository;
-        this.eventRepository = eventRepository;
+    public TeamDto team(ProjectDto project) {
+        return null;
     }
 
-    public Team team(Project project) {
-        return teamRepository.findById(project.getTeamId());
+    public EventDto event(ProjectDto project) {
+        return null;
     }
 
-    public Event event(Project project) {
-        return eventRepository.findById(project.getEventId());
-    }
-
-    public List<Work> works(Project project, int page, int pageSize) {
-        int pageStart = page * pageSize;
-        int pageEnd = pageStart + pageSize - 1;
-        return workRepository.findAll(PageRequest.of(page, pageSize))
-            .stream()
-            .map(Thread::new)
-            .collect(Collectors.toList());
-    }
-
-    public Work work(Project project, int id) {
-        return workRepository.findById(id);
+    public List<WorkDto> works(ProjectDto project, int page, int pageSize) {
+        return null;
     }
 }

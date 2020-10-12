@@ -25,10 +25,16 @@ import lombok.Setter;
         @UniqueConstraint(columnNames = {"user", "article"})
     }
 )
+
 public class NotificationEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
+
+    @Column(nullable = false)
+    private String title;
+
+    private String content;
 
     @Column(nullable = false)
     private LocalDateTime at;
@@ -38,7 +44,7 @@ public class NotificationEntity implements Serializable {
     private UserEntity user;
 
     @ManyToOne
-    @JoinColumn(name = "article", nullable = false)
+    @JoinColumn(name = "article")
     private ArticleEntity article;
 
     @Builder

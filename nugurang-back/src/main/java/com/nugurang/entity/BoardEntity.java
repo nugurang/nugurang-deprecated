@@ -30,23 +30,14 @@ public class BoardEntity implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToOne(mappedBy = "blog")
-    private UserEntity user;
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    private List<XrefUserBoardEntity> xrefUsers = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<ThreadEntity> threads = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
-    private List<XrefUserBoardEntity> xrefUsers = new ArrayList<>();
-
     @Builder
-    public BoardEntity(String name, UserEntity user) {
+    public BoardEntity(String name) {
         this.name = name;
-        this.user = user;
-    }
-
-    @PreRemove
-    public void nullify() {
-        this.user.setBlog(null);
     }
 }

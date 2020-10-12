@@ -16,8 +16,6 @@ public class UserDto {
     @NotNull
     private String email;
     private String biography;
-    @NotNull
-    private byte[] password;
     //blog
     //threads
     //articles

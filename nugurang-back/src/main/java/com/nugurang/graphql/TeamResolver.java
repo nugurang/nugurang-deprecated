@@ -1,23 +1,27 @@
+package com.nugurang.graphql;
+
+import com.nugurang.dao.ProjectDao;
+import com.nugurang.dao.UserDao;
+import com.nugurang.dto.ProjectDto;
+import com.nugurang.dto.TeamDto;
+import com.nugurang.dto.UserDto;
+import graphql.kickstart.tools.GraphQLResolver;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
 @RequiredArgsConstructor
 @Service
-public class TeamResolver implements GraphQLResolver<Team> {
+public class TeamResolver implements GraphQLResolver<TeamDto> {
 
-    private final ProjectRepository projectRepository;
+    private final UserDao userDao;
+    private final ProjectDao projectDao;
 
-    public TeamResolver() {
-
+    public List<UserDto> users(TeamDto teamDto) {
+        return null;
     }
 
-    public List<Project> projects(Team team, int page, int pageSize) {
-        int pageStart = page * pageSize;
-        int pageEnd = pageStart + pageSize - 1;
-        return projectRepository.findAll(PageRequest.of(page, pageSize))
-            .stream()
-            .map(Thread::new)
-            .collect(Collectors.toList());
-    }
-
-    public Project project(Team team, int id) {
-        return projectRepository.findById(id);
+    public List<ProjectDto> projects(TeamDto teamDto) {
+        return null;
     }
 }

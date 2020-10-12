@@ -1,12 +1,4 @@
-"""Scalar"""
 scalar DateTime
-
-"""Enum"""
-enum ProgressType {
-    TODO
-    DOING
-    DONE
-}
 
 """Type"""
 type Article {
@@ -24,11 +16,12 @@ type Article {
 type Board {
     id: ID!
     name: String!
+    users: [User]!
+    threads(page: Int!, pageSize: Int!): [Thread]!
 }
 
 type Event {
     id: ID!
-    board: Board!
     title: String!
     content: String!
     images: [Image]!
@@ -51,12 +44,20 @@ type Image {
 
 type Notification {
     id: ID!
-    user: User!
+    title: String!
+    content: String
     at: DateTime!
-    article: Article!
+    user: User!
+    article: Article
+    team: Team
 }
 
 type Position {
+    id: ID!
+    name: String!
+}
+
+type Progress {
     id: ID!
     name: String!
 }
@@ -86,44 +87,50 @@ type Tag {
 
 type Task {
     id: ID!
-    work: Work!
     name: String!
-    users: [User]!
-    order: Int!
-    progress: ProgressType!
     difficulty: Int!
+    order: Int!
+    work: Work!
+    progress: Progress!
     positions: [Position]!
+    users: [User]!
 }
 
 type Team {
     id: ID!
     name: String!
-    Users: [User]!
+    users: [User]!
+    projects: [Project]!
 }
 
 type Thread {
     id: ID!
-    board: Board!
     name: String!
+    board: Board!
     user: User!
-    userTeam: Team!
+    team: Team!
     event: Event!
+    articles(page: Int!, pageSize: Int!): [Article]!
 }
 
 type User {
     id: ID!
-    password: String!
     name: String!
     email: String!
     image: Image
     blog: Board
+    followings(page: Int!, pageSize: Int!): [User]!
+    followers(page: Int!, pageSize: Int!): [User]!
+    threads(page: Int!, pageSize: Int!): [Thread]!
+    articles(page: Int!, pageSize: Int!): [Article]!
+    notifications: [Notification]!
 }
 
 type Vote {
     id: ID!
     user: User!
     article: Article!
-    voteTypes: [VoteType]!
+    voteType: VoteType!
 }
 
 type VoteType {
@@ -135,6 +142,7 @@ type Work {
     id: ID!
     project: Project!
     name: String!
+    opened: Boolean!
     order: Int!
 }
 
@@ -154,36 +162,34 @@ type Mutation {
     createEvent(board: ID!, name: String!, content: String, images: [ID]!): Event
     createFollowing(fromUser: ID!, toUser: ID!): Following
     createImage(address: String!): Image
-    createNotification(user: ID!, article: ID!): Notification
-    createProject(team: ID!, name: String!, event: ID!): Position
+    createProject(team: ID!, name: String!, event: ID!): Project
     createRole(name: String!): Role
     createStar(user: ID!, article: ID!): Star
     createTag(name: String!): Tag
     createTask(work: ID!, name: String!, difficulty: Int!): Task
     createTeam(name: String!): Team
-    createThread(board: ID!, name: String!, user: ID!, userTeam: ID!, event: ID!): Thread
-    createUser(password: String!, name: String!, email: String!, image: ID): User
+    createThread(board: ID!, name: String!, user: ID!, team: ID!, event: ID!): Thread
+    createUser(name: String!, email: String!, password: String!, image: ID): User
     createVote(user: ID!, article: ID!, voteTypes: [ID]!): Vote
     createVoteType(name: String!): VoteType
     createWork(project: ID!, name: String!): Work
     """UPDATE"""
-    updateArticle(id: ID!, thread: ID!, parent: ID!, title: String, content: String!): Article
-    updateBoard(id: ID!, name: String!): Board
-    updateEvent(id: ID!, title: String!, content: String!, images: [ID]!, recrutingStart: DateTime!, recrutingEnd: DateTime!, eventStart: DateTime!, eventEnd: DateTime!): Event
-    updateProject(id: ID!, team: ID!, name: String!, event: ID): Project
-    updateTask(id: ID!, work: ID!, name: String!, users: [ID]!, order: Int!, progress: Int!, difficulty: Int!, positions: [ID]!): Task
-    updateTeam(id: ID!, name: String!, users: [ID]!): Team
-    updateThread(id: ID!, board: ID!, name: String, event: ID): Thread
-    updateUser(id: ID!, password: String!, name: String!, email: String!, image: ID!): User
-    updateVote(id: ID!, voteTypes: [ID]!): Vote
-    updateWork(id: ID!, project: ID!, name: String!, order: Int!): Work
+    updateArticle(article: ID!, thread: ID!, parent: ID!, title: String, content: String!): Article
+    updateBoard(board: ID!, name: String!): Board
+    updateEvent(event: ID!, title: String!, content: String!, images: [ID]!, recrutingStart: DateTime!, recrutingEnd: DateTime!, eventStart: DateTime!, eventEnd: DateTime!): Event
+    updateProject(project: ID!, team: ID!, name: String!, event: ID): Project
+    updateTask(task: ID!, work: ID!, name: String!, users: [ID]!, order: Int!, progress: Int!, difficulty: Int!, positions: [ID]!): Task
+    updateTeam(team: ID!, name: String!, users: [ID]!): Team
+    updateThread(thread: ID!, board: ID!, name: String, event: ID): Thread
+    updateUser(user: ID!, name: String!, email: String!, password: String!, image: ID!): User
+    updateVote(vote: ID!, voteTypes: [ID]!): Vote
+    updateWork(work: ID!, project: ID!, name: String!, order: Int!): Work
     """DELETE"""
     deleteArticle(id: ID!): Boolean!
     deleteBoard(id: ID!): Boolean!
     deleteEvent(id: ID!): Boolean!
     deleteFollowing(id: ID!): Boolean!
     deleteImage(id: ID!): Boolean!
-    deleteNotification(id: ID!): Boolean!
     deleteProject(id: ID!): Boolean!
     deleteRole(id: ID!): Boolean!
     deleteTag(id: ID!): Boolean!

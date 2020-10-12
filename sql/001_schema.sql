@@ -18,7 +18,6 @@ CREATE TABLE `board`
 (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
-  `user` INT,
   PRIMARY KEY (`id`),
   UNIQUE (`name`)
 );
@@ -26,7 +25,6 @@ CREATE TABLE `board`
 CREATE TABLE `event`
 (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `image` INT,
   `title` VARCHAR(255) NOT NULL,
   `content` VARCHAR(255) NOT NULL,
   `recruiting_start` DATETIME NOT NULL,
@@ -57,6 +55,7 @@ CREATE TABLE `image`
 CREATE TABLE `notification`
 (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `content` VARCHAR(255) NOT NULL,
   `user` INT NOT NULL,
   `at` DATETIME NOT NULL DEFAULT NOW(),
   `article` INT NOT NULL,
@@ -151,14 +150,12 @@ CREATE TABLE `user`
 (
   `id` INT NOT NULL AUTO_INCREMENT,
   `image` INT,
-  `blog` INT,
   `name` VARCHAR(255) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
   `password` BINARY(60) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE (`name`),
   UNIQUE (`email`),
-  UNIQUE (`blog`)
 );
 
 CREATE TABLE `vote`
@@ -185,6 +182,7 @@ CREATE TABLE `work`
   `project` INT NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   `order` INT NOT NULL,
+  `opened` BOOLEAN NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE (`project`, `name`),
   UNIQUE (`project`, `name`, `order`)
@@ -206,6 +204,15 @@ CREATE TABLE `xref_event_tag`
   `tag` INT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE (`event`, `tag`)
+);
+
+CREATE TABLE `xref_event_image`
+(
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `event` INT NOT NULL,
+  `image` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE (`event`, `image`)
 );
 
 CREATE TABLE `xref_task_position`

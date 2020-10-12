@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-class Query implements GraphQLQueryResolver {
+public class Query implements GraphQLQueryResolver {
     private final BoardDao boardDao;
     private final ProjectDao projectDao;
     private final TeamDao teamDao;

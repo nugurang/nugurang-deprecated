@@ -43,10 +43,6 @@ public class UserEntity implements Serializable {
     @JoinColumn(name = "image")
     private ImageEntity image;
 
-    @OneToOne
-    @JoinColumn(name = "blog", unique = true)
-    private BoardEntity blog;
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ThreadEntity> threads = new ArrayList<>();
 
@@ -79,12 +75,11 @@ public class UserEntity implements Serializable {
 
     @Builder
     public UserEntity(
-        String name, String email, String password, ImageEntity image, BoardEntity blog
+        String name, String email, String password, ImageEntity image
     ) {
         this.name = name;
         this.email = email;
         this.password = new byte[60];
         this.image = image;
-        this.blog = blog;
     }
 }

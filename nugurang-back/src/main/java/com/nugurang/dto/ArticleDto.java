@@ -1,5 +1,6 @@
 package com.nugurang.dto;
 
+import java.time.LocalDateTime;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +17,10 @@ public class ArticleDto {
     private String content;
     @NotNull
     private Long viewCount;
+    @NotNull
+    private LocalDateTime createdAt;
+    @NotNull
+    private LocalDateTime modifiedAt;
     //thread
     //user
     //parent

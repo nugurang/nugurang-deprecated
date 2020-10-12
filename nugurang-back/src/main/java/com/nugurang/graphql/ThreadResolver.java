@@ -1,50 +1,51 @@
+package com.nugurang.graphql;
+
+import com.nugurang.dao.ArticleDao;
+import com.nugurang.dao.BoardDao;
+import com.nugurang.dao.EventDao;
+import com.nugurang.dao.TeamDao;
+import com.nugurang.dao.UserDao;
+import com.nugurang.dto.ArticleDto;
+import com.nugurang.dto.BoardDto;
+import com.nugurang.dto.EventDto;
+import com.nugurang.dto.TeamDto;
+import com.nugurang.dto.ThreadDto;
+import com.nugurang.dto.UserDto;
+import graphql.kickstart.tools.GraphQLResolver;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
 @RequiredArgsConstructor
 @Service
-public class ThreadResolver implements GraphQLResolver<Thread> {
+public class ThreadResolver implements GraphQLResolver<ThreadDto> {
 
-    private final UserRepository userRepository;
-    private final XrefserTeamRepository xrefUserTeamRepository;
-    private final BoardRepository boardRepository;
-    private final EventRepository eventRepository;
-    private final ArticleRepository articledRepository;
+    private final BoardDao boardDao;
+    private final UserDao userDao;
+    private final TeamDao teamDao;
+    private final EventDao eventDao;
+    private final ArticleDao articledDao;
 
-
-    public ThreadResolver(UserRepository userRepository,
-            XrefserTeamRepository xrefUserTeamRepository,
-            BoardRepository boardRepository,
-            EventRepository eventRepository) {
-        this.userRepository = userRepository;
-        this.xrefUserTeamRepository = xrefUserTeamRepository;
-        this.boardRepository = boardRepository;
-        this.articledRepository = articledRepository;
+    public BoardDto board(ThreadDto threadDto) {
+        return null;
     }
 
-    public User user(Thread thread) {
-        return userRepository.findById(thread.getTeamId());
+    public UserDto user(ThreadDto threadDto) {
+        return null;
     }
 
-    public XrefserTeam xrefserTeam(Thread thread) {
-        return xrefUserTeamRepository.findById(thread.getEventId());
+    public TeamDto team(ThreadDto threadDto) {
+        return null;
     }
 
-    public Board board(Thread thread) {
-        return boardRepository.findById(thread.getEventId());
+    public EventDto event(ThreadDto threadDto) {
+        return null;
     }
 
-    public Event Evebt(Thread thread) {
-        return eventRepository.findById(thread.getEventId());
-    }
-
-    public List<Article> article(Thread thread, int page, int pageSize) {
+    public List<ArticleDto> articles(ThreadDto threadDto, int page, int pageSize) {
         int pageStart = page * pageSize;
         int pageEnd = pageStart + pageSize - 1;
-        return articledRepository.findAll(PageRequest.of(page, pageSize))
-            .stream()
-            .map(Thread::new)
-            .collect(Collectors.toList());
+        return null;
     }
 
-    public Article article(Thread thread, int id) {
-        return articledRepository.findById(id);
-    }
 }

@@ -1,37 +1,32 @@
+package com.nugurang.graphql;
+
+import com.nugurang.dao.ArticleDao;
+import com.nugurang.dao.UserDao;
+import com.nugurang.dto.ArticleDto;
+import com.nugurang.dto.NotificationDto;
+import com.nugurang.dto.TeamDto;
+import com.nugurang.dto.UserDto;
+import graphql.kickstart.tools.GraphQLResolver;
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
 @RequiredArgsConstructor
 @Service
-public class NotificationResolver implements GraphQLResolver<Notification> {
+public class NotificationResolver implements GraphQLResolver<NotificationDto> {
 
-    private final UserRepository userRepository;
-    private final ArticleRepository articleRepository;
+    private final UserDao userDao;
+    private final ArticleDao articleDao;
 
-    public NotificationResolver() {
-
+    public UserDto user(NotificationDto notificationDto) {
+        return null;
     }
 
-    public List<User> users(Notification notification, int page, int pageSize) {
-        int pageStart = page * pageSize;
-        int pageEnd = pageStart + pageSize - 1;
-        return userRepository.findAll(PageRequest.of(page, pageSize))
-            .stream()
-            .map(Thread::new)
-            .collect(Collectors.toList());
+    public ArticleDto article(NotificationDto notificationDto) {
+        return null;
     }
 
-    public Event user(Notification notification, int id) {
-        return userRepository.findById(id);
-    }
-
-    public List<Article> articles(Notification notification, int page, int pageSize) {
-        int pageStart = page * pageSize;
-        int pageEnd = pageStart + pageSize - 1;
-        return articleRepository.findAll(PageRequest.of(page, pageSize))
-            .stream()
-            .map(Thread::new)
-            .collect(Collectors.toList());
-    }
-
-    public User article(Notification notification, int id) {
-        return articleRepository.findById(id);
+    public TeamDto team(NotificationDto notificationDto) {
+        return null;
     }
 }
