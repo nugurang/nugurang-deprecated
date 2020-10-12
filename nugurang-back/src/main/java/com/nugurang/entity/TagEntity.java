@@ -27,6 +27,12 @@ public class TagEntity implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
+    private List<XrefEventTagEntity> xrefEvents = new ArrayList<>();
+
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
+    private List<XrefThreadTagEntity> xrefThreads = new ArrayList<>();
+
     @Builder
     public TagEntity(String name) {
         this.name = name;

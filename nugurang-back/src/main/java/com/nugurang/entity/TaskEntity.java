@@ -47,6 +47,12 @@ public class TaskEntity implements Serializable {
     @JoinColumn(name = "progress", nullable = false)
     private ProgressEntity progress;
 
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+    private List<XrefTaskPositionEntity> xrefPositions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+    private List<XrefUserTaskEntity> xrefUsers = new ArrayList<>();
+
     @Builder
     public TaskEntity(
         String name, Integer order, Integer difficulty,

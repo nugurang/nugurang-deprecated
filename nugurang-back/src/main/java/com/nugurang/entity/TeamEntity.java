@@ -31,6 +31,9 @@ public class TeamEntity implements Serializable {
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<ProjectEntity> projects = new ArrayList<>();
 
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    private List<XrefUserTeamEntity> xrefUsers = new ArrayList<>();
+
     @Builder
     public TeamEntity(String name) {
         this.name = name;

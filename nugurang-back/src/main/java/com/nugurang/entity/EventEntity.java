@@ -56,6 +56,9 @@ public class EventEntity implements Serializable {
     @OneToMany(mappedBy = "event")
     private List<ThreadEntity> threads = new ArrayList<>();
 
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<XrefEventTagEntity> xrefTags = new ArrayList<>();
+
     @Builder
     public EventEntity(
         String title, String content,
