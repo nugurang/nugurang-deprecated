@@ -7,7 +7,7 @@ export default function CompTest() {
 const article = {
   title: "Article title",
   subtitle: "Article subtitle",
-  image: "/static/images/team.jpg",
+  image: "/static/images/sample_1.jpg",
   content: "Article content using accordion",
 };
 
