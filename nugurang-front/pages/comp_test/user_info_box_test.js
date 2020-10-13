@@ -6,7 +6,7 @@ export default function CompTest() {
 
 const user = {
   name: "Username",
-  image: "/static/favicon/favicon-nugurang.png",
+  image: "/static/favicon/sample_1.jpg",
   statistics: "Statistics",
   bio: "Bio"
 }

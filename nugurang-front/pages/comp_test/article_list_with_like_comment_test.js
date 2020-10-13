@@ -12,7 +12,7 @@ const articles = [
     content: "Content 1",
     like: 1,
     comment: 3,
-    image: "/static/images/team.jpg",
+    image: "/static/images/sample_1.jpg",
     chip: <Chip label="Basic1" />,
   },
   {
@@ -28,7 +28,7 @@ const articles = [
     title: "Article 3 with no chips",
     content: "Content 3",
     like: 9,
-    image: "/static/images/team.jpg",
+    image: "/static/images/sample_3.jpg",
     comment: 1,
   }
 ];
