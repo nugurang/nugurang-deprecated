@@ -4,7 +4,7 @@ import UserGroupCard from '../../components/UserGroupCard';
 
 export default function CompTest() {
 
-const card = {
+const userGroup = {
   id: 1,
   title: "Article 1",
   content: "Article 1 content",
@@ -35,7 +35,7 @@ const card = {
 
   return (
 	<div>
-	  <UserGroupCard card={card} />
+	  <UserGroupCard userGroup={userGroup} />
 	</div>
   );
 }
