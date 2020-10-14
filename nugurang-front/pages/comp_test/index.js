@@ -114,6 +114,11 @@ const components = [
     title: "ChattingBox",
     link: "./comp_test/chatting_box_test",
   },
+  {
+    id: 19,
+    title: "ArticleGridWithLikeComment",
+    link: "./comp_test/article_grid_with_like_comment_test",
+  },
 ];
 
 
