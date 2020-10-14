@@ -1,3 +1,4 @@
+import Chip from '@material-ui/core/Chip';
 
 const articleTest = {
   id: 1,
