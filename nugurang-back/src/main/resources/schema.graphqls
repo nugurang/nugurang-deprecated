@@ -149,6 +149,7 @@ type Work {
 """Query: SELECT"""
 type Query {
     ping: String!
+    getCurrentUser: User
     getCurrentOAuth2Provider: String
     getCurrentOAuth2Id: String
     getCurrentOAuth2Email: String
@@ -173,7 +174,7 @@ type Mutation {
     createTask(work: ID!, name: String!, difficulty: Int!): Task
     createTeam(name: String!): Team
     createThread(board: ID!, name: String!, user: ID!, team: ID!, event: ID!): Thread
-    createUser(name: String!, email: String!, password: String!, image: ID): User
+    createUser(name: String!, email: String!, image: ID): User
     createVote(user: ID!, article: ID!, voteTypes: [ID]!): Vote
     createVoteType(name: String!): VoteType
     createWork(project: ID!, name: String!): Work
@@ -185,7 +186,7 @@ type Mutation {
     updateTask(task: ID!, work: ID!, name: String!, users: [ID]!, order: Int!, progress: Int!, difficulty: Int!, positions: [ID]!): Task
     updateTeam(team: ID!, name: String!, users: [ID]!): Team
     updateThread(thread: ID!, board: ID!, name: String, event: ID): Thread
-    updateUser(user: ID!, name: String!, email: String!, password: String!, image: ID!): User
+    updateUser(user: ID!, name: String!, email: String!, image: ID): User
     updateVote(vote: ID!, voteTypes: [ID]!): Vote
     updateWork(work: ID!, project: ID!, name: String!, order: Int!): Work
     """DELETE"""

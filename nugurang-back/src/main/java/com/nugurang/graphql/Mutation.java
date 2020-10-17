@@ -95,8 +95,21 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.empty();
     }
 
-    Optional<UserDto> createUser(Long name, String email, String password, Long image) {
-        return Optional.empty();
+    Optional<UserDto> createUser(String name, String email, Long image) {
+        UserEntity userEntity = UserEntity
+            .builder()
+            .name(name)
+            .email(email)
+            .build();
+        userEntity = userDao.save(userEntity);
+        return Optional.of(
+            UserDto
+            .builder()
+            .id(userEntity.getId())
+            .email(userEntity.getEmail())
+            .name(userEntity.getName())
+            .build()
+        );
     }
 
     Optional<VoteDto> createVote(Long user, Long article, List<Long> voteTypes) {
@@ -148,7 +161,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Optional<UserDto> updateUser(
-        Long user, String name, String email, String password, Long image
+        Long user, String name, String email, Long image
     ) {
         return Optional.empty();
     }

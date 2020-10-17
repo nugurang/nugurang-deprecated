@@ -74,6 +74,20 @@ public class Query implements GraphQLQueryResolver {
             .map((userEntity) -> 
                 UserDto.builder()
                 .id(userEntity.getId())
+                .email(userEntity.getEmail())
+                .name(userEntity.getName())
+                .build()
+            );
+    }
+
+    Optional<UserDto> getCurrentUser() {
+        String email = getCurrentOAuth2Email().get();
+        return userDao
+            .findByEmail(email)
+            .map((userEntity) -> 
+                UserDto.builder()
+                .id(userEntity.getId())
+                .email(userEntity.getEmail())
                 .name(userEntity.getName())
                 .build()
             );
