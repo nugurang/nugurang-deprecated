@@ -3,8 +3,8 @@ package com.nugurang.controller;
 import com.nugurang.dao.ArticleDao;
 import com.nugurang.entity.ArticleEntity;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +26,6 @@ public class HomeController {
 
     @RequestMapping("/")
     public String index() {
-        /*
-        articleDao.save(new Article("test", "this is test article"));
-        Iterable<Article> articles = articleDao.findAll();
-        LinkedList<String> strings = new LinkedList<>();
-        for (Article article : articles) {
-            String title = article.getTitle();
-            strings.add(title == null ? "" : title);
-        }
-        return "Hello Spring Boot<br/>" + String.join("<br/>", strings);
-        */
         OAuth2AuthenticationToken authentication = (OAuth2AuthenticationToken) SecurityContextHolder
             .getContext()
             .getAuthentication();
@@ -45,17 +35,23 @@ public class HomeController {
             authentication.getName()
         );
         OAuth2User oauth2User = authentication.getPrincipal();
-        String name = String.valueOf(oauth2User.getAttributes().get("login"));
+        Map<String, Object> attributes = oauth2User.getAttributes();
+        for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+            System.out.println(entry.getKey());
+        }
+        String name = String.valueOf(attributes.get("login"));
+        String email = String.valueOf(attributes.get("email"));
+
         /*
         String name = (String) (
-            (HashMap) (
-                (HashMap) oauth2User
+            (Map) (
+                (Map) oauth2User
                 .getAttribute("kakao_account")
             )
             .get("profile")
         ).get("nickname");
         */
-
+        /*
         if (client == null) {
             return "authorized client is null "
                 + authentication.getAuthorizedClientRegistrationId()
@@ -65,7 +61,11 @@ public class HomeController {
         return client.getPrincipalName()
             + " " + accessToken
             + " " + authentication.getAuthorizedClientRegistrationId()
-            + " " + authentication.getName() + " " + name;
+            + " " + authentication.getName() + " " + name + " " + email;
+        */
+        return authentication.getAuthorizedClientRegistrationId()
+            + " " + authentication.getName() + " " + name + " " + email;
+
     }
 
     @RequestMapping("/after-signin")

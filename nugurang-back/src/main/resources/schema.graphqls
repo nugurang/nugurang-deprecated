@@ -149,6 +149,9 @@ type Work {
 """Query: SELECT"""
 type Query {
     ping: String!
+    getCurrentOAuth2Provider: String
+    getCurrentOAuth2Id: String
+    getCurrentOAuth2Email: String
     getBoard(id: ID): Board
     getProject(id: ID): Project
     getTeam(id: ID): Team

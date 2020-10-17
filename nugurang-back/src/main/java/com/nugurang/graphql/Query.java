@@ -12,14 +12,20 @@ import com.nugurang.entity.BoardEntity;
 import com.nugurang.entity.ProjectEntity;
 import com.nugurang.entity.TeamEntity;
 import com.nugurang.entity.UserEntity;
+import com.nugurang.service.OAuth2Attributes;
 import graphql.kickstart.tools.GraphQLQueryResolver;
+import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class Query implements GraphQLQueryResolver {
+    private final OAuth2Attributes oauth2Attributes;
     private final BoardDao boardDao;
     private final ProjectDao projectDao;
     private final TeamDao teamDao;
@@ -71,5 +77,17 @@ public class Query implements GraphQLQueryResolver {
                 .name(userEntity.getName())
                 .build()
             );
+    }
+
+    Optional<String> getCurrentOAuth2Provider() {
+        return Optional.ofNullable((String) oauth2Attributes.getProvider());
+    }
+
+    Optional<String> getCurrentOAuth2Id() {
+        return Optional.ofNullable((String) oauth2Attributes.getId());
+    }
+
+    Optional<String> getCurrentOAuth2Email() {
+        return Optional.ofNullable((String) oauth2Attributes.getEmail());
     }
 }
