@@ -25,6 +25,10 @@ public class Query implements GraphQLQueryResolver {
     private final TeamDao teamDao;
     private final UserDao userDao;
 
+    String ping() {
+        return "pong";
+    }
+
     Optional<BoardDto> getBoard(Long id) {
         return boardDao
             .findById(id)

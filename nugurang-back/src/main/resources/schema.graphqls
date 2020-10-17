@@ -148,6 +148,7 @@ type Work {
 
 """Query: SELECT"""
 type Query {
+    ping: String!
     getBoard(id: ID): Board
     getProject(id: ID): Project
     getTeam(id: ID): Team
