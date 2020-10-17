@@ -18,9 +18,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"from_user", "to_user"})
-})
+@Table(
+    name = "following",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"from_user", "to_user"})
+    }
+)
 public class FollowingEntity implements Serializable {
     @Id
     @GeneratedValue
