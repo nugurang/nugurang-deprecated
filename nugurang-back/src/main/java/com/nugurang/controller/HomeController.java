@@ -1,4 +1,4 @@
-package com.nugurang.nugurang;
+package com.nugurang.controller;
 
 import com.nugurang.dao.ArticleDao;
 import com.nugurang.entity.ArticleEntity;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-public class HelloController {
+public class HomeController {
     private final ArticleDao articleDao;
     private final OAuth2AuthorizedClientService authorizedClientService;
 
