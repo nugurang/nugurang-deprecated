@@ -32,17 +32,16 @@ module.exports = {
     'react',
   ],
   rules: {
-    "no-plusplus": "off",
-    "react/destructuring-assignment": "off",
-    "react/display-name": "warn",
-    "react/forbid-prop-types": "off",
+    "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": "off",
-    "react/jsx-first-prop-new-line": "off",
-    "react/jsx-fragments": "warn",
-    "react/jsx-key": "off",
+    "react/display-name": "warn",
+    "react/prop-types": "warn",
+    "react/jsx-props-no-spreading": "warn",
     "react/jsx-one-expression-per-line": "warn",
-    "react/jsx-props-no-spreading": "off",
-    "react/prop-types": "off",
-    "react/react-in-jsx-scope": "off"
+    "react/jsx-fragments": "warn",
+    "react/forbid-prop-types": "warn",
+    "react/destructuring-assignment": "off",
+    "react/jsx-first-prop-new-line": "off",
+    "no-plusplus": "off"
   }
 };

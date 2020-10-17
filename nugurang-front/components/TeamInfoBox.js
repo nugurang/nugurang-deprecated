@@ -29,12 +29,6 @@ const styles = {
     fontWeight: 400,
     margin: '0px',
   },
-  followersTypography: {
-    fontFamily: "Ubuntu",
-    fontSize: 18,
-    fontWeight: 300,
-    margin: '0px',
-  },
   bioTypography: {
     fontFamily: "Ubuntu",
     fontSize: 24,
@@ -53,7 +47,7 @@ const styles = {
 };
 
 
-function UserInfoBox(props) {
+function TeamInfoBox(props) {
   const { classes } = props;
   return (
     <>
@@ -63,24 +57,21 @@ function UserInfoBox(props) {
           <Grid item container spacing={2} alignItems="center" justify="flex-start">
             <Grid item justify='space-around'>
               <Avatar className={classes.avatar}
-                alt={props.user.name}
-                src={props.user.image}
+                alt={props.team.name}
+                src={props.team.image}
                 variant="circle"
               />
             </Grid>
             <Grid item justify='space-around'>
               <Typography className={classes.nameTypography}>
-                {props.user.name}
-              </Typography>
-              <Typography className={classes.followersTypography}>
-                {props.user.followers} followers, {props.user.followings} followings
+                {props.team.name}
               </Typography>
             </Grid>
           </Grid>
           <Grid item xs={12} justify='space-around'>
             <Paper className={classes.bioPaper} variant='outlined'>
               <Typography className={classes.bioTypography}>
-                {props.user.bio}
+                {props.team.bio}
               </Typography>
             </Paper>
           </Grid>
@@ -90,8 +81,8 @@ function UserInfoBox(props) {
   );
 }
 
-UserInfoBox.propTypes = {
+TeamInfoBox.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(UserInfoBox);
+export default withStyles(styles)(TeamInfoBox);

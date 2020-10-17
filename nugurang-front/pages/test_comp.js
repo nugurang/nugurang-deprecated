@@ -28,6 +28,7 @@ import UniversalList from '../components/UniversalList';
 import UserBriefInfoBox from '../components/UserBriefInfoBox';
 import UserGroupCard from '../components/UserGroupCard';
 import UserInfoBox from '../components/UserInfoBox';
+import FixedTab from '../components/FixedTab'
 
 /* ---------------------------- Test data ------------------------ */
 
@@ -53,6 +54,16 @@ const singleArticleListTest = [
   chip: "Basic1",
   },
 ];
+
+const singleProjectListTest = [
+  {
+    id: 1,
+    title: "Project 1",
+    numberofusers: "34",
+    userbadge: "/static images/userbadge_1"
+  },
+];
+
 
 const articlesTest = [
   {
@@ -496,6 +507,13 @@ function TestComp(props) {
           <UserInfoBox user={userTest} />
         </Paper>
 
+        <Paper className={classes.paper} elevation={1}>
+          <Typography className={classes.componentNameTypography} variant="h4" gutterBottom>
+            FixedTab
+          </Typography>
+          <FixedTab userGroup={userGroupTest} />
+        </Paper>
+        
       </Layout>
     </>
   );

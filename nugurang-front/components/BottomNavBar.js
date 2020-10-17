@@ -1,5 +1,6 @@
 import { withStyles } from '@material-ui/core/styles';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
@@ -20,23 +21,19 @@ const styles = {
 function BottomNavBar(props) {
   const router = useRouter();
   const { classes } = props;
-  let key = 0;
   const actions = [
-    ['home', <HomeIcon />],
-    ['boards', <TeaIcon />],
-    ['team', <GroupIcon />],
-    ['chat', <ChatIcon />],
-    ['more', <MoreIcon />]
+    ['home', <HomeIcon/>],
+    ['boards', <TeaIcon/>],
+    ['team', <GroupIcon/>],
+    ['chat', <ChatIcon/>],
+    ['more', <MoreIcon/>]
   ].map(([value, icon]) => {
-      return (
-        <BottomNavigationAction
-          key={++key}
-          label={value}
-          value={value}
-          icon={icon}
-          onClick={() => {router.push(`/${value}`)}}
-        />
-      )
+      return <BottomNavigationAction
+               label={value}
+               value={value}
+               icon={icon}
+               onClick={() => {router.push(`/${value}`)}}
+              />
   });
   return (
     <AppBar className={classes.root}>
