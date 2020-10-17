@@ -22,7 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http 
             .cors()
             .and()
             .csrf()
@@ -32,7 +32,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authenticated()
             .and()
             .oauth2Login()
-            .defaultSuccessUrl("/after-signin");
+            .defaultSuccessUrl("/after-signin")
+            .and()
+            .headers()
+            .frameOptions()
+            .sameOrigin();
             /*
             .and()
             .logout()
