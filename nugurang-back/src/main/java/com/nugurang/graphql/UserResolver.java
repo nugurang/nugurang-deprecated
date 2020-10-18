@@ -26,6 +26,10 @@ public class UserResolver implements GraphQLResolver<UserDto> {
     private final ArticleDao articleDao;
     private final NotificationDao notificationDao;
 
+    public Integer totalHonor(UserDto userDto) {
+        return 0;
+    }
+
     public ImageDto image(UserDto userDto) {
         return null;
     }

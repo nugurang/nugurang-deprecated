@@ -2,11 +2,13 @@ package com.nugurang.config;
 
 import com.nugurang.dao.ArticleDao;
 import com.nugurang.dao.BoardDao;
+import com.nugurang.dao.RoleDao;
 import com.nugurang.dao.ThreadDao;
 import com.nugurang.dao.UserDao;
 import com.nugurang.dao.VoteTypeDao;
 import com.nugurang.entity.ArticleEntity;
 import com.nugurang.entity.BoardEntity;
+import com.nugurang.entity.RoleEntity;
 import com.nugurang.entity.VoteTypeEntity;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -17,10 +19,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @RequiredArgsConstructor
 public class DbInit {
-    private final UserDao userDao;
-    private final BoardDao boardDao;
-    private final ThreadDao threadDao;
     private final ArticleDao articleDao;
+    private final BoardDao boardDao;
+    private final RoleDao roleDao;
+    private final ThreadDao threadDao;
+    private final UserDao userDao;
     private final VoteTypeDao voteTypeDao;
 
     @PostConstruct
@@ -29,6 +32,10 @@ public class DbInit {
             : List.of("competition", "study", "hobby", "circle", "activity", "startup")) {
             BoardEntity board = BoardEntity.builder().name(boardName).build();
             boardDao.save(board);
+        }
+        for (String roleName : List.of("admin", "member")) {
+            RoleEntity roleEntity = RoleEntity.builder().name(roleName).build();
+            roleDao.save(roleEntity);
         }
         for (String voteTypeName : List.of("up", "down")) {
             VoteTypeEntity voteTypeEntity = VoteTypeEntity.builder().name(voteTypeName).build();

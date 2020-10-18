@@ -14,16 +14,19 @@ import com.nugurang.dto.ThreadDto;
 import com.nugurang.dto.UserDto;
 import graphql.kickstart.tools.GraphQLResolver;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
 public class ThreadResolver implements GraphQLResolver<ThreadDto> {
-    private final ThreadDao threadDao;
+    private final ArticleDao articleDao;
     private final BoardDao boardDao;
-    private final UserDao userDao;
     private final TeamDao teamDao;
+    private final ThreadDao threadDao;
+    private final UserDao userDao;
     private final EventDao eventDao;
     private final ArticleDao articledDao;
 
@@ -54,9 +57,12 @@ public class ThreadResolver implements GraphQLResolver<ThreadDto> {
     }
 
     public List<ArticleDto> articles(ThreadDto threadDto, int page, int pageSize) {
-        int pageStart = page * pageSize;
-        int pageEnd = pageStart + pageSize - 1;
-        return null;
+        return articleDao
+            .findAllByThreadIdOrderByCreatedAtAsc(threadDto.getId(), PageRequest.of(page, pageSize))
+            .getContent()
+            .stream()
+            .map((entity) -> entity.toDto())
+            .collect(Collectors.toList());
     }
 
 }

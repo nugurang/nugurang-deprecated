@@ -49,9 +49,6 @@ public class UserEntity implements BaseEntity<UserDto>, Serializable {
 
     private String biography;
 
-    @Column(nullable = false)
-    byte[] password;
-
     @ManyToOne
     @JoinColumn(name = "image")
     private ImageEntity image;
@@ -92,14 +89,14 @@ public class UserEntity implements BaseEntity<UserDto>, Serializable {
         String oauth2Id,
         String name,
         String email,
-        String password,
+        String biography,
         ImageEntity image
     ) {
         this.oauth2Provider = oauth2Provider;
         this.oauth2Id = oauth2Id;
         this.name = name;
         this.email = email;
-        this.password = new byte[60];
+        this.biography = biography;
         this.image = image;
     }
 
@@ -112,6 +109,7 @@ public class UserEntity implements BaseEntity<UserDto>, Serializable {
             .oauth2Id(oauth2Id)
             .email(email)
             .name(name)
+            .biography(biography)
             .build();
     }
 }

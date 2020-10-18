@@ -50,17 +50,18 @@ public class Mutation implements GraphQLMutationResolver {
     private final UserDao userDao;
     private final EventDao eventDao;
 
-    Optional<ArticleDto> createArticle(Long thread, Long parent, String title, String content) {
+    Optional<ArticleDto> createArticle(String content, String title, Long thread, Long parent) {
         String oauth2Provider = oauth2Attributes.getProvider();
         String oauth2Id = oauth2Attributes.getId();
         UserEntity userEntity = userDao
             .findByOauth2ProviderAndOauth2Id(oauth2Provider, oauth2Id).get();
         ThreadEntity threadEntity = threadDao.findById(thread).get();
-        ArticleEntity parentEntity = articleDao.findById(parent).orElse(null);
+        ArticleEntity parentEntity = parent == null ? null : articleDao.findById(parent).get();
         ArticleEntity articleEntity = ArticleEntity
             .builder()
             .title(title)
             .content(content)
+            .user(userEntity)
             .thread(threadEntity)
             .parent(parentEntity)
             .build();
@@ -133,13 +134,14 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.of(threadEntity.toDto());
     }
 
-    Optional<UserDto> createUser(String name, String email, Long image) {
+    Optional<UserDto> createUser(String name, String email, String biography, Long image) {
         UserEntity userEntity = UserEntity
             .builder()
             .oauth2Provider(oauth2Attributes.getProvider())
             .oauth2Id(oauth2Attributes.getId())
             .name(name)
             .email(email)
+            .biography(biography)
             .build();
         userEntity = userDao.save(userEntity);
         return Optional.of(userEntity.toDto());

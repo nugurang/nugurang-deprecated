@@ -34,8 +34,10 @@ public class BoardEntity implements BaseEntity<BoardDto>, Serializable {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<XrefUserBoardEntity> xrefUsers = new ArrayList<>();
 
+    /*
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<ThreadEntity> threads = new ArrayList<>();
+    */
 
     @Builder
     public BoardEntity(String name) {

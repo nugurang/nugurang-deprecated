@@ -23,12 +23,12 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "thread")
-public class ThreadEntity implements BaseEntity<ThreadDto>, Serializable {
+public class ThreadEntity extends DateAudit implements BaseEntity<ThreadDto>, Serializable {
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @ManyToOne
@@ -47,8 +47,10 @@ public class ThreadEntity implements BaseEntity<ThreadDto>, Serializable {
     @JoinColumn(name = "event")
     private EventEntity event;
 
+    /*
     @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL)
     private List<ArticleEntity> articles = new ArrayList<ArticleEntity>();
+    */
 
     @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL)
     private List<XrefThreadTagEntity> xrefTags = new ArrayList<>();

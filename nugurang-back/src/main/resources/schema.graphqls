@@ -16,7 +16,7 @@ type Article {
 type Board {
     id: ID!
     name: String!
-    users: [User]!
+    users(page: Int!, pageSize: Int!): [User]!
     threads(page: Int!, pageSize: Int!): [Thread]!
 }
 
@@ -126,6 +126,9 @@ type User {
     oauth2Id: String!
     name: String!
     email: String!
+    biography: String
+    totalHonor: Int!
+    #honors: [Honor]
     image: Image
     blog: Board
     followings(page: Int!, pageSize: Int!): [User]!
@@ -171,7 +174,7 @@ type Query {
 """Mutation: INSERT, UPDATE, DELETE"""
 type Mutation {
     """CREATE"""
-    createArticle(thread: ID!, parent: ID!, title: String!, content: String!): Article
+    createArticle(content: String!, title: String, thread: ID!, parent: ID): Article
     createBoard(name: String!): Board
     createEvent(board: ID!, name: String!, content: String, images: [ID]!): Event
     createFollowing(fromUser: ID!, toUser: ID!): Following
@@ -183,7 +186,7 @@ type Mutation {
     createTask(work: ID!, name: String!, difficulty: Int!): Task
     createTeam(name: String!): Team
     createThread(board: ID!, name: String!, team: ID, event: ID): Thread
-    createUser(name: String!, email: String!, image: ID): User
+    createUser(name: String!, email: String!, biography: String, image: ID): User
     createVote(user: ID!, article: ID!, voteTypes: [ID]!): Vote
     createVoteType(name: String!): VoteType
     createWork(project: ID!, name: String!): Work

@@ -52,7 +52,7 @@ public class Query implements GraphQLQueryResolver {
     Optional<BoardDto> getBoard(Long id) {
         return boardDao
             .findById(id)
-            .map((entity) -> entity.toDto()); 
+            .map((entity) -> entity.toDto());
     }
 
     Optional<ProjectDto> getProject(Long id) {
