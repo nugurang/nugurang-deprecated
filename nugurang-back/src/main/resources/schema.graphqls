@@ -115,6 +115,8 @@ type Thread {
 
 type User {
     id: ID!
+    oauth2Provider: String!
+    oauth2Id: String!
     name: String!
     email: String!
     image: Image

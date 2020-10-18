@@ -149,9 +149,11 @@ CREATE TABLE `thread`
 CREATE TABLE `user`
 (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `image` INT,
+  `oauth2_provider` VARCHAR(255) NOT NULL,
+  `oauth2_id` VARCHAR(255) NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
+  `image` INT,
   `password` BINARY(60) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE (`name`),

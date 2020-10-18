@@ -12,6 +12,10 @@ public class UserDto {
     @NotNull
     private Long id;
     @NotNull
+    private String oauth2Provider;
+    @NotNull
+    private String oauth2Id;
+    @NotNull
     private String name;
     @NotNull
     private String email;

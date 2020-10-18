@@ -24,6 +24,7 @@ import com.nugurang.entity.BoardEntity;
 import com.nugurang.entity.ProjectEntity;
 import com.nugurang.entity.TeamEntity;
 import com.nugurang.entity.UserEntity;
+import com.nugurang.service.OAuth2Attributes;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,6 +35,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class Mutation implements GraphQLMutationResolver {
+    private final OAuth2Attributes oauth2Attributes;
     private final BoardDao boardDao;
     private final ProjectDao projectDao;
     private final TeamDao teamDao;
@@ -98,6 +100,8 @@ public class Mutation implements GraphQLMutationResolver {
     Optional<UserDto> createUser(String name, String email, Long image) {
         UserEntity userEntity = UserEntity
             .builder()
+            .oauth2Provider(oauth2Attributes.getProvider())
+            .oauth2Id(oauth2Attributes.getId())
             .name(name)
             .email(email)
             .build();
@@ -106,6 +110,8 @@ public class Mutation implements GraphQLMutationResolver {
             UserDto
             .builder()
             .id(userEntity.getId())
+            .oauth2Provider(userEntity.getOauth2Provider())
+            .oauth2Id(userEntity.getOauth2Id())
             .email(userEntity.getEmail())
             .name(userEntity.getName())
             .build()

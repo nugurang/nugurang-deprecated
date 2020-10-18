@@ -74,6 +74,8 @@ public class Query implements GraphQLQueryResolver {
             .map((userEntity) -> 
                 UserDto.builder()
                 .id(userEntity.getId())
+                .oauth2Provider(userEntity.getOauth2Provider())
+                .oauth2Id(userEntity.getOauth2Id())
                 .email(userEntity.getEmail())
                 .name(userEntity.getName())
                 .build()
@@ -81,12 +83,15 @@ public class Query implements GraphQLQueryResolver {
     }
 
     Optional<UserDto> getCurrentUser() {
-        String email = getCurrentOAuth2Email().get();
+        String provider = oauth2Attributes.getProvider();
+        String id = oauth2Attributes.getId();
         return userDao
-            .findByEmail(email)
+            .findByOauth2ProviderAndOauth2Id(provider, id)
             .map((userEntity) -> 
                 UserDto.builder()
                 .id(userEntity.getId())
+                .oauth2Provider(userEntity.getOauth2Provider())
+                .oauth2Id(userEntity.getOauth2Id())
                 .email(userEntity.getEmail())
                 .name(userEntity.getName())
                 .build()

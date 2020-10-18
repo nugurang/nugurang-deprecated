@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,11 +23,22 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "user")
+@Table(
+    name = "user",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"oauth2_provider", "oauth2_id"}),
+    }
+)
 public class UserEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
+
+    @Column(name = "oauth2_provider", nullable = false)
+    private String oauth2Provider;
+
+    @Column(name = "oauth2_id", nullable = false)
+    private String oauth2Id;
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -75,8 +87,15 @@ public class UserEntity implements Serializable {
 
     @Builder
     public UserEntity(
-        String name, String email, String password, ImageEntity image
+        String oauth2Provider,
+        String oauth2Id,
+        String name,
+        String email,
+        String password,
+        ImageEntity image
     ) {
+        this.oauth2Provider = oauth2Provider;
+        this.oauth2Id = oauth2Id;
         this.name = name;
         this.email = email;
         this.password = new byte[60];
