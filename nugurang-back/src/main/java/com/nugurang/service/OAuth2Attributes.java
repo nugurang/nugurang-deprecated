@@ -50,6 +50,11 @@ public class OAuth2Attributes {
         return oauth2AuthToken.getName();
     }
 
+    public String getName() {
+        Map<String, Object> oauth2Attributes = getOAuth2Attributes();
+        return (String) oauth2Attributes.get("login");
+    }
+
     public String getEmail() {
         Map<String, Object> oauth2Attributes = getOAuth2Attributes();
         return (String) oauth2Attributes.get("email");

@@ -4,6 +4,7 @@ import com.nugurang.dao.ArticleDao;
 import com.nugurang.dao.BoardDao;
 import com.nugurang.dao.EventDao;
 import com.nugurang.dao.TeamDao;
+import com.nugurang.dao.ThreadDao;
 import com.nugurang.dao.UserDao;
 import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.BoardDto;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class ThreadResolver implements GraphQLResolver<ThreadDto> {
-
+    private final ThreadDao threadDao;
     private final BoardDao boardDao;
     private final UserDao userDao;
     private final TeamDao teamDao;
@@ -27,7 +28,17 @@ public class ThreadResolver implements GraphQLResolver<ThreadDto> {
     private final ArticleDao articledDao;
 
     public BoardDto board(ThreadDto threadDto) {
-        return null;
+        return threadDao
+            .findById(threadDto.getId())
+            .map((threadEntity) ->
+                threadEntity.getBoard()
+            )
+            .map((boardEntity) ->
+                BoardDto.builder()
+                .id(boardEntity.getId())
+                .name(boardEntity.getName())
+                .build()
+            ).get();
     }
 
     public UserDto user(ThreadDto threadDto) {

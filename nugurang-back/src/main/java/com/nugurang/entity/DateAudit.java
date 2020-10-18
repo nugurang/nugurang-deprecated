@@ -20,5 +20,5 @@ public abstract class DateAudit implements Serializable {
 
     @LastModifiedDate
     @Column(nullable = false)
-    protected LocalDateTime updatedAt;
+    protected LocalDateTime modifiedAt;
 }

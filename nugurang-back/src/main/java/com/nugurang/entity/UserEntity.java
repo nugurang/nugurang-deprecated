@@ -1,5 +1,6 @@
 package com.nugurang.entity;
 
+import com.nugurang.dto.UserDto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ import lombok.Setter;
         @UniqueConstraint(columnNames = {"oauth2_provider", "oauth2_id"}),
     }
 )
-public class UserEntity implements Serializable {
+public class UserEntity implements BaseEntity<UserDto>, Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -100,5 +101,17 @@ public class UserEntity implements Serializable {
         this.email = email;
         this.password = new byte[60];
         this.image = image;
+    }
+
+    @Override
+    public UserDto toDto() {
+        return UserDto
+            .builder()
+            .id(id)
+            .oauth2Provider(oauth2Provider)
+            .oauth2Id(oauth2Id)
+            .email(email)
+            .name(name)
+            .build();
     }
 }

@@ -1,5 +1,6 @@
 package com.nugurang.entity;
 
+import com.nugurang.dto.TeamDto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "team")
-public class TeamEntity implements Serializable {
+public class TeamEntity implements BaseEntity<TeamDto>, Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -37,5 +38,14 @@ public class TeamEntity implements Serializable {
     @Builder
     public TeamEntity(String name) {
         this.name = name;
+    }
+
+    @Override
+    public TeamDto toDto() {
+        return TeamDto
+            .builder()
+            .id(id)
+            .name(name)
+            .build();
     }
 }

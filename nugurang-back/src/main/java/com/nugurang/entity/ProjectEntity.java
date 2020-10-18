@@ -1,5 +1,6 @@
 package com.nugurang.entity;
 
+import com.nugurang.dto.ProjectDto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ import lombok.Setter;
     name = "project",
     uniqueConstraints = @UniqueConstraint(columnNames = {"team", "name"})
 )
-public class ProjectEntity implements Serializable {
+public class ProjectEntity implements BaseEntity<ProjectDto>, Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -50,5 +51,14 @@ public class ProjectEntity implements Serializable {
         this.team = team;
         this.name = name;
         this.event = event;
+    }
+
+    @Override
+    public ProjectDto toDto() {
+        return ProjectDto
+            .builder()
+            .id(id)
+            .name(name)
+            .build();
     }
 }

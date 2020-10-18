@@ -1,8 +1,11 @@
 package com.nugurang.graphql;
 
+import com.nugurang.dao.ArticleDao;
 import com.nugurang.dao.BoardDao;
+import com.nugurang.dao.EventDao;
 import com.nugurang.dao.ProjectDao;
 import com.nugurang.dao.TeamDao;
+import com.nugurang.dao.ThreadDao;
 import com.nugurang.dao.UserDao;
 import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.BoardDto;
@@ -20,9 +23,12 @@ import com.nugurang.dto.UserDto;
 import com.nugurang.dto.VoteDto;
 import com.nugurang.dto.VoteTypeDto;
 import com.nugurang.dto.WorkDto;
+import com.nugurang.entity.ArticleEntity;
 import com.nugurang.entity.BoardEntity;
+import com.nugurang.entity.EventEntity;
 import com.nugurang.entity.ProjectEntity;
 import com.nugurang.entity.TeamEntity;
+import com.nugurang.entity.ThreadEntity;
 import com.nugurang.entity.UserEntity;
 import com.nugurang.service.OAuth2Attributes;
 import graphql.kickstart.tools.GraphQLMutationResolver;
@@ -36,25 +42,38 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class Mutation implements GraphQLMutationResolver {
     private final OAuth2Attributes oauth2Attributes;
+    private final ArticleDao articleDao;
     private final BoardDao boardDao;
     private final ProjectDao projectDao;
     private final TeamDao teamDao;
+    private final ThreadDao threadDao;
     private final UserDao userDao;
+    private final EventDao eventDao;
 
-    Optional<ArticleDto> createArticle(
-        Long user, Long thread, Long parent, String title, String content) {
-        return Optional.empty();
+    Optional<ArticleDto> createArticle(Long thread, Long parent, String title, String content) {
+        String oauth2Provider = oauth2Attributes.getProvider();
+        String oauth2Id = oauth2Attributes.getId();
+        UserEntity userEntity = userDao
+            .findByOauth2ProviderAndOauth2Id(oauth2Provider, oauth2Id).get();
+        ThreadEntity threadEntity = threadDao.findById(thread).get();
+        ArticleEntity parentEntity = articleDao.findById(parent).orElse(null);
+        ArticleEntity articleEntity = ArticleEntity
+            .builder()
+            .title(title)
+            .content(content)
+            .thread(threadEntity)
+            .parent(parentEntity)
+            .build();
+
+        articleEntity = articleDao.save(articleEntity);
+
+        return Optional.of(articleEntity.toDto());
     }
 
     Optional<BoardDto> createBoard(String name) {
         BoardEntity boardEntity = BoardEntity.builder().name(name).build();
         boardEntity = boardDao.save(boardEntity);
-        return Optional.of(
-             BoardDto.builder()
-            .id(boardEntity.getId())
-            .name(boardEntity.getName())
-            .build()
-        );
+        return Optional.of(boardEntity.toDto());
     }
 
     Optional<EventDto> createEvent(Long board, String name, String content, List<Long> images) {
@@ -93,8 +112,25 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.empty();
     }
 
-    Optional<ThreadDto> createThread(Long board, String name, Long user, Long team, Long event) {
-        return Optional.empty();
+    Optional<ThreadDto> createThread(Long board, String name, Long team, Long event) {
+        String oauth2Provider = oauth2Attributes.getProvider();
+        String oauth2Id = oauth2Attributes.getId();
+        UserEntity userEntity = userDao
+            .findByOauth2ProviderAndOauth2Id(oauth2Provider, oauth2Id).get();
+        BoardEntity boardEntity = boardDao.findById(board).get();
+        EventEntity eventEntity = event == null ? null : eventDao.findById(event).get();
+        ThreadEntity threadEntity = ThreadEntity
+            .builder()
+            .name(name)
+            .user(userEntity)
+            .board(boardEntity)
+            // .team(teamEntity)
+            .event(eventEntity)
+            .build();
+
+        threadEntity = threadDao.save(threadEntity);
+
+        return Optional.of(threadEntity.toDto());
     }
 
     Optional<UserDto> createUser(String name, String email, Long image) {
@@ -106,16 +142,7 @@ public class Mutation implements GraphQLMutationResolver {
             .email(email)
             .build();
         userEntity = userDao.save(userEntity);
-        return Optional.of(
-            UserDto
-            .builder()
-            .id(userEntity.getId())
-            .oauth2Provider(userEntity.getOauth2Provider())
-            .oauth2Id(userEntity.getOauth2Id())
-            .email(userEntity.getEmail())
-            .name(userEntity.getName())
-            .build()
-        );
+        return Optional.of(userEntity.toDto());
     }
 
     Optional<VoteDto> createVote(Long user, Long article, List<Long> voteTypes) {
@@ -239,5 +266,4 @@ public class Mutation implements GraphQLMutationResolver {
     Boolean deleteWork(Long id) {
         return false;
     }
-
 }

@@ -1,5 +1,6 @@
 package com.nugurang.entity;
 
+import com.nugurang.dto.ArticleDto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "article")
-public class ArticleEntity extends DateAudit implements Serializable {
+public class ArticleEntity extends DateAudit implements BaseEntity<ArticleDto>, Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -60,11 +61,31 @@ public class ArticleEntity extends DateAudit implements Serializable {
     private List<XrefArticleImageEntity> xrefImages = new ArrayList<>();
 
     @Builder
-    public ArticleEntity(String title, String content, ThreadEntity thread, UserEntity user) {
+    public ArticleEntity(
+        String title,
+        String content,
+        ThreadEntity thread,
+        UserEntity user,
+        ArticleEntity parent
+    ) {
         this.title = title;
         this.content = content;
         this.viewCount = Long.valueOf(0);
         this.thread = thread;
         this.user = user;
+        this.parent = parent;
+    }
+
+    @Override
+    public ArticleDto toDto() {
+        return ArticleDto
+            .builder()
+            .id(id)
+            .title(title)
+            .content(content)
+            .viewCount(viewCount)
+            .createdAt(getCreatedAt())
+            .modifiedAt(getModifiedAt())
+            .build();
     }
 }

@@ -52,6 +52,13 @@ type Notification {
     team: Team
 }
 
+type OAuth2User {
+    provider: String!
+    id: String!
+    name: String!
+    email: String!
+}
+
 type Position {
     id: ID!
     name: String!
@@ -151,20 +158,20 @@ type Work {
 """Query: SELECT"""
 type Query {
     ping: String!
+    getArticle(id: ID): Article
     getCurrentUser: User
-    getCurrentOAuth2Provider: String
-    getCurrentOAuth2Id: String
-    getCurrentOAuth2Email: String
+    getCurrentOAuth2User: OAuth2User
     getBoard(id: ID): Board
     getProject(id: ID): Project
     getTeam(id: ID): Team
+    getThread(id: ID): Thread
     getUser(id: ID): User
 }
 
 """Mutation: INSERT, UPDATE, DELETE"""
 type Mutation {
     """CREATE"""
-    createArticle(user: ID!, thread: ID!, parent: ID!, title: String!, content: String!): Article
+    createArticle(thread: ID!, parent: ID!, title: String!, content: String!): Article
     createBoard(name: String!): Board
     createEvent(board: ID!, name: String!, content: String, images: [ID]!): Event
     createFollowing(fromUser: ID!, toUser: ID!): Following
@@ -175,7 +182,7 @@ type Mutation {
     createTag(name: String!): Tag
     createTask(work: ID!, name: String!, difficulty: Int!): Task
     createTeam(name: String!): Team
-    createThread(board: ID!, name: String!, user: ID!, team: ID!, event: ID!): Thread
+    createThread(board: ID!, name: String!, team: ID, event: ID): Thread
     createUser(name: String!, email: String!, image: ID): User
     createVote(user: ID!, article: ID!, voteTypes: [ID]!): Vote
     createVoteType(name: String!): VoteType
