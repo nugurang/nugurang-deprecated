@@ -16,8 +16,8 @@ type Article {
 type Board {
     id: ID!
     name: String!
-    users(page: Int!, pageSize: Int!): [User]!
-    threads(page: Int!, pageSize: Int!): [Thread]!
+    getUsers(page: Int!, pageSize: Int!): [User]!
+    getThreads(page: Int!, pageSize: Int!): [Thread]!
 }
 
 type Event {
@@ -117,7 +117,7 @@ type Thread {
     user: User!
     team: Team!
     event: Event!
-    articles(page: Int!, pageSize: Int!): [Article]!
+    getArticles(page: Int!, pageSize: Int!): [Article]!
 }
 
 type User {
@@ -131,11 +131,11 @@ type User {
     #honors: [Honor]
     image: Image
     blog: Board
-    followings(page: Int!, pageSize: Int!): [User]!
-    followers(page: Int!, pageSize: Int!): [User]!
-    threads(page: Int!, pageSize: Int!): [Thread]!
-    articles(page: Int!, pageSize: Int!): [Article]!
-    notifications: [Notification]!
+    getFollowings(page: Int!, pageSize: Int!): [User]!
+    getFollowers(page: Int!, pageSize: Int!): [User]!
+    getThreads(page: Int!, pageSize: Int!): [Thread]!
+    getArticles(page: Int!, pageSize: Int!): [Article]!
+    getNotifications(page: Int!, pageSize: Int!): [Notification]!
 }
 
 type Vote {
@@ -161,15 +161,16 @@ type Work {
 """Query: SELECT"""
 type Query {
     ping: String!
-    article(id: ID): Article
     currentUser: User
     currentOAuth2User: OAuth2User
-    board(id: ID): Board
-    project(id: ID): Project
-    team(id: ID): Team
-    thread(id: ID): Thread
-    threads(boards: [ID]!, page: Int!, pageSize: Int!): [Thread]!
-    user(id: ID): User
+    getArticle(id: ID!): Article
+    getBoard(id: ID!): Board
+    getBoardByName(name: String!): Board
+    getProject(id: ID!): Project
+    getTeam(id: ID!): Team
+    getThread(id: ID!): Thread
+    getThreads(boards: [ID]!, page: Int!, pageSize: Int!): [Thread]!
+    getUser(id: ID!): User
 }
 
 """Mutation: INSERT, UPDATE, DELETE"""

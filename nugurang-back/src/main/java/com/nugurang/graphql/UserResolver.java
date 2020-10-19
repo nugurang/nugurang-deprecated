@@ -38,23 +38,23 @@ public class UserResolver implements GraphQLResolver<UserDto> {
         return Optional.empty();
     }
 
-    public List<ThreadDto> threads(UserDto userDto, int page, int pageSize) {
+    public List<ThreadDto> getThreads(UserDto userDto, Integer page, Integer pageSize) {
         return null;
     }
 
-    public List<ArticleDto> articles(UserDto userDto, int page, int pageSize) {
+    public List<ArticleDto> getArticles(UserDto userDto, Integer page, Integer pageSize) {
         return null;
     }
 
-    public List<UserDto> followings(UserDto userDto, int page, int pageSize) {
+    public List<UserDto> getFollowings(UserDto userDto, Integer page, Integer pageSize) {
         return null;
     }
 
-    public List<UserDto> followers(UserDto userDto, int page, int pageSize) {
+    public List<UserDto> getFollowers(UserDto userDto, Integer page, Integer pageSize) {
         return null;
     }
 
-    public List<NotificationDto> notifications(UserDto userDto) {
+    public List<NotificationDto> getNotifications(UserDto userDto, Integer page, Integer pageSize) {
         return null;
     }
 }

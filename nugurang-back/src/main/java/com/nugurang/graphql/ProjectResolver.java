@@ -28,7 +28,7 @@ public class ProjectResolver implements GraphQLResolver<ProjectDto> {
         return null;
     }
 
-    public List<WorkDto> works(ProjectDto project, int page, int pageSize) {
+    public List<WorkDto> getWorks(ProjectDto project, Integer page, Integer pageSize) {
         return null;
     }
 }

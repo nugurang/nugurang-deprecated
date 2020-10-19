@@ -46,51 +46,6 @@ public class Query implements GraphQLQueryResolver {
         return "pong";
     }
 
-    Optional<ArticleDto> article(Long id) {
-        return articleDao
-            .findById(id)
-            .map((entity) -> entity.toDto());
-    }
-
-    Optional<BoardDto> board(Long id) {
-        return boardDao
-            .findById(id)
-            .map((entity) -> entity.toDto());
-    }
-
-    Optional<ProjectDto> project(Long id) {
-        return projectDao
-            .findById(id)
-            .map((entity) -> entity.toDto());
-    }
-
-    Optional<TeamDto> team(Long id) {
-        return teamDao
-            .findById(id)
-            .map((entity) -> entity.toDto());
-    }
-
-    Optional<ThreadDto> thread(Long id) {
-        return threadDao
-            .findById(id)
-            .map((entity) -> entity.toDto());
-    }
-
-    List<ThreadDto> threads(List<Long> boards, Integer page, Integer pageSize) {
-        return threadDao
-            .findAllByBoardIdInOrderByCreatedAtDesc(boards, PageRequest.of(page, pageSize))
-            .getContent()
-            .stream()
-            .map((entity) -> entity.toDto())
-            .collect(Collectors.toList());
-    }
-
-    Optional<UserDto> user(Long id) {
-        return userDao
-            .findById(id)
-            .map((entity) -> entity.toDto());
-    }
-
     Optional<UserDto> currentUser() {
         String provider = oauth2Attributes.getProvider();
         String id = oauth2Attributes.getId();
@@ -110,4 +65,56 @@ public class Query implements GraphQLQueryResolver {
             .build()
         );
     }
+
+    Optional<ArticleDto> getArticle(Long id) {
+        return articleDao
+            .findById(id)
+            .map((entity) -> entity.toDto());
+    }
+
+    Optional<BoardDto> getBoard(Long id) {
+        return boardDao
+            .findById(id)
+            .map((entity) -> entity.toDto());
+    }
+
+    Optional<BoardDto> getBoardByName(String name) {
+        return boardDao
+            .findByName(name)
+            .map((entity) -> entity.toDto());
+    }
+
+    Optional<ProjectDto> getProject(Long id) {
+        return projectDao
+            .findById(id)
+            .map((entity) -> entity.toDto());
+    }
+
+    Optional<TeamDto> getTeam(Long id) {
+        return teamDao
+            .findById(id)
+            .map((entity) -> entity.toDto());
+    }
+
+    Optional<ThreadDto> getThread(Long id) {
+        return threadDao
+            .findById(id)
+            .map((entity) -> entity.toDto());
+    }
+
+    List<ThreadDto> getThreads(List<Long> boards, Integer page, Integer pageSize) {
+        return threadDao
+            .findAllByBoardIdInOrderByCreatedAtDesc(boards, PageRequest.of(page, pageSize))
+            .getContent()
+            .stream()
+            .map((entity) -> entity.toDto())
+            .collect(Collectors.toList());
+    }
+
+    Optional<UserDto> getUser(Long id) {
+        return userDao
+            .findById(id)
+            .map((entity) -> entity.toDto());
+    }
+
 }

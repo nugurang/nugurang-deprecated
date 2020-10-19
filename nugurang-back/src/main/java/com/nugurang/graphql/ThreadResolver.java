@@ -56,7 +56,7 @@ public class ThreadResolver implements GraphQLResolver<ThreadDto> {
         return null;
     }
 
-    public List<ArticleDto> articles(ThreadDto threadDto, int page, int pageSize) {
+    public List<ArticleDto> getArticles(ThreadDto threadDto, Integer page, Integer pageSize) {
         return articleDao
             .findAllByThreadIdOrderByCreatedAtAsc(threadDto.getId(), PageRequest.of(page, pageSize))
             .getContent()

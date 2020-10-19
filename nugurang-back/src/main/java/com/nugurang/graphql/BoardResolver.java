@@ -19,7 +19,7 @@ public class BoardResolver implements GraphQLResolver<BoardDto> {
     private final UserDao userDao;
     private final ThreadDao threadDao;
 
-    public List<UserDto> users(BoardDto boardDto, Integer page, Integer pageSize) {
+    public List<UserDto> getUsers(BoardDto boardDto, Integer page, Integer pageSize) {
         return userDao
             .findAllByBoardId(boardDto.getId(), PageRequest.of(page, pageSize))
             .getContent()
@@ -28,7 +28,7 @@ public class BoardResolver implements GraphQLResolver<BoardDto> {
             .collect(Collectors.toList());
     }
 
-    public List<ThreadDto> threads(BoardDto boardDto, Integer page, Integer pageSize) {
+    public List<ThreadDto> getThreads(BoardDto boardDto, Integer page, Integer pageSize) {
         return threadDao
             .findAllByBoardIdOrderByCreatedAtDesc(boardDto.getId(), PageRequest.of(page, pageSize))
             .getContent()
