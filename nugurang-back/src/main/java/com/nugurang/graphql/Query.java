@@ -20,9 +20,12 @@ import com.nugurang.entity.TeamEntity;
 import com.nugurang.entity.UserEntity;
 import com.nugurang.service.OAuth2Attributes;
 import graphql.kickstart.tools.GraphQLQueryResolver;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -43,43 +46,52 @@ public class Query implements GraphQLQueryResolver {
         return "pong";
     }
 
-    Optional<ArticleDto> getArticle(Long id) {
+    Optional<ArticleDto> article(Long id) {
         return articleDao
             .findById(id)
             .map((entity) -> entity.toDto());
     }
 
-    Optional<BoardDto> getBoard(Long id) {
+    Optional<BoardDto> board(Long id) {
         return boardDao
             .findById(id)
             .map((entity) -> entity.toDto());
     }
 
-    Optional<ProjectDto> getProject(Long id) {
+    Optional<ProjectDto> project(Long id) {
         return projectDao
             .findById(id)
             .map((entity) -> entity.toDto());
     }
 
-    Optional<TeamDto> getTeam(Long id) {
+    Optional<TeamDto> team(Long id) {
         return teamDao
             .findById(id)
             .map((entity) -> entity.toDto());
     }
 
-    Optional<ThreadDto> getThread(Long id) {
+    Optional<ThreadDto> thread(Long id) {
         return threadDao
             .findById(id)
             .map((entity) -> entity.toDto());
     }
 
-    Optional<UserDto> getUser(Long id) {
+    List<ThreadDto> threads(List<Long> boards, Integer page, Integer pageSize) {
+        return threadDao
+            .findAllByBoardIdInOrderByCreatedAtDesc(boards, PageRequest.of(page, pageSize))
+            .getContent()
+            .stream()
+            .map((entity) -> entity.toDto())
+            .collect(Collectors.toList());
+    }
+
+    Optional<UserDto> user(Long id) {
         return userDao
             .findById(id)
             .map((entity) -> entity.toDto());
     }
 
-    Optional<UserDto> getCurrentUser() {
+    Optional<UserDto> currentUser() {
         String provider = oauth2Attributes.getProvider();
         String id = oauth2Attributes.getId();
         return userDao
@@ -87,7 +99,7 @@ public class Query implements GraphQLQueryResolver {
             .map((entity) -> entity.toDto());
     }
 
-    Optional<OAuth2UserDto> getCurrentOAuth2User() {
+    Optional<OAuth2UserDto> currentOAuth2User() {
         return Optional.of(
             OAuth2UserDto
             .builder()

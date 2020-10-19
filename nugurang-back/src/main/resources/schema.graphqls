@@ -161,14 +161,15 @@ type Work {
 """Query: SELECT"""
 type Query {
     ping: String!
-    getArticle(id: ID): Article
-    getCurrentUser: User
-    getCurrentOAuth2User: OAuth2User
-    getBoard(id: ID): Board
-    getProject(id: ID): Project
-    getTeam(id: ID): Team
-    getThread(id: ID): Thread
-    getUser(id: ID): User
+    article(id: ID): Article
+    currentUser: User
+    currentOAuth2User: OAuth2User
+    board(id: ID): Board
+    project(id: ID): Project
+    team(id: ID): Team
+    thread(id: ID): Thread
+    threads(boards: [ID]!, page: Int!, pageSize: Int!): [Thread]!
+    user(id: ID): User
 }
 
 """Mutation: INSERT, UPDATE, DELETE"""
