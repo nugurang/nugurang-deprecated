@@ -19,13 +19,12 @@ import java.io.IOException;
 import java.net.URL;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
-public class GraphQLProvider {
+public class GraphQlProvider {
     private GraphQL graphQL;
     private final Query query;
     private final Mutation mutation;
