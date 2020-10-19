@@ -170,9 +170,12 @@ type Query {
     getBoardsByNames(names: [String]!): [Board]!
     getProject(id: ID!): Project
     getTeam(id: ID!): Team
+    getTeamByName(name: String!): Team
     getThread(id: ID!): Thread
-    getThreads(boards: [ID]!, page: Int!, pageSize: Int!): [Thread]!
+    getThreadsByBoards(boards: [ID]!, page: Int!, pageSize: Int!): [Thread]!
     getUser(id: ID!): User
+    getUserByName(name: String!): User
+    getUsers(page: Int!, pageSize: Int!): [User]!
 }
 
 """Mutation: INSERT, UPDATE, DELETE"""

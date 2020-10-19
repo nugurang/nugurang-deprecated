@@ -111,13 +111,19 @@ public class Query implements GraphQLQueryResolver {
             .map((entity) -> entity.toDto());
     }
 
+    Optional<TeamDto> getTeamByName(String name) {
+        return teamDao
+            .findByName(name)
+            .map((entity) -> entity.toDto());
+    }
+
     Optional<ThreadDto> getThread(Long id) {
         return threadDao
             .findById(id)
             .map((entity) -> entity.toDto());
     }
 
-    List<ThreadDto> getThreads(List<Long> boards, Integer page, Integer pageSize) {
+    List<ThreadDto> getThreadsByBoards(List<Long> boards, Integer page, Integer pageSize) {
         return threadDao
             .findAllByBoardIdInOrderByCreatedAtDesc(boards, PageRequest.of(page, pageSize))
             .getContent()
@@ -131,4 +137,20 @@ public class Query implements GraphQLQueryResolver {
             .findById(id)
             .map((entity) -> entity.toDto());
     }
+
+    Optional<UserDto> getUserByName(String name) {
+        return userDao
+            .findByName(name)
+            .map((entity) -> entity.toDto());
+    }
+
+    List<UserDto> getUsers(Integer page, Integer pageSize) {
+        return userDao
+            .findAll(PageRequest.of(page, pageSize))
+            .getContent()
+            .stream()
+            .map((entity) -> entity.toDto())
+            .collect(Collectors.toList());
+    }
+
 }
