@@ -46,6 +46,13 @@ public class Query implements GraphQLQueryResolver {
         return "pong";
     }
 
+    List<BoardDto> boards() {
+        return boardDao.findAll()
+            .stream()
+            .map((entity) -> entity.toDto())
+            .collect(Collectors.toList());
+    }
+
     Optional<UserDto> currentUser() {
         String provider = oauth2Attributes.getProvider();
         String id = oauth2Attributes.getId();

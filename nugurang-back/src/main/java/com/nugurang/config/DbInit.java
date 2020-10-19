@@ -29,7 +29,10 @@ public class DbInit {
     @PostConstruct
     public void init() {
         for (String boardName
-            : List.of("competition", "study", "hobby", "circle", "activity", "startup")) {
+            : List.of(
+                "competition", "study", "hobby", "circle", "activity", "startup",
+                "competition_event", "study_event", "hobby_event", "circle_event", "activity_event", "startup_event"
+            )) {
             BoardEntity board = BoardEntity.builder().name(boardName).build();
             boardDao.save(board);
         }
