@@ -91,6 +91,14 @@ public class Query implements GraphQLQueryResolver {
             .map((entity) -> entity.toDto());
     }
 
+    List<BoardDto> getBoardsByNames(List<String> names) {
+        return boardDao
+            .findAllByNameIn(names)
+            .stream()
+            .map((entity) -> entity.toDto())
+            .collect(Collectors.toList());
+    }
+
     Optional<ProjectDto> getProject(Long id) {
         return projectDao
             .findById(id)
@@ -123,5 +131,4 @@ public class Query implements GraphQLQueryResolver {
             .findById(id)
             .map((entity) -> entity.toDto());
     }
-
 }

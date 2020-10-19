@@ -8,5 +8,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BoardDao extends JpaRepository<BoardEntity, Long> {
+
     Optional<BoardEntity> findByName(String name);
+
+    List<BoardEntity> findAllByNameIn(List<String> names);
 }

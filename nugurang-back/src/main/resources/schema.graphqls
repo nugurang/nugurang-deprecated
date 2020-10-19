@@ -167,6 +167,7 @@ type Query {
     getArticle(id: ID!): Article
     getBoard(id: ID!): Board
     getBoardByName(name: String!): Board
+    getBoardsByNames(names: [String]!): [Board]!
     getProject(id: ID!): Project
     getTeam(id: ID!): Team
     getThread(id: ID!): Thread
