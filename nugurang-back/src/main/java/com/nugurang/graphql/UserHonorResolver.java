@@ -14,10 +14,18 @@ public class UserHonorResolver implements GraphQLResolver<UserHonorDto> {
     private final UserHonorDao userHonorDao;
 
     public UserDto user(UserHonorDto userHonorDto) {
-        return null;
+        return userHonorDao
+            .findById(userHonorDto.getId())
+            .map((userHonorEntity) -> userHonorEntity.getUser())
+            .map((userEntity) -> userEntity.toDto())
+            .get();
     }
 
     public PositionDto position(UserHonorDto userHonorDto) {
-        return null;
+        return userHonorDao
+            .findById(userHonorDto.getId())
+            .map((userHonorEntity) -> userHonorEntity.getPosition())
+            .map((positionEntity) -> positionEntity.toDto())
+            .get();
     }
 }

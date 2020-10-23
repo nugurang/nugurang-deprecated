@@ -1,5 +1,6 @@
 package com.nugurang.entity;
 
+import com.nugurang.dto.PositionDto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "position")
-public class PositionEntity implements Serializable {
+public class PositionEntity implements BaseEntity<PositionDto>, Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -37,5 +38,13 @@ public class PositionEntity implements Serializable {
     @Builder
     public PositionEntity(String name) {
         this.name = name;
+    }
+
+    public PositionDto toDto() {
+        return PositionDto
+            .builder()
+            .id(id)
+            .name(name)
+            .build();
     }
 }

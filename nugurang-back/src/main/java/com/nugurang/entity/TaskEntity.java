@@ -1,5 +1,6 @@
 package com.nugurang.entity;
 
+import com.nugurang.dto.TaskDto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ import lombok.Setter;
         @UniqueConstraint(columnNames = {"work", "name", "order"})
     }
 ) 
-public class TaskEntity implements Serializable {
+public class TaskEntity implements BaseEntity<TaskDto>, Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -67,5 +68,15 @@ public class TaskEntity implements Serializable {
         this.difficulty = difficulty;
         this.work = work;
         this.progress = progress;
+    }
+
+    public TaskDto toDto() {
+        return TaskDto
+            .builder()
+            .id(id)
+            .name(name)
+            .order(order)
+            .difficulty(difficulty)
+            .build();
     }
 }

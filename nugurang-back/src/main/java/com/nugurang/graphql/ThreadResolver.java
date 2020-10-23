@@ -33,15 +33,9 @@ public class ThreadResolver implements GraphQLResolver<ThreadDto> {
     public BoardDto board(ThreadDto threadDto) {
         return threadDao
             .findById(threadDto.getId())
-            .map((threadEntity) ->
-                threadEntity.getBoard()
-            )
-            .map((boardEntity) ->
-                BoardDto.builder()
-                .id(boardEntity.getId())
-                .name(boardEntity.getName())
-                .build()
-            ).get();
+            .map((threadEntity) -> threadEntity.getBoard())
+            .map((boardEntity) -> boardEntity.toDto())
+            .get();
     }
 
     public UserDto user(ThreadDto threadDto) {

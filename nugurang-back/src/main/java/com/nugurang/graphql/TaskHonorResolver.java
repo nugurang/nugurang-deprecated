@@ -14,10 +14,18 @@ public class TaskHonorResolver implements GraphQLResolver<TaskHonorDto> {
     private final TaskHonorDao taskHonorDao;
 
     public TaskDto task(TaskHonorDto taskHonorDto) {
-        return null;
+        return taskHonorDao
+            .findById(taskHonorDto.getId())
+            .map((taskHonorEntity) -> taskHonorEntity.getTask())
+            .map((taskEntity) -> taskEntity.toDto())
+            .get();
     }
 
     public PositionDto position(TaskHonorDto taskHonorDto) {
-        return null;
+        return taskHonorDao
+            .findById(taskHonorDto.getId())
+            .map((taskHonorEntity) -> taskHonorEntity.getPosition())
+            .map((positionEntity) -> positionEntity.toDto())
+            .get();
     }
 }
