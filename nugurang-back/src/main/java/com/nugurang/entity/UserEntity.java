@@ -72,10 +72,10 @@ public class UserEntity implements BaseEntity<UserDto>, Serializable {
     private List<StarEntity> stars = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<XrefUserBoardEntity> xrefBoards = new ArrayList<>();
+    private List<UserHonorEntity> userHonors = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<XrefUserPositionEntity> xrefPositions = new ArrayList<>();
+    private List<XrefUserBoardEntity> xrefBoards = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<XrefUserTaskEntity> xrefTasks = new ArrayList<>();

@@ -1,10 +1,10 @@
 package com.nugurang.dao;
 
-import com.nugurang.entity.XrefUserPositionEntity;
+import com.nugurang.entity.TaskHonorEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface XrefUserPositionDao extends JpaRepository<XrefUserPositionEntity, Long> {
+public interface TaskHonorDao extends JpaRepository<TaskHonorEntity, Long> {
 
 }

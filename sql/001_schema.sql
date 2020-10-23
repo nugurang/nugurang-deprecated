@@ -222,6 +222,7 @@ CREATE TABLE `xref_task_position`
     `id` INT NOT NULL AUTO_INCREMENT,
     `task` INT NOT NULL,
     `position` INT NOT NULL,
+    `honor` INT NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`),
     UNIQUE (`task`, `position`)
 );
@@ -250,7 +251,6 @@ CREATE TABLE `xref_user_task`
   `id` INT NOT NULL AUTO_INCREMENT,
   `user` INT NOT NULL,
   `task` INT NOT NULL,
-  `honor` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE (`user`, `task`)
 );

@@ -8,9 +8,11 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class XrefTaskPositionDto {
+public class TaskHonorDto {
     @NotNull
     private Long id;
+    @NotNull
+    private Integer honor;
     // task
     // position
 }

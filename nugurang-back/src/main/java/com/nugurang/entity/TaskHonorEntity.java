@@ -19,15 +19,17 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(
-    name = "xref_task_position",
+    name = "task_honor",
     uniqueConstraints = {
         @UniqueConstraint(columnNames = {"task", "position"})
     }
 )
-public class XrefTaskPositionEntity implements Serializable {
+public class TaskHonorEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
+
+    private Integer honor;
 
     @ManyToOne
     @JoinColumn(name = "task", nullable = false)
@@ -37,8 +39,10 @@ public class XrefTaskPositionEntity implements Serializable {
     @JoinColumn(name = "position", nullable = false)
     private PositionEntity position;
 
+
     @Builder
-    public XrefTaskPositionEntity(TaskEntity task, PositionEntity position) {
+    public TaskHonorEntity(Integer honor, TaskEntity task, PositionEntity position) {
+        this.honor = honor;
         this.task = task;
         this.position = position;
     }

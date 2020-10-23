@@ -1,6 +1,5 @@
 scalar DateTime
 
-"""Type"""
 type Article {
     id: ID!
     thread: Thread!
@@ -99,8 +98,14 @@ type Task {
     order: Int!
     work: Work!
     progress: Progress!
-    positions: [Position]!
+    honors: [TaskHonor]!
     users: [User]!
+}
+
+type TaskHonor {
+    honor: Int!
+    task: Task!
+    position: Position!
 }
 
 type Team {
@@ -128,7 +133,7 @@ type User {
     email: String!
     biography: String
     totalHonor: Int!
-    #honors: [Honor]
+    honors: [UserHonor]!
     image: Image
     blog: Board
     getFollowings(page: Int!, pageSize: Int!): [User]!
@@ -136,6 +141,12 @@ type User {
     getThreads(page: Int!, pageSize: Int!): [Thread]!
     getArticles(page: Int!, pageSize: Int!): [Article]!
     getNotifications(page: Int!, pageSize: Int!): [Notification]!
+}
+
+type UserHonor {
+    honor: Int!
+    user: User!
+    position: Position!
 }
 
 type Vote {
@@ -158,7 +169,6 @@ type Work {
     order: Int!
 }
 
-"""Query: SELECT"""
 type Query {
     ping: String!
     boards: [Board]!
@@ -178,7 +188,6 @@ type Query {
     getUsers(page: Int!, pageSize: Int!): [User]!
 }
 
-"""Mutation: INSERT, UPDATE, DELETE"""
 type Mutation {
     """CREATE"""
     createArticle(content: String!, title: String, thread: ID!, parent: ID): Article

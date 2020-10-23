@@ -29,9 +29,6 @@ public class XrefUserTaskEntity implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false)
-    private Integer honor;
-
     @ManyToOne
     @JoinColumn(name = "user", nullable = false)
     private UserEntity user;
@@ -42,7 +39,6 @@ public class XrefUserTaskEntity implements Serializable {
 
     @Builder
     public XrefUserTaskEntity(Integer honor, UserEntity user, TaskEntity task) {
-        this.honor = honor;
         this.user = user;
         this.task = task;
     }

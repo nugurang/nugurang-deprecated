@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class XrefUserPositionDto {
+public class UserHonorDto {
     @NotNull
     private Long id;
     @NotNull

@@ -29,10 +29,10 @@ public class PositionEntity implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "position", cascade = CascadeType.ALL)
-    private List<XrefTaskPositionEntity> xrefTasks = new ArrayList<>();
+    private List<TaskHonorEntity> taskHonors = new ArrayList<>();
 
     @OneToMany(mappedBy = "position", cascade = CascadeType.ALL)
-    private List<XrefUserPositionEntity> xrefUsers = new ArrayList<>();
+    private List<UserHonorEntity> userHonors = new ArrayList<>();
 
     @Builder
     public PositionEntity(String name) {

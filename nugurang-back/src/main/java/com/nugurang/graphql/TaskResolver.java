@@ -4,9 +4,9 @@ import com.nugurang.dao.PositionDao;
 import com.nugurang.dao.ProgressDao;
 import com.nugurang.dao.UserDao;
 import com.nugurang.dao.WorkDao;
-import com.nugurang.dto.PositionDto;
 import com.nugurang.dto.ProgressDto;
 import com.nugurang.dto.TaskDto;
+import com.nugurang.dto.TaskHonorDto;
 import com.nugurang.dto.UserDto;
 import com.nugurang.dto.WorkDto;
 import graphql.kickstart.tools.GraphQLResolver;
@@ -31,7 +31,7 @@ public class TaskResolver implements GraphQLResolver<TaskDto> {
         return null;
     }
 
-    public List<PositionDto> positions(TaskDto taskDto) {
+    public List<TaskHonorDto> honors(TaskDto taskDto) {
         return null;
     }
 

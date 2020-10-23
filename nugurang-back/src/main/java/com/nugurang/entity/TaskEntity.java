@@ -52,7 +52,7 @@ public class TaskEntity implements Serializable {
     private ProgressEntity progress;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
-    private List<XrefTaskPositionEntity> xrefPositions = new ArrayList<>();
+    private List<TaskHonorEntity> taskHonors = new ArrayList<>();
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private List<XrefUserTaskEntity> xrefUsers = new ArrayList<>();

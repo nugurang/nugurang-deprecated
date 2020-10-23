@@ -11,6 +11,7 @@ import com.nugurang.dto.ImageDto;
 import com.nugurang.dto.NotificationDto;
 import com.nugurang.dto.ThreadDto;
 import com.nugurang.dto.UserDto;
+import com.nugurang.dto.UserHonorDto;
 import graphql.kickstart.tools.GraphQLResolver;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,10 @@ public class UserResolver implements GraphQLResolver<UserDto> {
 
     public Integer totalHonor(UserDto userDto) {
         return 0;
+    }
+
+    public List<UserHonorDto> honors(UserDto userDto) {
+        return null;
     }
 
     public ImageDto image(UserDto userDto) {

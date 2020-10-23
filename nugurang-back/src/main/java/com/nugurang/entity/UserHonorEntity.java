@@ -19,12 +19,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(
-    name = "xref_user_position",
+    name = "user_honor",
     uniqueConstraints = {
         @UniqueConstraint(columnNames = {"user", "position"})
     }
 )
-public class XrefUserPositionEntity implements Serializable {
+public class UserHonorEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -41,7 +41,7 @@ public class XrefUserPositionEntity implements Serializable {
     private PositionEntity position;
 
     @Builder
-    public XrefUserPositionEntity(Integer honor, UserEntity user, PositionEntity position) {
+    public UserHonorEntity(Integer honor, UserEntity user, PositionEntity position) {
         this.honor = honor;
         this.user = user;
         this.position = position;
