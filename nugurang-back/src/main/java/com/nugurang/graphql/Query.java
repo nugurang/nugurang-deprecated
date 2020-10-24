@@ -132,6 +132,15 @@ public class Query implements GraphQLQueryResolver {
             .collect(Collectors.toList());
     }
 
+    List<ThreadDto> getThreadsByBoardNames(List<String> boards, Integer page, Integer pageSize) {
+        return threadDao
+            .findAllByBoardNameInOrderByCreatedAtDesc(boards, PageRequest.of(page, pageSize))
+            .getContent()
+            .stream()
+            .map((entity) -> entity.toDto())
+            .collect(Collectors.toList());
+    }
+
     Optional<UserDto> getUser(Long id) {
         return userDao
             .findById(id)

@@ -13,4 +13,7 @@ public interface ThreadDao extends JpaRepository<ThreadEntity, Long> {
     Page<ThreadEntity> findAllByBoardIdInOrderByCreatedAtDesc(List<Long> boards, Pageable pageable);
 
     Page<ThreadEntity> findAllByBoardIdOrderByCreatedAtDesc(Long board, Pageable pageable);
+
+    Page<ThreadEntity> findAllByBoardNameInOrderByCreatedAtDesc(List<String> boards, Pageable pageable);
+
 }

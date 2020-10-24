@@ -183,6 +183,7 @@ type Query {
     getTeamByName(name: String!): Team
     getThread(id: ID!): Thread
     getThreadsByBoards(boards: [ID]!, page: Int!, pageSize: Int!): [Thread]!
+    getThreadsByBoardNames(boards: [String]!, page: Int!, pageSize: Int!): [Thread]!
     getUser(id: ID!): User
     getUserByName(name: String!): User
     getUsers(page: Int!, pageSize: Int!): [User]!
