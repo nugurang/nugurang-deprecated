@@ -55,7 +55,7 @@ type OAuth2User {
     provider: String!
     id: String!
     name: String!
-    email: String!
+    email: String
 }
 
 type Position {
