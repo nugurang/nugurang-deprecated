@@ -122,10 +122,11 @@ type Thread {
     user: User!
     team: Team!
     event: Event!
+    getArticles(page: Int!, pageSize: Int!): [Article]!
+    image: Image
     upCount: Int!
     downCount: Int!
     starCount: Int!
-    getArticles(page: Int!, pageSize: Int!): [Article]!
 }
 
 type User {

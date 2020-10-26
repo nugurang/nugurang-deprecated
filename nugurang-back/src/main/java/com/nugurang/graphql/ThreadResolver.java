@@ -9,11 +9,13 @@ import com.nugurang.dao.UserDao;
 import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.BoardDto;
 import com.nugurang.dto.EventDto;
+import com.nugurang.dto.ImageDto;
 import com.nugurang.dto.TeamDto;
 import com.nugurang.dto.ThreadDto;
 import com.nugurang.dto.UserDto;
 import graphql.kickstart.tools.GraphQLResolver;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -50,6 +52,15 @@ public class ThreadResolver implements GraphQLResolver<ThreadDto> {
         return null;
     }
 
+    public List<ArticleDto> getArticles(ThreadDto threadDto, Integer page, Integer pageSize) {
+        return articleDao
+            .findAllByThreadIdOrderByCreatedAtAsc(threadDto.getId(), PageRequest.of(page, pageSize))
+            .getContent()
+            .stream()
+            .map((entity) -> entity.toDto())
+            .collect(Collectors.toList());
+    }
+
     public Integer upCount(ThreadDto threadDto) {
         return 0;
     }
@@ -62,13 +73,7 @@ public class ThreadResolver implements GraphQLResolver<ThreadDto> {
         return 0;
     }
 
-    public List<ArticleDto> getArticles(ThreadDto threadDto, Integer page, Integer pageSize) {
-        return articleDao
-            .findAllByThreadIdOrderByCreatedAtAsc(threadDto.getId(), PageRequest.of(page, pageSize))
-            .getContent()
-            .stream()
-            .map((entity) -> entity.toDto())
-            .collect(Collectors.toList());
+    public Optional<ImageDto> image(ThreadDto threadDto) {
+        return Optional.empty();
     }
-
 }
