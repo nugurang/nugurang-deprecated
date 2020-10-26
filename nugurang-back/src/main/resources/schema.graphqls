@@ -122,6 +122,9 @@ type Thread {
     user: User!
     team: Team!
     event: Event!
+    upCount: Int!
+    downCount: Int!
+    starCount: Int!
     getArticles(page: Int!, pageSize: Int!): [Article]!
 }
 

@@ -50,6 +50,18 @@ public class ThreadResolver implements GraphQLResolver<ThreadDto> {
         return null;
     }
 
+    public Integer upCount(ThreadDto threadDto) {
+        return 0;
+    }
+
+    public Integer downCount(ThreadDto threadDto) {
+        return 0;
+    }
+
+    public Integer starCount(ThreadDto threadDto) {
+        return 0;
+    }
+
     public List<ArticleDto> getArticles(ThreadDto threadDto, Integer page, Integer pageSize) {
         return articleDao
             .findAllByThreadIdOrderByCreatedAtAsc(threadDto.getId(), PageRequest.of(page, pageSize))
