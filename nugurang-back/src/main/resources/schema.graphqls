@@ -76,9 +76,10 @@ type Progress {
 
 type Project {
     id: ID!
-    team: Team!
     name: String!
-    event: Event!
+    team: Team!
+    users: [User]!
+    event: Event
 }
 
 type Role {
@@ -211,7 +212,7 @@ type Mutation {
     createFollowing(fromUser: ID!, toUser: ID!): Following
     createImage(address: String!): Image
     createPosition(name: String!): Position
-    createProject(team: ID!, name: String!, event: ID!): Project
+    createProject(team: ID!, name: String!, event: ID): Project
     createReviews(project: ID!, honors: [UserHonorInput]!): Boolean!
     createRole(name: String!): Role
     createStar(user: ID!, article: ID!): Star

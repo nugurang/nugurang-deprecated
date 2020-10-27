@@ -114,8 +114,19 @@ public class Mutation implements GraphQLMutationResolver {
         );
     }
 
-    Optional<ProjectDto> createProject(Long team, String name, Integer difficulty) {
-        return Optional.empty();
+    Optional<ProjectDto> createProject(Long team, String name, Optional<Long> event) {
+        return Optional.of(
+            projectDao
+            .save(
+                ProjectEntity
+                .builder()
+                .name(name)
+                .team(teamDao.findById(team).get())
+                .event(event.flatMap((id) -> eventDao.findById(id)).orElse(null))
+               .build()
+            )
+            .toDto()
+        );
     }
 
     Boolean createReviews(Long team, List<UserHonorInputDto> honors) {
