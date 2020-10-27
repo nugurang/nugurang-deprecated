@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AfterSigninController {
 
     @RequestMapping("/after-signin")
-    public void afterLogin(HttpServletResponse response, @CookieValue("JSESSIONID") String jsessionId) throws IOException {
+    public void afterSignin(HttpServletResponse response, @CookieValue("JSESSIONID") String jsessionId) throws IOException {
         response.sendRedirect("http://localhost:3000/after-signin/" + jsessionId);
     }
 }

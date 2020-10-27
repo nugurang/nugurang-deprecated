@@ -37,6 +37,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .loginPage("/signin")
             .defaultSuccessUrl("/after-signin", true)
             .and()
+            .logout()
+            .logoutSuccessUrl("/after-signout")
+            .permitAll()
+            .and()
             .headers()
             .frameOptions()
             .sameOrigin();
