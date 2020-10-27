@@ -4,11 +4,14 @@ import com.nugurang.dao.ArticleDao;
 import com.nugurang.dao.BoardDao;
 import com.nugurang.dao.ImageDao;
 import com.nugurang.dao.NotificationDao;
+import com.nugurang.dao.TeamDao;
 import com.nugurang.dao.ThreadDao;
+import com.nugurang.dao.UserDao;
 import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.BoardDto;
 import com.nugurang.dto.ImageDto;
 import com.nugurang.dto.NotificationDto;
+import com.nugurang.dto.TeamDto;
 import com.nugurang.dto.ThreadDto;
 import com.nugurang.dto.UserDto;
 import com.nugurang.dto.UserHonorDto;
@@ -21,11 +24,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class UserResolver implements GraphQLResolver<UserDto> {
+    private final ArticleDao articleDao;
     private final ImageDao imageDao;
     private final BoardDao boardDao;
+    private final TeamDao teamDao;
     private final ThreadDao threadDao;
-    private final ArticleDao articleDao;
+    private final UserDao userDao;
     private final NotificationDao notificationDao;
+
+    public List<TeamDto> teams(UserDto userDto) {
+        return null;
+    }
 
     public Integer totalHonor(UserDto userDto) {
         return 0;
@@ -35,8 +44,11 @@ public class UserResolver implements GraphQLResolver<UserDto> {
         return null;
     }
 
-    public ImageDto image(UserDto userDto) {
-        return null;
+    public Optional<ImageDto> image(UserDto userDto) {
+        return userDao
+            .findById(userDto.getId())
+            .map((userEntity) -> userEntity.getImage())
+            .map((imageEntity) -> imageEntity.toDto());
     }
 
     public Optional<BoardDto> blog(UserDto userDto) {

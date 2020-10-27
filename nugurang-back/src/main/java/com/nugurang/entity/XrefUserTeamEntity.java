@@ -37,9 +37,14 @@ public class XrefUserTeamEntity implements Serializable {
     @JoinColumn(name = "team", nullable = false)
     private TeamEntity team;
 
+    @ManyToOne
+    @JoinColumn(name = "role", nullable = false)
+    private RoleEntity role;
+
     @Builder
-    public XrefUserTeamEntity(UserEntity user, TeamEntity team) {
+    public XrefUserTeamEntity(UserEntity user, TeamEntity team, RoleEntity role) {
         this.user = user;
         this.team = team;
+        this.role = role;
     }
 }

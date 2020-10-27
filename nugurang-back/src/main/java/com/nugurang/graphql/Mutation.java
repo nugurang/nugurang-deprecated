@@ -3,6 +3,7 @@ package com.nugurang.graphql;
 import com.nugurang.dao.ArticleDao;
 import com.nugurang.dao.BoardDao;
 import com.nugurang.dao.EventDao;
+import com.nugurang.dao.ImageDao;
 import com.nugurang.dao.ProjectDao;
 import com.nugurang.dao.TeamDao;
 import com.nugurang.dao.ThreadDao;
@@ -26,6 +27,7 @@ import com.nugurang.dto.WorkDto;
 import com.nugurang.entity.ArticleEntity;
 import com.nugurang.entity.BoardEntity;
 import com.nugurang.entity.EventEntity;
+import com.nugurang.entity.ImageEntity;
 import com.nugurang.entity.ProjectEntity;
 import com.nugurang.entity.TeamEntity;
 import com.nugurang.entity.ThreadEntity;
@@ -44,6 +46,7 @@ public class Mutation implements GraphQLMutationResolver {
     private final OAuth2Attributes oauth2Attributes;
     private final ArticleDao articleDao;
     private final BoardDao boardDao;
+    private final ImageDao imageDao;
     private final ProjectDao projectDao;
     private final TeamDao teamDao;
     private final ThreadDao threadDao;
@@ -86,7 +89,13 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Optional<ImageDto> createImage(String address) {
-        return Optional.empty();
+        ImageEntity imageEntity = imageDao.save(
+            ImageEntity
+            .builder()
+            .address(address)
+            .build()
+        );
+        return Optional.of(imageEntity.toDto());
     }
 
     Optional<ProjectDto> createProject(Long team, String name, Integer difficulty) {
@@ -134,7 +143,7 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.of(threadEntity.toDto());
     }
 
-    Optional<UserDto> createUser(String name, String email, String biography, Long image) {
+    Optional<UserDto> createUser(String name, String email, String biography, Optional<Long> image) {
         UserEntity userEntity = UserEntity
             .builder()
             .oauth2Provider(oauth2Attributes.getProvider())
@@ -142,6 +151,7 @@ public class Mutation implements GraphQLMutationResolver {
             .name(name)
             .email(email)
             .biography(biography)
+            .image(image.flatMap((id) -> imageDao.findById(id)).orElse(null))
             .build();
         userEntity = userDao.save(userEntity);
         return Optional.of(userEntity.toDto());

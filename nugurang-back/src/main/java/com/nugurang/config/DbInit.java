@@ -28,19 +28,11 @@ public class DbInit {
 
     @PostConstruct
     public void init() {
-        for (String boardName
-            : List.of(
-                "competition", "study", "hobby", "circle", "activity", "startup",
-                "competition_event", "study_event", "hobby_event", "circle_event", "activity_event", "startup_event"
-            )) {
-            BoardEntity board = BoardEntity.builder().name(boardName).build();
-            boardDao.save(board);
-        }
-        for (String roleName : List.of("admin", "member")) {
+        for (String roleName : List.of("ADMIN", "MEMBER")) {
             RoleEntity roleEntity = RoleEntity.builder().name(roleName).build();
             roleDao.save(roleEntity);
         }
-        for (String voteTypeName : List.of("up", "down")) {
+        for (String voteTypeName : List.of("UP", "DOWN")) {
             VoteTypeEntity voteTypeEntity = VoteTypeEntity.builder().name(voteTypeName).build();
             voteTypeDao.save(voteTypeEntity);
         }

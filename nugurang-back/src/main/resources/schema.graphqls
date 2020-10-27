@@ -137,6 +137,7 @@ type User {
     name: String!
     email: String!
     biography: String
+    teams: [Team]!
     totalHonor: Int!
     honors: [UserHonor]!
     image: Image

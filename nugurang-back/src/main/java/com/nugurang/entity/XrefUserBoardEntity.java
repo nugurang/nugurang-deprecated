@@ -30,10 +30,6 @@ public class XrefUserBoardEntity implements Serializable {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "role", nullable = false)
-    private RoleEntity role;
-
-    @ManyToOne
     @JoinColumn(name = "user", nullable = false)
     private UserEntity user;
 
@@ -41,10 +37,14 @@ public class XrefUserBoardEntity implements Serializable {
     @JoinColumn(name = "board", nullable = false)
     private BoardEntity board;
 
+    @ManyToOne
+    @JoinColumn(name = "role", nullable = false)
+    private RoleEntity role;
+
     @Builder
-    public XrefUserBoardEntity(RoleEntity role, UserEntity user, BoardEntity board) {
-        this.role = role;
+    public XrefUserBoardEntity(UserEntity user, BoardEntity board, RoleEntity role) {
         this.user = user;
         this.board = board;
+        this.role = role;
     }
 }

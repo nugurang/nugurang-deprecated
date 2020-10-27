@@ -1,5 +1,6 @@
 package com.nugurang.entity;
 
+import com.nugurang.dto.ImageDto;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "image")
-public class ImageEntity implements Serializable {
+public class ImageEntity implements BaseEntity<ImageDto>, Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -48,5 +49,13 @@ public class ImageEntity implements Serializable {
     public void nullify() {
         this.events.forEach(event -> event.setImage(null));
         this.users.forEach(user -> user.setImage(null));
+    }
+
+    public ImageDto toDto() {
+        return ImageDto
+            .builder()
+            .id(id)
+            .address(address)
+            .build();
     }
 }

@@ -54,18 +54,6 @@ public class UserEntity implements BaseEntity<UserDto>, Serializable {
     private ImageEntity image;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<ThreadEntity> threads = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<ArticleEntity> articles = new ArrayList<>();
-
-    @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL)
-    private List<FollowingEntity> follwings = new ArrayList<>();
-
-    @OneToMany(mappedBy = "toUser", cascade = CascadeType.ALL)
-    private List<FollowingEntity> followers = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<NotificationEntity> notifications = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
