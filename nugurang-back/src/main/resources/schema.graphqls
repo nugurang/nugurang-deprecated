@@ -120,13 +120,14 @@ type Thread {
     name: String!
     board: Board!
     user: User!
-    team: Team!
-    event: Event!
-    getArticles(page: Int!, pageSize: Int!): [Article]!
+    team: Team
+    event: Event
     image: Image
+    getArticles(page: Int!, pageSize: Int!): [Article]!
     upCount: Int!
     downCount: Int!
     starCount: Int!
+    commentCount: Int!
 }
 
 type User {
@@ -188,6 +189,7 @@ type Query {
     getThread(id: ID!): Thread
     getThreadsByBoards(boards: [ID]!, page: Int!, pageSize: Int!): [Thread]!
     getThreadsByBoardNames(boards: [String]!, page: Int!, pageSize: Int!): [Thread]!
+    getHotThreadsByBoardNames(boards: [String]!, page: Int!, pageSize: Int!): [Thread]!
     getUser(id: ID!): User
     getUserByName(name: String!): User
     getUsers(page: Int!, pageSize: Int!): [User]!

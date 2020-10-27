@@ -41,15 +41,23 @@ public class ThreadResolver implements GraphQLResolver<ThreadDto> {
     }
 
     public UserDto user(ThreadDto threadDto) {
-        return null;
+        return threadDao
+            .findById(threadDto.getId())
+            .map((threadEntity) -> threadEntity.getUser())
+            .map((userEntity) -> userEntity.toDto())
+            .get();
     }
 
-    public TeamDto team(ThreadDto threadDto) {
-        return null;
+    public Optional<TeamDto> team(ThreadDto threadDto) {
+        return Optional.empty();
     }
 
-    public EventDto event(ThreadDto threadDto) {
-        return null;
+    public Optional<EventDto> event(ThreadDto threadDto) {
+        return Optional.empty();
+    }
+
+    public Optional<ImageDto> image(ThreadDto threadDto) {
+        return Optional.empty();
     }
 
     public List<ArticleDto> getArticles(ThreadDto threadDto, Integer page, Integer pageSize) {
@@ -73,7 +81,7 @@ public class ThreadResolver implements GraphQLResolver<ThreadDto> {
         return 0;
     }
 
-    public Optional<ImageDto> image(ThreadDto threadDto) {
-        return Optional.empty();
+    public Integer commentCount(ThreadDto threadDto) {
+        return 0;
     }
 }
