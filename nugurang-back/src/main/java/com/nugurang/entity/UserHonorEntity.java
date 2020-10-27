@@ -1,5 +1,6 @@
 package com.nugurang.entity;
 
+import com.nugurang.dto.UserHonorDto;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +25,7 @@ import lombok.Setter;
         @UniqueConstraint(columnNames = {"user", "position"})
     }
 )
-public class UserHonorEntity implements Serializable {
+public class UserHonorEntity implements BaseEntity<UserHonorDto>, Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -45,5 +46,12 @@ public class UserHonorEntity implements Serializable {
         this.honor = honor;
         this.user = user;
         this.position = position;
+    }
+
+    public UserHonorDto toDto() {
+        return UserHonorDto
+            .builder()
+            .honor(honor)
+            .build();
     }
 }

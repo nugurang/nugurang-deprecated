@@ -7,6 +7,7 @@ import com.nugurang.dao.NotificationDao;
 import com.nugurang.dao.TeamDao;
 import com.nugurang.dao.ThreadDao;
 import com.nugurang.dao.UserDao;
+import com.nugurang.dao.UserHonorDao;
 import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.BoardDto;
 import com.nugurang.dto.ImageDto;
@@ -18,6 +19,7 @@ import com.nugurang.dto.UserHonorDto;
 import graphql.kickstart.tools.GraphQLResolver;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,7 @@ public class UserResolver implements GraphQLResolver<UserDto> {
     private final TeamDao teamDao;
     private final ThreadDao threadDao;
     private final UserDao userDao;
+    private final UserHonorDao userHonorDao;
     private final NotificationDao notificationDao;
 
     public List<TeamDto> teams(UserDto userDto) {
@@ -37,11 +40,19 @@ public class UserResolver implements GraphQLResolver<UserDto> {
     }
 
     public Integer totalHonor(UserDto userDto) {
-        return 0;
+        return userHonorDao
+            .findAllByUserId(userDto.getId())
+            .stream()
+            .mapToInt((entity) -> entity.toDto().getHonor())
+            .sum();
     }
 
     public List<UserHonorDto> honors(UserDto userDto) {
-        return null;
+        return userHonorDao
+            .findAllByUserId(userDto.getId())
+            .stream()
+            .map((entity) -> entity.toDto())
+            .collect(Collectors.toList());
     }
 
     public Optional<ImageDto> image(UserDto userDto) {
