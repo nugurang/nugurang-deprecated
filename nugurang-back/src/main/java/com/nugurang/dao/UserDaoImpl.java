@@ -1,5 +1,6 @@
 package com.nugurang.dao;
 
+import static com.nugurang.entity.QArticleEntity.articleEntity;
 import static com.nugurang.entity.QBoardEntity.boardEntity;
 import static com.nugurang.entity.QUserEntity.userEntity;
 import static com.nugurang.entity.QXrefUserBoardEntity.xrefUserBoardEntity;
@@ -46,4 +47,14 @@ public class UserDaoImpl implements UserDaoCustom {
         return new PageImpl<UserEntity>(results.getResults(), pageable, results.getTotal());
     }
 
+    public Optional<UserEntity> findByArticleId(Long article) {
+        return Optional.ofNullable(
+            queryFactory
+            .selectFrom(userEntity)
+            .innerJoin(articleEntity)
+            .on(userEntity.id.eq(articleEntity.user.id))
+            .where(articleEntity.id.eq(article))
+            .fetchOne()
+        );
+    }
 }

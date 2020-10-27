@@ -2,6 +2,7 @@ package com.nugurang.graphql;
 
 import com.nugurang.dao.ArticleDao;
 import com.nugurang.dao.BoardDao;
+import com.nugurang.dao.PositionDao;
 import com.nugurang.dao.ProjectDao;
 import com.nugurang.dao.TeamDao;
 import com.nugurang.dao.ThreadDao;
@@ -9,6 +10,7 @@ import com.nugurang.dao.UserDao;
 import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.BoardDto;
 import com.nugurang.dto.OAuth2UserDto;
+import com.nugurang.dto.PositionDto;
 import com.nugurang.dto.ProjectDto;
 import com.nugurang.dto.TeamDto;
 import com.nugurang.dto.ThreadDto;
@@ -37,6 +39,7 @@ public class Query implements GraphQLQueryResolver {
     private final OAuth2Attributes oauth2Attributes;
     private final ArticleDao articleDao;
     private final BoardDao boardDao;
+    private final PositionDao positionDao;
     private final ProjectDao projectDao;
     private final TeamDao teamDao;
     private final ThreadDao threadDao;
@@ -71,6 +74,13 @@ public class Query implements GraphQLQueryResolver {
             .email(oauth2Attributes.getEmail())
             .build()
         );
+    }
+
+    List<PositionDto> positions() {
+        return positionDao.findAll()
+            .stream()
+            .map((entity) -> entity.toDto())
+            .collect(Collectors.toList());
     }
 
     Optional<ArticleDto> getArticle(Long id) {

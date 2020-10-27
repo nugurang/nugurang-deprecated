@@ -4,6 +4,7 @@ import com.nugurang.dao.ArticleDao;
 import com.nugurang.dao.BoardDao;
 import com.nugurang.dao.EventDao;
 import com.nugurang.dao.ImageDao;
+import com.nugurang.dao.PositionDao;
 import com.nugurang.dao.ProjectDao;
 import com.nugurang.dao.TeamDao;
 import com.nugurang.dao.ThreadDao;
@@ -13,6 +14,7 @@ import com.nugurang.dto.BoardDto;
 import com.nugurang.dto.EventDto;
 import com.nugurang.dto.FollowingDto;
 import com.nugurang.dto.ImageDto;
+import com.nugurang.dto.PositionDto;
 import com.nugurang.dto.ProjectDto;
 import com.nugurang.dto.RoleDto;
 import com.nugurang.dto.StarDto;
@@ -21,6 +23,7 @@ import com.nugurang.dto.TaskDto;
 import com.nugurang.dto.TeamDto;
 import com.nugurang.dto.ThreadDto;
 import com.nugurang.dto.UserDto;
+import com.nugurang.dto.UserHonorInputDto;
 import com.nugurang.dto.VoteDto;
 import com.nugurang.dto.VoteTypeDto;
 import com.nugurang.dto.WorkDto;
@@ -28,6 +31,7 @@ import com.nugurang.entity.ArticleEntity;
 import com.nugurang.entity.BoardEntity;
 import com.nugurang.entity.EventEntity;
 import com.nugurang.entity.ImageEntity;
+import com.nugurang.entity.PositionEntity;
 import com.nugurang.entity.ProjectEntity;
 import com.nugurang.entity.TeamEntity;
 import com.nugurang.entity.ThreadEntity;
@@ -47,6 +51,7 @@ public class Mutation implements GraphQLMutationResolver {
     private final ArticleDao articleDao;
     private final BoardDao boardDao;
     private final ImageDao imageDao;
+    private final PositionDao positionDao;
     private final ProjectDao projectDao;
     private final TeamDao teamDao;
     private final ThreadDao threadDao;
@@ -98,8 +103,23 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.of(imageEntity.toDto());
     }
 
+    Optional<PositionDto> createPosition(String name) {
+        return Optional.of(
+            positionDao.save(
+                PositionEntity
+                .builder()
+                .name(name)
+                .build()
+            ).toDto()
+        );
+    }
+
     Optional<ProjectDto> createProject(Long team, String name, Integer difficulty) {
         return Optional.empty();
+    }
+
+    Boolean createReviews(Long team, List<UserHonorInputDto> honors) {
+        return true;
     }
 
     Optional<RoleDto> createRole(String name) {
@@ -119,7 +139,14 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Optional<TeamDto> createTeam(String name) {
-        return Optional.empty();
+        return Optional.of(
+            teamDao.save(
+                TeamEntity
+                .builder()
+                .name(name)
+                .build()
+            ).toDto()
+        );
     }
 
     Optional<ThreadDto> createThread(Long board, String name, Long team, Long event) {
@@ -139,7 +166,6 @@ public class Mutation implements GraphQLMutationResolver {
             .build();
 
         threadEntity = threadDao.save(threadEntity);
-
         return Optional.of(threadEntity.toDto());
     }
 

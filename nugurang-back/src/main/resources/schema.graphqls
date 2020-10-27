@@ -1,5 +1,11 @@
 scalar DateTime
 
+input UserHonorInput {
+    honor: Int!
+    user: ID!
+    position: ID!
+}
+
 type Article {
     id: ID!
     thread: Thread!
@@ -180,6 +186,7 @@ type Query {
     boards: [Board]!
     currentUser: User
     currentOAuth2User: OAuth2User
+    positions: [Position]!
     getArticle(id: ID!): Article
     getBoard(id: ID!): Board
     getBoardByName(name: String!): Board
@@ -203,7 +210,9 @@ type Mutation {
     createEvent(board: ID!, name: String!, content: String, images: [ID]!): Event
     createFollowing(fromUser: ID!, toUser: ID!): Following
     createImage(address: String!): Image
+    createPosition(name: String!): Position
     createProject(team: ID!, name: String!, event: ID!): Project
+    createReviews(project: ID!, honors: [UserHonorInput]!): Boolean!
     createRole(name: String!): Role
     createStar(user: ID!, article: ID!): Star
     createTag(name: String!): Tag

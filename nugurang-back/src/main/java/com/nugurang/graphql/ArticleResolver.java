@@ -17,7 +17,7 @@ public class ArticleResolver implements GraphQLResolver<ArticleDto> {
 
     private final UserDao userDao;
     private final ThreadDao threadDao;
-    private final ArticleDao parentDao;
+    private final ArticleDao articleDao;
 
     public ThreadDto thread(ArticleDto articleDto) {
         /*return threadDao.findByArticle_Id(articleDto.getId())
@@ -31,7 +31,7 @@ public class ArticleResolver implements GraphQLResolver<ArticleDto> {
     }
 
     public UserDto user(ArticleDto articleDto) {
-        /*return userDao.findByArticleId(articleDto.getId())
+        return userDao.findByArticleId(articleDto.getId())
             .map((userEntity) ->
                 UserDto.builder()
                 .id(userEntity.getId())
@@ -39,13 +39,11 @@ public class ArticleResolver implements GraphQLResolver<ArticleDto> {
                 .email(userEntity.getEmail())
                 .biography(userEntity.getBiography())
                 .build()
-            );*/
-        return null;
+            ).get();
     }
 
     public Optional<ArticleDto> parent(ArticleDto articleDto) {
-        //return articleDao.findById(article.getParentId());
-        return Optional.empty();
+        return Optional.ofNullable(null);
     }
 
 }

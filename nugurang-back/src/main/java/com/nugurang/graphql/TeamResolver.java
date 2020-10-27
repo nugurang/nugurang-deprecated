@@ -20,7 +20,11 @@ public class TeamResolver implements GraphQLResolver<TeamDto> {
     private final ProjectDao projectDao;
 
     public List<ProjectDto> projects(TeamDto teamDto) {
-        return null;
+        return projectDao
+            .findAllByTeamId(teamDto.getId())
+            .stream()
+            .map((entity) -> entity.toDto())
+            .collect(Collectors.toList());
     }
 
     public List<UserDto> getUsers(TeamDto teamDto, Integer page, Integer pageSize) {
