@@ -9,7 +9,11 @@ public interface UserDaoCustom {
 
     Page<UserEntity> findAllByBoardId(Long board, Pageable pageable);
 
-    Page<UserEntity> findAllByTeamId(Long team, Pageable pageable);
+    Page<UserEntity> findAllByFollowerId(Long follower, Pageable pageable);
 
-    Optional<UserEntity> findByArticleId(Long article);
+    Page<UserEntity> findAllByFollowingId(Long following, Pageable pageable);
+
+    Page<UserEntity> findAllByProjectId(Long project, Pageable pageable);
+
+    Page<UserEntity> findAllByTeamId(Long team, Pageable pageable);
 }

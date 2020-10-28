@@ -1,5 +1,6 @@
 package com.nugurang.entity;
 
+import com.nugurang.dto.WorkDto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ import lombok.Setter;
         @UniqueConstraint(columnNames = {"project", "name", "order"})
     }
 )
-public class WorkEntity implements Serializable {
+public class WorkEntity implements Serializable, BaseEntity<WorkDto> {
     @Id
     @GeneratedValue
     private Long id;
@@ -48,5 +49,13 @@ public class WorkEntity implements Serializable {
         this.name = name;
         this.order = order;
         this.project = project;
+    }
+
+    public WorkDto toDto() {
+        return WorkDto
+            .builder()
+            .name(name)
+            .order(order)
+            .build();
     }
 }

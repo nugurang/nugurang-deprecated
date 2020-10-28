@@ -2,8 +2,10 @@ package com.nugurang.dao;
 
 import static com.nugurang.entity.QArticleEntity.articleEntity;
 import static com.nugurang.entity.QBoardEntity.boardEntity;
+import static com.nugurang.entity.QFollowingEntity.followingEntity;
 import static com.nugurang.entity.QUserEntity.userEntity;
 import static com.nugurang.entity.QXrefUserBoardEntity.xrefUserBoardEntity;
+import static com.nugurang.entity.QXrefUserProjectEntity.xrefUserProjectEntity;
 import static com.nugurang.entity.QXrefUserTeamEntity.xrefUserTeamEntity;
 
 import com.nugurang.entity.UserEntity;
@@ -32,7 +34,44 @@ public class UserDaoImpl implements UserDaoCustom {
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetchResults();
-        return new PageImpl<UserEntity>(results.getResults(), pageable, results.getTotal());
+        return new PageImpl<>(results.getResults(), pageable, results.getTotal());
+    }
+
+    public Page<UserEntity> findAllByFollowerId(Long follower, Pageable pageable) {
+        QueryResults<UserEntity> results = queryFactory
+            .selectFrom(userEntity)
+            .innerJoin(followingEntity)
+            .on(userEntity.id.eq(followingEntity.toUser.id))
+            .where(followingEntity.fromUser.id.eq(follower))
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetchResults();
+        return new PageImpl<>(results.getResults(), pageable, results.getTotal());
+    }
+
+    public Page<UserEntity> findAllByFollowingId(Long following, Pageable pageable) {
+        QueryResults<UserEntity> results = queryFactory
+            .selectFrom(userEntity)
+            .innerJoin(followingEntity)
+            .on(userEntity.id.eq(followingEntity.fromUser.id))
+            .where(followingEntity.toUser.id.eq(following))
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetchResults();
+        return new PageImpl<>(results.getResults(), pageable, results.getTotal());
+    }
+
+    public Page<UserEntity> findAllByProjectId(Long project, Pageable pageable) {
+        QueryResults<UserEntity> results = queryFactory
+            .selectFrom(userEntity)
+            .innerJoin(xrefUserProjectEntity)
+            .on(userEntity.id.eq(xrefUserProjectEntity.user.id))
+            .where(xrefUserProjectEntity.project.id.eq(project))
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetchResults();
+
+        return new PageImpl<>(results.getResults(), pageable, results.getTotal());
     }
 
     public Page<UserEntity> findAllByTeamId(Long team, Pageable pageable) {
@@ -44,17 +83,6 @@ public class UserDaoImpl implements UserDaoCustom {
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetchResults();
-        return new PageImpl<UserEntity>(results.getResults(), pageable, results.getTotal());
-    }
-
-    public Optional<UserEntity> findByArticleId(Long article) {
-        return Optional.ofNullable(
-            queryFactory
-            .selectFrom(userEntity)
-            .innerJoin(articleEntity)
-            .on(userEntity.id.eq(articleEntity.user.id))
-            .where(articleEntity.id.eq(article))
-            .fetchOne()
-        );
+        return new PageImpl<>(results.getResults(), pageable, results.getTotal());
     }
 }

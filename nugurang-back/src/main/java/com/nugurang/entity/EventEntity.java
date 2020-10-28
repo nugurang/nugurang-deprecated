@@ -1,5 +1,6 @@
 package com.nugurang.entity;
 
+import com.nugurang.dto.EventDto;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "event")
-public class EventEntity implements Serializable {
+public class EventEntity implements Serializable, BaseEntity<EventDto> {
     @Id
     @GeneratedValue
     private Long id;
@@ -77,5 +78,17 @@ public class EventEntity implements Serializable {
     public void nullify() {
         this.projects.forEach(project -> project.setEvent(null));
         this.threads.forEach(thread -> thread.setEvent(null));
+    }
+
+    public EventDto toDto() {
+        return EventDto
+            .builder()
+            .title(title)
+            .content(content)
+            .recruitingStart(recruitingStart)
+            .recruitingEnd(recruitingEnd)
+            .eventStart(eventStart)
+            .eventEnd(eventEnd)
+            .build();
     }
 }

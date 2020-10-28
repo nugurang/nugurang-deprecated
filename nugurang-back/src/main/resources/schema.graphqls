@@ -78,7 +78,7 @@ type Project {
     id: ID!
     name: String!
     team: Team!
-    users: [User]!
+    getUsers(page: Int!, pageSize: Int!): [User]!
     event: Event
 }
 
@@ -144,11 +144,11 @@ type User {
     name: String!
     email: String!
     biography: String
-    teams: [Team]!
     totalHonor: Int!
     honors: [UserHonor]!
     image: Image
     blog: Board
+    getTeams(page: Int!, pageSize: Int!): [Team]!
     getFollowings(page: Int!, pageSize: Int!): [User]!
     getFollowers(page: Int!, pageSize: Int!): [User]!
     getThreads(page: Int!, pageSize: Int!): [Thread]!

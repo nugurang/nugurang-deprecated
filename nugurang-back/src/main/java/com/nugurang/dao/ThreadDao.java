@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ThreadDao extends JpaRepository<ThreadEntity, Long> {
+public interface ThreadDao extends JpaRepository<ThreadEntity, Long>, ThreadDaoCustom {
 
     Page<ThreadEntity> findAllByBoardIdInOrderByCreatedAtDesc(List<Long> boards, Pageable pageable);
 
@@ -16,4 +16,5 @@ public interface ThreadDao extends JpaRepository<ThreadEntity, Long> {
 
     Page<ThreadEntity> findAllByBoardNameInOrderByCreatedAtDesc(List<String> boards, Pageable pageable);
 
+    Page<ThreadEntity> findAllByUserId(Long user, Pageable pageable);
 }

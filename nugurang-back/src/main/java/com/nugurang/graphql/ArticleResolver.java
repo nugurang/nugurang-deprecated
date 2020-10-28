@@ -20,30 +20,24 @@ public class ArticleResolver implements GraphQLResolver<ArticleDto> {
     private final ArticleDao articleDao;
 
     public ThreadDto thread(ArticleDto articleDto) {
-        /*return threadDao.findByArticle_Id(articleDto.getId())
-            .map((threadEntity) ->
-                ThreadDto.builder()
-                .id(threadEntity.getId())
-                .name(threadEntity.getName())
-                .build()
-            );*/
-        return null;
+        return articleDao.findById(articleDto.getId())
+            .map((articleEntity) -> articleEntity.getThread())
+            .map((entity) -> entity.toDto())
+            .get();
     }
 
     public UserDto user(ArticleDto articleDto) {
-        return userDao.findByArticleId(articleDto.getId())
-            .map((userEntity) ->
-                UserDto.builder()
-                .id(userEntity.getId())
-                .name(userEntity.getName())
-                .email(userEntity.getEmail())
-                .biography(userEntity.getBiography())
-                .build()
-            ).get();
+        return articleDao
+            .findById(articleDto.getId())
+            .map((articleEntity) -> articleEntity.getUser())
+            .map((userEntity) -> userEntity.toDto())
+            .get();
     }
 
     public Optional<ArticleDto> parent(ArticleDto articleDto) {
-        return Optional.ofNullable(null);
+        return articleDao
+            .findById(articleDto.getId())
+            .map((articleEntity) -> articleEntity.getParent())
+            .map((entity) -> entity.toDto());
     }
-
 }
