@@ -28,7 +28,7 @@ public class DbInit {
 
     @PostConstruct
     public void init() {
-        for (String roleName : List.of("ADMIN", "MEMBER")) {
+        for (String roleName : List.of("OWNER", "MEMBER")) {
             RoleEntity roleEntity = RoleEntity.builder().name(roleName).build();
             roleDao.save(roleEntity);
         }

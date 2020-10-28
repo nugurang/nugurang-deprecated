@@ -6,9 +6,11 @@ import com.nugurang.dao.EventDao;
 import com.nugurang.dao.ImageDao;
 import com.nugurang.dao.PositionDao;
 import com.nugurang.dao.ProjectDao;
+import com.nugurang.dao.RoleDao;
 import com.nugurang.dao.TeamDao;
 import com.nugurang.dao.ThreadDao;
 import com.nugurang.dao.UserDao;
+import com.nugurang.dao.XrefUserTeamDao;
 import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.BoardDto;
 import com.nugurang.dto.EventDto;
@@ -33,9 +35,11 @@ import com.nugurang.entity.EventEntity;
 import com.nugurang.entity.ImageEntity;
 import com.nugurang.entity.PositionEntity;
 import com.nugurang.entity.ProjectEntity;
+import com.nugurang.entity.RoleEntity;
 import com.nugurang.entity.TeamEntity;
 import com.nugurang.entity.ThreadEntity;
 import com.nugurang.entity.UserEntity;
+import com.nugurang.entity.XrefUserTeamEntity;
 import com.nugurang.service.OAuth2Attributes;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import java.time.LocalDateTime;
@@ -53,10 +57,12 @@ public class Mutation implements GraphQLMutationResolver {
     private final ImageDao imageDao;
     private final PositionDao positionDao;
     private final ProjectDao projectDao;
+    private final RoleDao roleDao;
     private final TeamDao teamDao;
     private final ThreadDao threadDao;
     private final UserDao userDao;
     private final EventDao eventDao;
+    private final XrefUserTeamDao xrefUserTeamDao;
 
     Optional<ArticleDto> createArticle(String content, String title, Long thread, Long parent) {
         String oauth2Provider = oauth2Attributes.getProvider();
@@ -150,14 +156,30 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Optional<TeamDto> createTeam(String name) {
-        return Optional.of(
-            teamDao.save(
-                TeamEntity
-                .builder()
-                .name(name)
-                .build()
-            ).toDto()
+        String oauth2Provider = oauth2Attributes.getProvider();
+        String oauth2Id = oauth2Attributes.getId();
+        UserEntity userEntity = userDao
+            .findByOauth2ProviderAndOauth2Id(oauth2Provider, oauth2Id).get();
+
+        TeamEntity teamEntity = teamDao.save(
+            TeamEntity
+            .builder()
+            .name(name)
+            .build()
         );
+
+        RoleEntity roleEntity = roleDao.findByName("OWNER").get();
+
+        xrefUserTeamDao.save(
+            XrefUserTeamEntity
+            .builder()
+            .user(userEntity)
+            .team(teamEntity)
+            .role(roleEntity)
+            .build()
+        );
+
+        return Optional.of(teamEntity.toDto());
     }
 
     Optional<ThreadDto> createThread(Long board, String name, Long team, Long event) {
