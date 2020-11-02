@@ -2,7 +2,7 @@ package com.nugurang.entity;
 
 import com.nugurang.dto.EventDto;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -37,22 +37,22 @@ public class EventEntity implements Serializable, BaseEntity<EventDto> {
     private String content;
 
     @Column(nullable = false)
-    private LocalDateTime recruitingStart;
+    private OffsetDateTime recruitingStart;
 
     @Column(nullable = false)
-    private LocalDateTime recruitingEnd;
+    private OffsetDateTime recruitingEnd;
     
     @Column(nullable = false)
-    private LocalDateTime eventStart;
+    private OffsetDateTime eventStart;
 
     @Column(nullable = false)
-    private LocalDateTime eventEnd;
+    private OffsetDateTime eventEnd;
 
     @Builder
     public EventEntity(
         String title, String content,
-        LocalDateTime recruitingStart, LocalDateTime recruitingEnd,
-        LocalDateTime eventStart, LocalDateTime eventEnd) {
+        OffsetDateTime recruitingStart, OffsetDateTime recruitingEnd,
+        OffsetDateTime eventStart, OffsetDateTime eventEnd) {
         this.title = title;
         this.content = content;
         this.recruitingStart = recruitingStart;

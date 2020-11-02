@@ -44,7 +44,7 @@ import com.nugurang.entity.XrefUserTeamEntity;
 import com.nugurang.service.OAuth2Service;
 import com.nugurang.service.UserService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -244,8 +244,8 @@ public class Mutation implements GraphQLMutationResolver {
 
     Optional<EventDto> updateEvent(
         Long event, String title, String content, List<Long> images,
-        LocalDateTime recruitingStart, LocalDateTime recruitingEnd,
-        LocalDateTime eventStart, LocalDateTime eventEnd) {
+        OffsetDateTime recruitingStart, OffsetDateTime recruitingEnd,
+        OffsetDateTime eventStart, OffsetDateTime eventEnd) {
         return Optional.empty();
     }
 

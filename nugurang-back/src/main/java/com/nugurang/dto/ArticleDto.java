@@ -1,6 +1,6 @@
 package com.nugurang.dto;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,9 +18,9 @@ public class ArticleDto {
     @NotNull
     private Long viewCount;
     @NotNull
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
     @NotNull
-    private LocalDateTime modifiedAt;
+    private OffsetDateTime modifiedAt;
     //thread
     //user
     //parent

@@ -2,11 +2,13 @@ package com.nugurang.entity;
 
 import com.nugurang.dto.ArticleDto;
 import java.io.Serializable;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -17,13 +19,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "article")
-public class ArticleEntity extends DateAudit implements BaseEntity<ArticleDto>, Serializable {
+public class ArticleEntity implements BaseEntity<ArticleDto>, Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -35,6 +41,14 @@ public class ArticleEntity extends DateAudit implements BaseEntity<ArticleDto>, 
 
     @Column(nullable = false)
     private Long viewCount;
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private OffsetDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(nullable = false)
+    private OffsetDateTime modifiedAt;
 
     @ManyToOne
     @JoinColumn(name = "thread", nullable = false)

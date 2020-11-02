@@ -1,7 +1,7 @@
 package com.nugurang.entity;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +14,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 @NoArgsConstructor
 @Getter
@@ -36,8 +37,9 @@ public class NotificationEntity implements Serializable {
 
     private String content;
 
+    @CreatedDate
     @Column(nullable = false)
-    private LocalDateTime at;
+    private OffsetDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "user", nullable = false)
@@ -49,7 +51,6 @@ public class NotificationEntity implements Serializable {
 
     @Builder
     public NotificationEntity(UserEntity user, ArticleEntity article) {
-        this.at = LocalDateTime.now();
         this.user = user;
         this.article = article;
     }

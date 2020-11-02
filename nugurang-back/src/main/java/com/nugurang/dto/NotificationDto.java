@@ -1,6 +1,6 @@
 package com.nugurang.dto;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +16,7 @@ public class NotificationDto {
     private String title;
     private String content;
     @NotNull
-    private LocalDateTime at;
+    private OffsetDateTime createdAt;
     // user
     // article
 }

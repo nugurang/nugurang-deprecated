@@ -1,6 +1,6 @@
 package com.nugurang.dto;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,13 +17,13 @@ public class EventDto {
     @NotNull
     private String content;
     @NotNull
-    private LocalDateTime recruitingStart;
+    private OffsetDateTime recruitingStart;
     @NotNull
-    private LocalDateTime recruitingEnd;
+    private OffsetDateTime recruitingEnd;
     @NotNull
-    private LocalDateTime eventStart;
+    private OffsetDateTime eventStart;
     @NotNull
-    private LocalDateTime eventEnd;
+    private OffsetDateTime eventEnd;
     //image
     //projects
     //threads

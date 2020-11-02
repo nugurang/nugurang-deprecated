@@ -2,7 +2,6 @@ package com.nugurang.entity;
 
 import com.nugurang.dto.ImageDto;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;

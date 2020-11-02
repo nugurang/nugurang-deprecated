@@ -45,7 +45,7 @@ type Notification {
     id: ID!
     title: String!
     content: String
-    at: DateTime!
+    createdAt: DateTime!
     user: User!
     article: Article
     team: Team
