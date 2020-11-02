@@ -43,12 +43,11 @@ public class ProjectResolver implements GraphQLResolver<ProjectDto> {
             .collect(Collectors.toList());
     }
 
-    public EventDto event(ProjectDto projectDto) {
+    public Optional<EventDto> event(ProjectDto projectDto) {
         return projectDao
             .findById(projectDto.getId())
             .map((projectEntity) -> projectEntity.getEvent())
             .map((entity) -> entity.toDto())
-            .get();
     }
 
     public List<WorkDto> getWorks(ProjectDto projectDto, Integer page, Integer pageSize) {
