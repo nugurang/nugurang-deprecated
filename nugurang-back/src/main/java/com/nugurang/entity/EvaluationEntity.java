@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,41 +20,23 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 @Setter
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(
-    name = "notification",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"user", "article"})
-    }
-)
-public class NotificationEntity implements Serializable {
+@Table(name = "evaluation")
+public class EvaluationEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
-
-    @Column(nullable = false)
-    private String title;
-
-    private String content;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private OffsetDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "user", nullable = false)
-    private UserEntity user;
-
-    @ManyToOne
-    @JoinColumn(name = "article")
-    private ArticleEntity article;
-
-    @Builder
-    public NotificationEntity(UserEntity user, ArticleEntity article) {
-        this.user = user;
-        this.article = article;
-    }
+    @JoinColumn(name = "project", nullable = false, unique = true)
+    private ProjectEntity project;
 }

@@ -2,11 +2,13 @@ package com.nugurang.graphql;
 
 import com.nugurang.dao.ArticleDao;
 import com.nugurang.dao.BoardDao;
+import com.nugurang.dao.EvaluationDao;
 import com.nugurang.dao.EventDao;
 import com.nugurang.dao.FollowingDao;
 import com.nugurang.dao.ImageDao;
 import com.nugurang.dao.PositionDao;
 import com.nugurang.dao.ProjectDao;
+import com.nugurang.dao.ReviewDao;
 import com.nugurang.dao.RoleDao;
 import com.nugurang.dao.TeamDao;
 import com.nugurang.dao.ThreadDao;
@@ -31,15 +33,18 @@ import com.nugurang.dto.VoteTypeDto;
 import com.nugurang.dto.WorkDto;
 import com.nugurang.entity.ArticleEntity;
 import com.nugurang.entity.BoardEntity;
+import com.nugurang.entity.EvaluationEntity;
 import com.nugurang.entity.EventEntity;
 import com.nugurang.entity.FollowingEntity;
 import com.nugurang.entity.ImageEntity;
 import com.nugurang.entity.PositionEntity;
 import com.nugurang.entity.ProjectEntity;
+import com.nugurang.entity.ReviewEntity;
 import com.nugurang.entity.RoleEntity;
 import com.nugurang.entity.TeamEntity;
 import com.nugurang.entity.ThreadEntity;
 import com.nugurang.entity.UserEntity;
+import com.nugurang.entity.UserHonorEntity;
 import com.nugurang.entity.XrefUserTeamEntity;
 import com.nugurang.service.OAuth2Service;
 import com.nugurang.service.UserService;
@@ -47,6 +52,7 @@ import graphql.kickstart.tools.GraphQLMutationResolver;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -57,10 +63,12 @@ public class Mutation implements GraphQLMutationResolver {
     private final UserService userService;
     private final ArticleDao articleDao;
     private final BoardDao boardDao;
+    private final EvaluationDao evaluationDao;
     private final FollowingDao followingDao;
     private final ImageDao imageDao;
     private final PositionDao positionDao;
     private final ProjectDao projectDao;
+    private final ReviewDao reviewDao;
     private final RoleDao roleDao;
     private final TeamDao teamDao;
     private final ThreadDao threadDao;
@@ -139,13 +147,43 @@ public class Mutation implements GraphQLMutationResolver {
                 .name(name)
                 .team(teamDao.findById(team).get())
                 .event(event.flatMap((id) -> eventDao.findById(id)).orElse(null))
-               .build()
+                .build()
             )
             .toDto()
         );
     }
 
-    Boolean createReviews(Long team, List<UserHonorInputDto> honors) {
+    Boolean createReviews(Long project, List<UserHonorInputDto> honors) {
+        UserEntity reviewer = userService.getCurrentUser().get();
+        ProjectEntity projectEntity = projectDao.findById(project).get();
+        EvaluationEntity evaluationEntity = evaluationDao.save(
+            EvaluationEntity
+            .builder()
+            .project(projectEntity)
+            .build()
+        );
+
+        List<ReviewEntity> reviewEntities = reviewDao.saveAll(
+            honors.stream()
+            .map((userHonorInputDto) ->
+                UserHonorEntity
+                .builder()
+                .honor(userHonorInputDto.getHonor())
+                .user(userDao.findById(userHonorInputDto.getUser()).get())
+                .position(positionDao.findById(userHonorInputDto.getPosition()).get())
+                .build()
+            )
+            .map((userHonorEntity) ->
+                ReviewEntity
+                .builder()
+                .reviewer(reviewer)
+                .userHonor(userHonorEntity)
+                .evaluation(evaluationEntity)
+                .build()
+            )
+            .collect(Collectors.toList())
+        );
+
         return true;
     }
 
