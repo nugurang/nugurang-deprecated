@@ -36,12 +36,6 @@ type Event {
     eventEnd: DateTime!
 }
 
-type Following {
-    id: ID!
-    fromUser: User!
-    toUser: User!
-}
-
 type Image {
     id: ID!
     address: String!
@@ -209,7 +203,6 @@ type Mutation {
     createArticle(content: String!, title: String, thread: ID!, parent: ID): Article
     createBoard(name: String!): Board
     createEvent(board: ID!, name: String!, content: String, images: [ID]!): Event
-    createFollowing(fromUser: ID!, toUser: ID!): Following
     createImage(address: String!): Image
     createPosition(name: String!): Position
     createProject(team: ID!, name: String!, event: ID): Project
@@ -239,7 +232,6 @@ type Mutation {
     deleteArticle(id: ID!): Boolean!
     deleteBoard(id: ID!): Boolean!
     deleteEvent(id: ID!): Boolean!
-    deleteFollowing(id: ID!): Boolean!
     deleteImage(id: ID!): Boolean!
     deleteProject(id: ID!): Boolean!
     deleteRole(id: ID!): Boolean!

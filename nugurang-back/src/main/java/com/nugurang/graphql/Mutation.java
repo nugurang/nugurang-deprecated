@@ -14,7 +14,6 @@ import com.nugurang.dao.XrefUserTeamDao;
 import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.BoardDto;
 import com.nugurang.dto.EventDto;
-import com.nugurang.dto.FollowingDto;
 import com.nugurang.dto.ImageDto;
 import com.nugurang.dto.PositionDto;
 import com.nugurang.dto.ProjectDto;
@@ -92,10 +91,6 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Optional<EventDto> createEvent(Long board, String name, String content, List<Long> images) {
-        return Optional.empty();
-    }
-
-    Optional<FollowingDto> createFollowing(Long fromUser, Long toUser) {
         return Optional.empty();
     }
 
@@ -287,10 +282,6 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Boolean deleteEvent(Long id) {
-        return false;
-    }
-
-    Boolean deleteFollowing(Long id) {
         return false;
     }
 
