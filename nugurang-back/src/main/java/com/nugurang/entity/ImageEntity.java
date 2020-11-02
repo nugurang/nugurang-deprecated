@@ -31,24 +31,9 @@ public class ImageEntity implements BaseEntity<ImageDto>, Serializable {
     @Column(nullable = false) 
     private String address;
 
-    @OneToMany(mappedBy = "image")
-    private List<EventEntity> events = new ArrayList<>();
-
-    @OneToMany(mappedBy = "image")
-    private List<UserEntity> users = new ArrayList<>();
-
-    @OneToMany(mappedBy = "image", cascade = CascadeType.ALL)
-    private List<XrefArticleImageEntity> xrefArticles = new ArrayList<>();
-
     @Builder
     public ImageEntity(String address) {
         this.address = address;
-    }
-
-    @PreRemove
-    public void nullify() {
-        this.events.forEach(event -> event.setImage(null));
-        this.users.forEach(user -> user.setImage(null));
     }
 
     public ImageDto toDto() {

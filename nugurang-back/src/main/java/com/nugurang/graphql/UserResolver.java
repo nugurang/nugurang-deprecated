@@ -36,13 +36,6 @@ public class UserResolver implements GraphQLResolver<UserDto> {
     private final UserHonorDao userHonorDao;
     private final NotificationDao notificationDao;
 
-    public List<TeamDto> teams(UserDto userDto, Integer page, Integer pageSize) {
-        return teamDao
-            .findAllByUserId(userDto.getId(), PageRequest.of(page, pageSize))
-            .stream().map((entity) -> entity.toDto())
-            .collect(Collectors.toList());
-    }
-
     public Integer totalHonor(UserDto userDto) {
         return userHonorDao
             .findAllByUserId(userDto.getId())
@@ -68,6 +61,13 @@ public class UserResolver implements GraphQLResolver<UserDto> {
 
     public Optional<BoardDto> blog(UserDto userDto) {
         return Optional.empty();
+    }
+
+    public List<TeamDto> getTeams(UserDto userDto, Integer page, Integer pageSize) {
+        return teamDao
+            .findAllByUserId(userDto.getId(), PageRequest.of(page, pageSize))
+            .stream().map((entity) -> entity.toDto())
+            .collect(Collectors.toList());
     }
 
     public List<ThreadDto> getThreads(UserDto userDto, Integer page, Integer pageSize) {

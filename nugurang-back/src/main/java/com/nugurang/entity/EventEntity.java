@@ -48,19 +48,6 @@ public class EventEntity implements Serializable, BaseEntity<EventDto> {
     @Column(nullable = false)
     private LocalDateTime eventEnd;
 
-    @ManyToOne
-    @JoinColumn(name = "image")
-    private ImageEntity image;
-
-    @OneToMany(mappedBy = "event")
-    private List<ProjectEntity> projects = new ArrayList<>();
-
-    @OneToMany(mappedBy = "event")
-    private List<ThreadEntity> threads = new ArrayList<>();
-
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    private List<XrefEventTagEntity> xrefTags = new ArrayList<>();
-
     @Builder
     public EventEntity(
         String title, String content,
@@ -72,12 +59,6 @@ public class EventEntity implements Serializable, BaseEntity<EventDto> {
         this.recruitingEnd = recruitingEnd;
         this.eventStart = eventStart;
         this.eventEnd = eventEnd;
-    }
-
-    @PreRemove
-    public void nullify() {
-        this.projects.forEach(project -> project.setEvent(null));
-        this.threads.forEach(thread -> thread.setEvent(null));
     }
 
     public EventDto toDto() {
