@@ -22,9 +22,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(
-    name = "user_honor",
+    name = "review",
     uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"user", "user_honor"})
+        @UniqueConstraint(columnNames = {"reviewer", "user_honor", "evaluation"})
     }
 )
 public class ReviewEntity implements Serializable {

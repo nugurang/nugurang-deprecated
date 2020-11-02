@@ -13,6 +13,7 @@ import com.nugurang.dao.RoleDao;
 import com.nugurang.dao.TeamDao;
 import com.nugurang.dao.ThreadDao;
 import com.nugurang.dao.UserDao;
+import com.nugurang.dao.UserHonorDao;
 import com.nugurang.dao.XrefUserTeamDao;
 import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.BoardDto;
@@ -55,6 +56,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -73,6 +75,7 @@ public class Mutation implements GraphQLMutationResolver {
     private final TeamDao teamDao;
     private final ThreadDao threadDao;
     private final UserDao userDao;
+    private final UserHonorDao userHonorDao;
     private final EventDao eventDao;
     private final XrefUserTeamDao xrefUserTeamDao;
 
@@ -153,6 +156,7 @@ public class Mutation implements GraphQLMutationResolver {
         );
     }
 
+    @Transactional
     Boolean createReviews(Long project, List<UserHonorInputDto> honors) {
         UserEntity reviewer = userService.getCurrentUser().get();
         ProjectEntity projectEntity = projectDao.findById(project).get();
@@ -166,12 +170,14 @@ public class Mutation implements GraphQLMutationResolver {
         List<ReviewEntity> reviewEntities = reviewDao.saveAll(
             honors.stream()
             .map((userHonorInputDto) ->
+                userHonorDao.save(
                 UserHonorEntity
                 .builder()
                 .honor(userHonorInputDto.getHonor())
                 .user(userDao.findById(userHonorInputDto.getUser()).get())
                 .position(positionDao.findById(userHonorInputDto.getPosition()).get())
                 .build()
+                )
             )
             .map((userHonorEntity) ->
                 ReviewEntity
