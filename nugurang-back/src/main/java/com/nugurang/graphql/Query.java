@@ -20,7 +20,8 @@ import com.nugurang.entity.BoardEntity;
 import com.nugurang.entity.ProjectEntity;
 import com.nugurang.entity.TeamEntity;
 import com.nugurang.entity.UserEntity;
-import com.nugurang.service.OAuth2Attributes;
+import com.nugurang.service.OAuth2Service;
+import com.nugurang.service.UserService;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class Query implements GraphQLQueryResolver {
-    private final OAuth2Attributes oauth2Attributes;
+    private final OAuth2Service oauth2Service;
+    private final UserService userService;
     private final ArticleDao articleDao;
     private final BoardDao boardDao;
     private final PositionDao positionDao;
@@ -57,10 +59,8 @@ public class Query implements GraphQLQueryResolver {
     }
 
     Optional<UserDto> currentUser() {
-        String provider = oauth2Attributes.getProvider();
-        String id = oauth2Attributes.getId();
-        return userDao
-            .findByOauth2ProviderAndOauth2Id(provider, id)
+        return userService
+            .getCurrentUser()
             .map((entity) -> entity.toDto());
     }
 
@@ -68,10 +68,10 @@ public class Query implements GraphQLQueryResolver {
         return Optional.of(
             OAuth2UserDto
             .builder()
-            .provider(oauth2Attributes.getProvider())
-            .id(oauth2Attributes.getId())
-            .name(oauth2Attributes.getName())
-            .email(oauth2Attributes.getEmail())
+            .provider(oauth2Service.getProvider())
+            .id(oauth2Service.getId())
+            .name(oauth2Service.getName())
+            .email(oauth2Service.getEmail())
             .build()
         );
     }

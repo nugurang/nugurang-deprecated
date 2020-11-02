@@ -38,7 +38,7 @@ public class FollowingEntity implements Serializable {
     private UserEntity toUser;
 
     @Builder
-    public FollowingEntity(UserEntity fromUserEntity, UserEntity toUserEntity) {
+    public FollowingEntity(UserEntity fromUser, UserEntity toUser) {
         this.fromUser = fromUser;
         this.toUser = toUser;
     }

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class OAuth2Attributes {
+public class OAuth2Service {
 
     private final OAuth2AuthorizedClientService authorizedClientService;
 
@@ -35,7 +35,7 @@ public class OAuth2Attributes {
         return getOAuth2AuthToken().getPrincipal();
     }
 
-    private Map<String, Object> getOAuth2Attributes() {
+    private Map<String, Object> getOAuth2Service() {
         OAuth2User oauth2User = getOAuth2User();
         return oauth2User.getAttributes();
     }
@@ -51,12 +51,12 @@ public class OAuth2Attributes {
     }
 
     public String getName() {
-        Map<String, Object> oauth2Attributes = getOAuth2Attributes();
-        return (String) oauth2Attributes.get("login");
+        Map<String, Object> oauth2Service = getOAuth2Service();
+        return (String) oauth2Service.get("login");
     }
 
     public String getEmail() {
-        Map<String, Object> oauth2Attributes = getOAuth2Attributes();
-        return (String) oauth2Attributes.get("email");
+        Map<String, Object> oauth2Service = getOAuth2Service();
+        return (String) oauth2Service.get("email");
     }
 }
