@@ -51,6 +51,7 @@ public class WorkEntity implements Serializable, BaseEntity<WorkDto> {
     public WorkDto toDto() {
         return WorkDto
             .builder()
+            .id(id)
             .name(name)
             .order(order)
             .build();
