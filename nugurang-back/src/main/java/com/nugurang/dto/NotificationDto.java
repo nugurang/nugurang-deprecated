@@ -17,6 +17,4 @@ public class NotificationDto {
     private String content;
     @NotNull
     private OffsetDateTime createdAt;
-    // user
-    // article
 }

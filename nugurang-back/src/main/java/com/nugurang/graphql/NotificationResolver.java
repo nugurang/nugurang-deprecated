@@ -7,7 +7,6 @@ import com.nugurang.dto.NotificationDto;
 import com.nugurang.dto.TeamDto;
 import com.nugurang.dto.UserDto;
 import graphql.kickstart.tools.GraphQLResolver;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

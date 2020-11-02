@@ -13,7 +13,4 @@ public class ProjectDto {
     private Long id;
     @NotNull
     private String name;
-    //team
-    //event
-    //works
 }

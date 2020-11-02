@@ -15,23 +15,14 @@ import com.nugurang.dto.ProjectDto;
 import com.nugurang.dto.TeamDto;
 import com.nugurang.dto.ThreadDto;
 import com.nugurang.dto.UserDto;
-import com.nugurang.entity.ArticleEntity;
-import com.nugurang.entity.BoardEntity;
-import com.nugurang.entity.ProjectEntity;
-import com.nugurang.entity.TeamEntity;
-import com.nugurang.entity.UserEntity;
 import com.nugurang.service.OAuth2Service;
 import com.nugurang.service.UserService;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 @Service

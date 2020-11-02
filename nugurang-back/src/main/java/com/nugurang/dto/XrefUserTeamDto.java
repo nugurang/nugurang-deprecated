@@ -11,6 +11,4 @@ import lombok.Data;
 public class XrefUserTeamDto {
     @NotNull
     private Long id;
-    //user
-    //team
 }

@@ -16,6 +16,7 @@ import com.nugurang.dao.UserDao;
 import com.nugurang.dao.UserHonorDao;
 import com.nugurang.dao.XrefUserTeamDao;
 import com.nugurang.dto.ArticleDto;
+import com.nugurang.dto.ArticleInputDto;
 import com.nugurang.dto.BoardDto;
 import com.nugurang.dto.EventDto;
 import com.nugurang.dto.ImageDto;
@@ -79,20 +80,22 @@ public class Mutation implements GraphQLMutationResolver {
     private final EventDao eventDao;
     private final XrefUserTeamDao xrefUserTeamDao;
 
-    Optional<ArticleDto> createArticle(String content, String title, Long thread, Long parent) {
-        UserEntity userEntity = userService.getCurrentUser().get();
-        ThreadEntity threadEntity = threadDao.findById(thread).get();
-        ArticleEntity parentEntity = parent == null ? null : articleDao.findById(parent).get();
-        ArticleEntity articleEntity = ArticleEntity
+    Optional<ArticleDto> createArticle(ArticleInputDto articleInputDto) {
+        ArticleEntity articleEntity = articleDao.save(
+            ArticleEntity
             .builder()
-            .title(title)
-            .content(content)
-            .user(userEntity)
-            .thread(threadEntity)
-            .parent(parentEntity)
-            .build();
-
-        articleEntity = articleDao.save(articleEntity);
+            .title(articleInputDto.getTitle().orElse(null))
+            .content(articleInputDto.getContent())
+            .user(userService.getCurrentUser().get())
+            .thread(threadDao.findById(articleInputDto.getThread()).get())
+            .parent(
+                articleInputDto
+                .getParent()
+                .flatMap((parent) -> articleDao.findById(parent))
+                .orElse(null)
+             )
+            .build()
+        );
 
         return Optional.of(articleEntity.toDto());
     }

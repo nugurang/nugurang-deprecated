@@ -13,8 +13,4 @@ public class ThreadDto {
     private Long id;
     @NotNull
     private String name;
-    //xrefUserTeam
-    //board
-    //event
-    //article
 }

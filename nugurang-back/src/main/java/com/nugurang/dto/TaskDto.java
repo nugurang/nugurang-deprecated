@@ -17,6 +17,4 @@ public class TaskDto {
     private Integer order;
     @NotNull
     private Integer difficulty;
-    //work
-    //progress
 }

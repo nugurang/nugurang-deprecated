@@ -24,7 +24,4 @@ public class EventDto {
     private OffsetDateTime eventStart;
     @NotNull
     private OffsetDateTime eventEnd;
-    //image
-    //projects
-    //threads
 }

@@ -9,7 +9,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Builder
 public class FollowingDto {
+    @NotNull
     private Long id;
-    //fromUser
-    //toUser
 }

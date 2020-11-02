@@ -1,14 +1,11 @@
 package com.nugurang.dao;
 
 import static com.nugurang.entity.QTeamEntity.teamEntity;
-import static com.nugurang.entity.QUserEntity.userEntity;
 import static com.nugurang.entity.QXrefUserTeamEntity.xrefUserTeamEntity;
 
 import com.nugurang.entity.TeamEntity;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

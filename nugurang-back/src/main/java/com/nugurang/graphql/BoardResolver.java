@@ -7,7 +7,6 @@ import com.nugurang.dto.ThreadDto;
 import com.nugurang.dto.UserDto;
 import graphql.kickstart.tools.GraphQLResolver;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

@@ -13,6 +13,4 @@ public class ImageDto {
     private Long id;
     @NotNull
     private String address;
-    //events
-    //users
 }

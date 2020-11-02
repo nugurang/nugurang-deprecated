@@ -7,7 +7,7 @@ import com.nugurang.graphql.Mutation;
 import com.nugurang.graphql.Query;
 import graphql.GraphQL;
 //import graphql.kickstart.tools.SchemaParser;
-import graphql.kickstart.tools.SchemaParserOptions;
+//import graphql.kickstart.tools.SchemaParserOptions;
 import graphql.scalars.ExtendedScalars;
 import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;

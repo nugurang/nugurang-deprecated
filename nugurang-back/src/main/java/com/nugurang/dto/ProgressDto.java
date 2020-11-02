@@ -13,5 +13,4 @@ public class ProgressDto {
     private Long id;
     @NotNull
     private String name;
-    //tasks
 }

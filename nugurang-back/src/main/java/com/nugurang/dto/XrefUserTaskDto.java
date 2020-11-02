@@ -13,6 +13,4 @@ public class XrefUserTaskDto {
     private Long id;
     @NotNull
     private Integer honor;
-    //user
-    //task
 }

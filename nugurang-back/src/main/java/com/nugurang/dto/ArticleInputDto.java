@@ -1,6 +1,7 @@
 package com.nugurang.dto;
 
-import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Optional;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,16 +10,15 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class ArticleDto {
-    @NotNull
-    private Long id;
-    private String title;
+public class ArticleInputDto {
     @NotNull
     private String content;
     @NotNull
-    private Long viewCount;
+    private Optional<String> title;
     @NotNull
-    private OffsetDateTime createdAt;
+    private Long thread;
     @NotNull
-    private OffsetDateTime modifiedAt;
+    private Optional<Long> parent;
+    @NotNull
+    private List<Long> images;
 }

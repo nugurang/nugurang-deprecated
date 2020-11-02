@@ -11,6 +11,4 @@ import lombok.Data;
 public class StarDto {
     @NotNull
     private Long id;
-    //user
-    //article
 }

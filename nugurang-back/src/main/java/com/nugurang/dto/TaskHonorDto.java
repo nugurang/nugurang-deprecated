@@ -13,6 +13,4 @@ public class TaskHonorDto {
     private Long id;
     @NotNull
     private Integer honor;
-    // task
-    // position
 }

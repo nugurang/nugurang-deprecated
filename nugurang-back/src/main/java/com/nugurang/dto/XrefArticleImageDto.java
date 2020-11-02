@@ -11,6 +11,4 @@ import lombok.Data;
 public class XrefArticleImageDto {
     @NotNull
     private Long id;
-    //article
-    //image
 }

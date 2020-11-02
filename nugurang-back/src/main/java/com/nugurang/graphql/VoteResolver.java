@@ -8,7 +8,6 @@ import com.nugurang.dto.UserDto;
 import com.nugurang.dto.VoteDto;
 import com.nugurang.dto.VoteTypeDto;
 import graphql.kickstart.tools.GraphQLResolver;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

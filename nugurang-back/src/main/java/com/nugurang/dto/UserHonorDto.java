@@ -13,6 +13,4 @@ public class UserHonorDto {
     private Long id;
     @NotNull
     private Integer honor;
-    //honor
-    //position
 }

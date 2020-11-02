@@ -11,7 +11,4 @@ import lombok.Data;
 public class XrefUserBoardDto {
     @NotNull
     private Long id;
-    //role
-    //user
-    //board
 }

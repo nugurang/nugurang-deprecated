@@ -11,6 +11,4 @@ import lombok.Data;
 public class XrefEventTagDto {
     @NotNull
     private Long id;
-    //event
-    //tag
 }

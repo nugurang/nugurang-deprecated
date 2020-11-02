@@ -1,5 +1,13 @@
 scalar DateTime
 
+input ArticleInput {
+    content: String!
+    title: String
+    thread: ID!
+    parent: ID
+    images: [ID]!
+}
+
 input UserHonorInput {
     honor: Int!
     user: ID!
@@ -8,14 +16,15 @@ input UserHonorInput {
 
 type Article {
     id: ID!
-    thread: Thread!
-    user: User!
-    parent: Article
-    title: String
     content: String!
     viewCount: Int!
     createdAt: DateTime!
     modifiedAt: DateTime!
+    title: String
+    thread: Thread!
+    user: User!
+    parent: Article
+    images: [Image]!
 }
 
 type Board {
@@ -200,7 +209,7 @@ type Query {
 
 type Mutation {
     """CREATE"""
-    createArticle(content: String!, title: String, thread: ID!, parent: ID): Article
+    createArticle(article: ArticleInput!): Article
     createBoard(name: String!): Board
     createEvent(board: ID!, name: String!, content: String, images: [ID]!): Event
     createFollowing(user: ID!): Boolean

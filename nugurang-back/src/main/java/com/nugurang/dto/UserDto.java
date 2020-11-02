@@ -20,10 +20,4 @@ public class UserDto {
     @NotNull
     private String email;
     private String biography;
-    //blog
-    //threads
-    //articles
-    //followings
-    //followers
-    //notifications
 }

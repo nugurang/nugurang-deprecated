@@ -9,8 +9,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Builder
 public class VoteDto {
+    @NotNull
     private Long id;
-    //user
-    //article
-    //voteType
 }

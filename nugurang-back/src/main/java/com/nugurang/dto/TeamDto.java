@@ -13,5 +13,4 @@ public class TeamDto {
     private Long id;
     @NotNull
     private String name;
-    //projects
 }

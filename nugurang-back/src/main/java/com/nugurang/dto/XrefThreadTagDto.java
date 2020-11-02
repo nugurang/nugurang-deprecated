@@ -11,6 +11,4 @@ import lombok.Data;
 public class XrefThreadTagDto {
     @NotNull
     private Long id;
-    // thread
-    // tag
 }

@@ -6,14 +6,11 @@ import com.nugurang.dao.RoleDao;
 import com.nugurang.dao.ThreadDao;
 import com.nugurang.dao.UserDao;
 import com.nugurang.dao.VoteTypeDao;
-import com.nugurang.entity.ArticleEntity;
-import com.nugurang.entity.BoardEntity;
 import com.nugurang.entity.RoleEntity;
 import com.nugurang.entity.VoteTypeEntity;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration

@@ -5,7 +5,6 @@ import com.nugurang.dto.EventDto;
 import com.nugurang.dto.ImageDto;
 import graphql.kickstart.tools.GraphQLResolver;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
