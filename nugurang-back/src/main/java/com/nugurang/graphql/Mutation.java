@@ -7,9 +7,11 @@ import com.nugurang.dao.EventDao;
 import com.nugurang.dao.FollowingDao;
 import com.nugurang.dao.ImageDao;
 import com.nugurang.dao.PositionDao;
+import com.nugurang.dao.ProgressDao;
 import com.nugurang.dao.ProjectDao;
 import com.nugurang.dao.ReviewDao;
 import com.nugurang.dao.RoleDao;
+import com.nugurang.dao.TaskDao;
 import com.nugurang.dao.TeamDao;
 import com.nugurang.dao.ThreadDao;
 import com.nugurang.dao.UserDao;
@@ -27,6 +29,7 @@ import com.nugurang.dto.RoleDto;
 import com.nugurang.dto.StarDto;
 import com.nugurang.dto.TagDto;
 import com.nugurang.dto.TaskDto;
+import com.nugurang.dto.TaskInputDto;
 import com.nugurang.dto.TeamDto;
 import com.nugurang.dto.ThreadDto;
 import com.nugurang.dto.UserDto;
@@ -44,6 +47,7 @@ import com.nugurang.entity.PositionEntity;
 import com.nugurang.entity.ProjectEntity;
 import com.nugurang.entity.ReviewEntity;
 import com.nugurang.entity.RoleEntity;
+import com.nugurang.entity.TaskEntity;
 import com.nugurang.entity.TeamEntity;
 import com.nugurang.entity.ThreadEntity;
 import com.nugurang.entity.UserEntity;
@@ -72,9 +76,11 @@ public class Mutation implements GraphQLMutationResolver {
     private final FollowingDao followingDao;
     private final ImageDao imageDao;
     private final PositionDao positionDao;
+    private final ProgressDao progressDao;
     private final ProjectDao projectDao;
     private final ReviewDao reviewDao;
     private final RoleDao roleDao;
+    private final TaskDao taskDao;
     private final TeamDao teamDao;
     private final ThreadDao threadDao;
     private final UserDao userDao;
@@ -211,8 +217,25 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.empty();
     }
 
-    Optional<TaskDto> createTask(Long work, String name, Integer difficulty) {
-        return Optional.empty();
+    Optional<TaskDto> createTask(TaskInputDto taskInputDto) {
+        return Optional.of(
+            taskDao
+            .save(
+                TaskEntity
+                .builder()
+                .name(taskInputDto.getName())
+                .order(taskInputDto.getOrder().orElse(0))
+                .work(workDao.findById(taskInputDto.getWork()).get())
+                .progress(
+                    taskInputDto
+                    .getProgress()
+                    .flatMap((progressId) -> progressDao.findById(progressId))
+                    .orElseGet(() -> progressDao.findByName("TODO").get())
+                )
+                .build()
+            )
+            .toDto()
+        );
     }
 
     Optional<TeamDto> createTeam(String name) {

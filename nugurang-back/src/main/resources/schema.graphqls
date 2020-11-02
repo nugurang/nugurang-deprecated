@@ -14,6 +14,14 @@ input UserHonorInput {
     position: ID!
 }
 
+input TaskInput {
+    name: String!
+    difficulty: Int
+    order: Int
+    work: ID!
+    progress: ID
+}
+
 type Article {
     id: ID!
     content: String!
@@ -221,7 +229,7 @@ type Mutation {
     createRole(name: String!): Role
     createStar(user: ID!, article: ID!): Star
     createTag(name: String!): Tag
-    createTask(work: ID!, name: String!, difficulty: Int!): Task
+    createTask(task: TaskInput!): Task
     createTeam(name: String!): Team
     createThread(board: ID!, name: String!, team: ID, event: ID): Thread
     createUser(name: String!, email: String!, biography: String, image: ID): User
