@@ -83,6 +83,7 @@ type Project {
     team: Team!
     getUsers(page: Int!, pageSize: Int!): [User]!
     event: Event
+    works: [Work]!
 }
 
 type Role {

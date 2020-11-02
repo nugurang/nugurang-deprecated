@@ -12,6 +12,7 @@ import com.nugurang.dto.UserDto;
 import com.nugurang.dto.WorkDto;
 import graphql.kickstart.tools.GraphQLResolver;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +35,6 @@ public class ProjectResolver implements GraphQLResolver<ProjectDto> {
             .toDto();
     }
 
-
     public List<UserDto> getUsers(ProjectDto projectDto, Integer page, Integer pageSize) {
         return userDao
             .findAllByProjectId(projectDto.getId(), PageRequest.of(page, pageSize))
@@ -47,12 +47,12 @@ public class ProjectResolver implements GraphQLResolver<ProjectDto> {
         return projectDao
             .findById(projectDto.getId())
             .map((projectEntity) -> projectEntity.getEvent())
-            .map((entity) -> entity.toDto())
+            .map((entity) -> entity.toDto());
     }
 
-    public List<WorkDto> getWorks(ProjectDto projectDto, Integer page, Integer pageSize) {
+    public List<WorkDto> works(ProjectDto projectDto) {
         return workDao
-            .findByProjectId(projectDto.getId(), PageRequest.of(page, pageSize))
+            .findAllByProjectId(projectDto.getId())
             .stream()
             .map((entity) -> entity.toDto())
             .collect(Collectors.toList());
