@@ -14,6 +14,7 @@ import com.nugurang.dao.TeamDao;
 import com.nugurang.dao.ThreadDao;
 import com.nugurang.dao.UserDao;
 import com.nugurang.dao.UserHonorDao;
+import com.nugurang.dao.WorkDao;
 import com.nugurang.dao.XrefUserTeamDao;
 import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.ArticleInputDto;
@@ -47,6 +48,7 @@ import com.nugurang.entity.TeamEntity;
 import com.nugurang.entity.ThreadEntity;
 import com.nugurang.entity.UserEntity;
 import com.nugurang.entity.UserHonorEntity;
+import com.nugurang.entity.WorkEntity;
 import com.nugurang.entity.XrefUserTeamEntity;
 import com.nugurang.service.OAuth2Service;
 import com.nugurang.service.UserService;
@@ -78,6 +80,7 @@ public class Mutation implements GraphQLMutationResolver {
     private final UserDao userDao;
     private final UserHonorDao userHonorDao;
     private final EventDao eventDao;
+    private final WorkDao workDao;
     private final XrefUserTeamDao xrefUserTeamDao;
 
     Optional<ArticleDto> createArticle(ArticleInputDto articleInputDto) {
@@ -239,7 +242,7 @@ public class Mutation implements GraphQLMutationResolver {
     Optional<ThreadDto> createThread(Long board, String name, Long team, Long event) {
         UserEntity userEntity = userService.getCurrentUser().get();
         BoardEntity boardEntity = boardDao.findById(board).get();
-        EventEntity eventEntity = event == null ? null : eventDao.findById(event).get();
+        EventEntity eventEntity = eventDao.findById(event).orElse(null);
         ThreadEntity threadEntity = ThreadEntity
             .builder()
             .name(name)
@@ -275,8 +278,18 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.empty();
     }
 
-    Optional<WorkDto> createWork(Long project, String name) {
-        return Optional.empty();
+    Optional<WorkDto> createWork(Long project, String name, Optional<Integer> order) {
+        return Optional.of(
+            workDao.save(
+                WorkEntity
+                .builder()
+                .name(name)
+                .order(order.orElse(0))
+                .project(projectDao.findById(project).get())
+                .build()
+            )
+            .toDto()
+        );
     }
 
     Optional<ArticleDto> updateArticle(

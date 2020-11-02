@@ -227,7 +227,7 @@ type Mutation {
     createUser(name: String!, email: String!, biography: String, image: ID): User
     createVote(user: ID!, article: ID!, voteTypes: [ID]!): Vote
     createVoteType(name: String!): VoteType
-    createWork(project: ID!, name: String!): Work
+    createWork(project: ID!, name: String!, order: Int): Work
     """UPDATE"""
     updateArticle(article: ID!, thread: ID!, parent: ID!, title: String, content: String!): Article
     updateBoard(board: ID!, name: String!): Board

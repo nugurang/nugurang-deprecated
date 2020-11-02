@@ -1,5 +1,6 @@
 package com.nugurang.entity;
 
+import com.nugurang.dto.ProgressDto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "progress")
-public class ProgressEntity implements Serializable {
+public class ProgressEntity implements Serializable, BaseEntity<ProgressDto> {
     @Id
     @GeneratedValue
     private Long id;
@@ -34,5 +35,12 @@ public class ProgressEntity implements Serializable {
     @Builder
     public ProgressEntity(String name) {
         this.name = name;
+    }
+
+    public ProgressDto toDto() {
+        return ProgressDto
+            .builder()
+            .name(name)
+            .build();
     }
 }
