@@ -239,10 +239,10 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.of(teamEntity.toDto());
     }
 
-    Optional<ThreadDto> createThread(Long board, String name, Long team, Long event) {
+    Optional<ThreadDto> createThread(Long board, String name, Long team, Optional<Long> event) {
         UserEntity userEntity = userService.getCurrentUser().get();
         BoardEntity boardEntity = boardDao.findById(board).get();
-        EventEntity eventEntity = eventDao.findById(event).orElse(null);
+        EventEntity eventEntity = event.flatMap((eventId) -> eventDao.findById(eventId)).orElse(null);
         ThreadEntity threadEntity = ThreadEntity
             .builder()
             .name(name)
