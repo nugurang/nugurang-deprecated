@@ -66,21 +66,24 @@ public class UserResolver implements GraphQLResolver<UserDto> {
     public List<TeamDto> getTeams(UserDto userDto, Integer page, Integer pageSize) {
         return teamDao
             .findAllByUserId(userDto.getId(), PageRequest.of(page, pageSize))
-            .stream().map((entity) -> entity.toDto())
+            .stream()
+            .map((entity) -> entity.toDto())
             .collect(Collectors.toList());
     }
 
     public List<ThreadDto> getThreads(UserDto userDto, Integer page, Integer pageSize) {
         return threadDao
             .findAllByUserId(userDto.getId(), PageRequest.of(page, pageSize))
-            .stream().map((entity) -> entity.toDto())
+            .stream()
+            .map((entity) -> entity.toDto())
             .collect(Collectors.toList());
     }
 
     public List<ArticleDto> getArticles(UserDto userDto, Integer page, Integer pageSize) {
         return articleDao
             .findAllByUserId(userDto.getId(), PageRequest.of(page, pageSize))
-            .stream().map((entity) -> entity.toDto())
+            .stream()
+            .map((entity) -> entity.toDto())
             .collect(Collectors.toList());
 
     }
@@ -88,18 +91,24 @@ public class UserResolver implements GraphQLResolver<UserDto> {
     public List<UserDto> getFollowings(UserDto userDto, Integer page, Integer pageSize) {
         return userDao
             .findAllByFollowerId(userDto.getId(), PageRequest.of(page, pageSize))
-            .stream().map((entity) -> entity.toDto())
+            .stream()
+            .map((entity) -> entity.toDto())
             .collect(Collectors.toList());
     }
 
     public List<UserDto> getFollowers(UserDto userDto, Integer page, Integer pageSize) {
         return userDao
             .findAllByFollowingId(userDto.getId(), PageRequest.of(page, pageSize))
-            .stream().map((entity) -> entity.toDto())
+            .stream()
+            .map((entity) -> entity.toDto())
             .collect(Collectors.toList());
     }
 
     public List<NotificationDto> getNotifications(UserDto userDto, Integer page, Integer pageSize) {
-        return null;
+        return notificationDao
+            .findAllByUserId(userDto.getId(), PageRequest.of(page, pageSize))
+            .stream()
+            .map((entity) -> entity.toDto())
+            .collect(Collectors.toList());
     }
 }

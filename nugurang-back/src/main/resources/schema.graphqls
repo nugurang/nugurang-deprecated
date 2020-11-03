@@ -80,6 +80,7 @@ type Notification {
     title: String!
     content: String
     createdAt: DateTime!
+    user: User!
 }
 
 type OAuth2User {
