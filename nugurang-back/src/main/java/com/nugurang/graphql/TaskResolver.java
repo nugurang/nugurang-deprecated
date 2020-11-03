@@ -12,6 +12,7 @@ import com.nugurang.dto.UserDto;
 import com.nugurang.dto.WorkDto;
 import graphql.kickstart.tools.GraphQLResolver;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -42,10 +43,32 @@ public class TaskResolver implements GraphQLResolver<TaskDto> {
     }
 
     public List<TaskHonorDto> honors(TaskDto taskDto) {
-        return null;
+        return taskDao.findById(taskDto.getId())
+            .map((taskEntity) ->
+                taskEntity
+                .getTaskHonors()
+                .stream()
+                .map((taskHonorEntity) -> taskHonorEntity.toDto())
+                .collect(Collectors.toList())
+            ).get();
+
+        /*
+        return taskHonorDao
+            .findAllByTaskId(taskDto.getId())
+            .stream()
+            .flatMap((entity) -> entity.toDto())
+            .collect(Collectors.toList());
+        */
     }
 
     public List<UserDto> users(TaskDto taskDto) {
         return null;
+        /*
+        return userDao
+            .findAllByTaskId(taskDto.getId())
+            .stream()
+            .flatMap((entity) -> entity.toDto())
+            .collect(Collectors.toList());
+            */
     }
 }

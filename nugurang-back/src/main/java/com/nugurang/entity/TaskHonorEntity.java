@@ -1,5 +1,6 @@
 package com.nugurang.entity;
 
+import com.nugurang.dto.TaskHonorDto;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,7 +24,7 @@ import lombok.Setter;
         @UniqueConstraint(columnNames = {"task", "position"})
     }
 )
-public class TaskHonorEntity implements Serializable {
+public class TaskHonorEntity implements Serializable, BaseEntity<TaskHonorDto> {
     @Id
     @GeneratedValue
     private Long id;
@@ -44,5 +45,13 @@ public class TaskHonorEntity implements Serializable {
         this.honor = honor;
         this.task = task;
         this.position = position;
+    }
+
+    public TaskHonorDto toDto() {
+        return TaskHonorDto
+            .builder()
+            .id(id)
+            .honor(honor)
+            .build();
     }
 }

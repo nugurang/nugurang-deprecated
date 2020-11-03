@@ -9,7 +9,6 @@ import com.nugurang.dao.UserDao;
 import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.BoardDto;
 import com.nugurang.dto.EventDto;
-import com.nugurang.dto.ImageDto;
 import com.nugurang.dto.TeamDto;
 import com.nugurang.dto.ThreadDto;
 import com.nugurang.dto.UserDto;
@@ -56,8 +55,14 @@ public class ThreadResolver implements GraphQLResolver<ThreadDto> {
         return Optional.empty();
     }
 
-    public Optional<ImageDto> image(ThreadDto threadDto) {
-        return Optional.empty();
+    public ArticleDto firstArticle(ThreadDto threadDto) {
+        return articleDao
+            .findAllByThreadIdOrderByCreatedAtAsc(threadDto.getId(), PageRequest.of(0, 1))
+            .getContent()
+            .stream()
+            .map((entity) -> entity.toDto())
+            .collect(Collectors.toList())
+            .get(0);
     }
 
     public List<ArticleDto> getArticles(ThreadDto threadDto, Integer page, Integer pageSize) {

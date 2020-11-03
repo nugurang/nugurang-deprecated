@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,8 @@ import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 @Setter
 @Table(
@@ -35,24 +38,21 @@ public class WorkEntity implements Serializable, BaseEntity<WorkDto> {
     private String name;
 
     @Column(nullable = false)
+    private Boolean opened;
+
+    @Column(nullable = false)
     private Integer order;
 
     @ManyToOne
     @JoinColumn(name = "project", nullable = false)
     private ProjectEntity project;
 
-    @Builder
-    public WorkEntity(String name, Integer order, ProjectEntity project) {
-        this.name = name;
-        this.order = order;
-        this.project = project;
-    }
-
     public WorkDto toDto() {
         return WorkDto
             .builder()
             .id(id)
             .name(name)
+            .opened(opened)
             .order(order)
             .build();
     }

@@ -12,11 +12,13 @@ import com.nugurang.dao.ProjectDao;
 import com.nugurang.dao.ReviewDao;
 import com.nugurang.dao.RoleDao;
 import com.nugurang.dao.TaskDao;
+import com.nugurang.dao.TaskHonorDao;
 import com.nugurang.dao.TeamDao;
 import com.nugurang.dao.ThreadDao;
 import com.nugurang.dao.UserDao;
 import com.nugurang.dao.UserHonorDao;
 import com.nugurang.dao.WorkDao;
+import com.nugurang.dao.XrefUserTaskDao;
 import com.nugurang.dao.XrefUserTeamDao;
 import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.ArticleInputDto;
@@ -29,6 +31,7 @@ import com.nugurang.dto.RoleDto;
 import com.nugurang.dto.StarDto;
 import com.nugurang.dto.TagDto;
 import com.nugurang.dto.TaskDto;
+import com.nugurang.dto.TaskHonorInputDto;
 import com.nugurang.dto.TaskInputDto;
 import com.nugurang.dto.TeamDto;
 import com.nugurang.dto.ThreadDto;
@@ -48,11 +51,13 @@ import com.nugurang.entity.ProjectEntity;
 import com.nugurang.entity.ReviewEntity;
 import com.nugurang.entity.RoleEntity;
 import com.nugurang.entity.TaskEntity;
+import com.nugurang.entity.TaskHonorEntity;
 import com.nugurang.entity.TeamEntity;
 import com.nugurang.entity.ThreadEntity;
 import com.nugurang.entity.UserEntity;
 import com.nugurang.entity.UserHonorEntity;
 import com.nugurang.entity.WorkEntity;
+import com.nugurang.entity.XrefUserTaskEntity;
 import com.nugurang.entity.XrefUserTeamEntity;
 import com.nugurang.service.OAuth2Service;
 import com.nugurang.service.UserService;
@@ -81,12 +86,14 @@ public class Mutation implements GraphQLMutationResolver {
     private final ReviewDao reviewDao;
     private final RoleDao roleDao;
     private final TaskDao taskDao;
+    private final TaskHonorDao taskHonorDao;
     private final TeamDao teamDao;
     private final ThreadDao threadDao;
     private final UserDao userDao;
     private final UserHonorDao userHonorDao;
     private final EventDao eventDao;
     private final WorkDao workDao;
+    private final XrefUserTaskDao xrefUserTaskDao;
     private final XrefUserTeamDao xrefUserTeamDao;
 
     Optional<ArticleDto> createArticle(ArticleInputDto articleInputDto) {
@@ -169,7 +176,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     @Transactional
-    Boolean createReviews(Long project, List<UserHonorInputDto> honors) {
+    Boolean createUserReviews(Long project, List<UserHonorInputDto> honors) {
         UserEntity reviewer = userService.getCurrentUser().get();
         ProjectEntity projectEntity = projectDao.findById(project).get();
         EvaluationEntity evaluationEntity = evaluationDao.save(
@@ -180,15 +187,24 @@ public class Mutation implements GraphQLMutationResolver {
         );
 
         List<ReviewEntity> reviewEntities = reviewDao.saveAll(
-            honors.stream()
-            .map((userHonorInputDto) ->
-                userHonorDao.save(
-                UserHonorEntity
-                .builder()
-                .honor(userHonorInputDto.getHonor())
-                .user(userDao.findById(userHonorInputDto.getUser()).get())
-                .position(positionDao.findById(userHonorInputDto.getPosition()).get())
-                .build()
+            honors
+            .stream()
+            .flatMap((userHonorInputDto) ->
+                userHonorInputDto
+                .getHonors()
+                .stream()
+                .map((positionHonorInputDto) ->
+                    userHonorDao.save(
+                        UserHonorEntity
+                        .builder()
+                        .honor(positionHonorInputDto.getHonor())
+                        .user(userDao.findById(userHonorInputDto.getUser()).get())
+                        .position(
+                            positionDao
+                            .findById(positionHonorInputDto.getPosition()).get()
+                        )
+                        .build()
+                    )
                 )
             )
             .map((userHonorEntity) ->
@@ -217,25 +233,61 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.empty();
     }
 
+    @Transactional
     Optional<TaskDto> createTask(TaskInputDto taskInputDto) {
-        return Optional.of(
-            taskDao
-            .save(
-                TaskEntity
+        TaskEntity taskEntity = taskDao.save(
+            TaskEntity
+            .builder()
+            .name(taskInputDto.getName())
+            .order(taskInputDto.getOrder().orElse(0))
+            .work(workDao.findById(taskInputDto.getWork()).get())
+            .progress(
+                taskInputDto
+                .getProgress()
+                .flatMap((progressId) -> progressDao.findById(progressId))
+                .orElseGet(() -> progressDao.findByName("TODO").get())
+            )
+            .build()
+        );
+
+        xrefUserTaskDao.saveAll(
+            taskInputDto
+            .getUsers()
+            .stream()
+            .map((userId) -> userDao.findById(userId).get())
+            .map((userEntity) ->
+                XrefUserTaskEntity
                 .builder()
-                .name(taskInputDto.getName())
-                .order(taskInputDto.getOrder().orElse(0))
-                .work(workDao.findById(taskInputDto.getWork()).get())
-                .progress(
-                    taskInputDto
-                    .getProgress()
-                    .flatMap((progressId) -> progressDao.findById(progressId))
-                    .orElseGet(() -> progressDao.findByName("TODO").get())
-                )
+                .user(userEntity)
+                .task(taskEntity)
                 .build()
             )
-            .toDto()
+            .collect(Collectors.toList())
         );
+
+        taskHonorDao.saveAll(
+            taskInputDto
+            .getPositions()
+            .stream()
+            .map((positionId) ->
+                positionDao.findById(positionId).get()
+            )
+            .map((positionEntity) ->
+                TaskHonorEntity
+                .builder()
+                .honor(0)
+                .task(taskEntity)
+                .position(positionEntity)
+                .build()
+            )
+            .collect(Collectors.toList())
+        );
+
+        return Optional.of(taskEntity.toDto());
+    }
+
+    Boolean createTaskReview(TaskHonorInputDto honor) {
+        return false;
     }
 
     Optional<TeamDto> createTeam(String name) {
@@ -307,6 +359,7 @@ public class Mutation implements GraphQLMutationResolver {
                 WorkEntity
                 .builder()
                 .name(name)
+                .opened(true)
                 .order(order.orElse(0))
                 .project(projectDao.findById(project).get())
                 .build()

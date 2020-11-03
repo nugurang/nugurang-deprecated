@@ -2,6 +2,7 @@ package com.nugurang.graphql;
 
 import com.nugurang.dao.ArticleDao;
 import com.nugurang.dao.BoardDao;
+import com.nugurang.dao.NotificationDao;
 import com.nugurang.dao.PositionDao;
 import com.nugurang.dao.ProjectDao;
 import com.nugurang.dao.TeamDao;
@@ -9,6 +10,7 @@ import com.nugurang.dao.ThreadDao;
 import com.nugurang.dao.UserDao;
 import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.BoardDto;
+import com.nugurang.dto.NotificationDto;
 import com.nugurang.dto.OAuth2UserDto;
 import com.nugurang.dto.PositionDto;
 import com.nugurang.dto.ProjectDto;
@@ -32,6 +34,7 @@ public class Query implements GraphQLQueryResolver {
     private final UserService userService;
     private final ArticleDao articleDao;
     private final BoardDao boardDao;
+    private final NotificationDao notificationDao;
     private final PositionDao positionDao;
     private final ProjectDao projectDao;
     private final TeamDao teamDao;
@@ -98,6 +101,12 @@ public class Query implements GraphQLQueryResolver {
             .stream()
             .map((entity) -> entity.toDto())
             .collect(Collectors.toList());
+    }
+
+    Optional<NotificationDto> getNotification(Long id) {
+        return notificationDao
+            .findById(id)
+            .map((entity) -> entity.toDto());
     }
 
     Optional<ProjectDto> getProject(Long id) {

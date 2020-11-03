@@ -8,10 +8,19 @@ input ArticleInput {
     images: [ID]!
 }
 
-input UserHonorInput {
-    honor: Int!
-    user: ID!
+input PositionHonorInput {
     position: ID!
+    honor: Int!
+}
+
+input TaskHonorInput {
+    task: ID!
+    honor: Int!
+}
+
+input UserHonorInput {
+    user: ID!
+    honors: [PositionHonorInput]!
 }
 
 input TaskInput {
@@ -20,6 +29,8 @@ input TaskInput {
     order: Int
     work: ID!
     progress: ID
+    users: [ID]!
+    positions: [ID]!
 }
 
 type Article {
@@ -63,9 +74,6 @@ type Notification {
     title: String!
     content: String
     createdAt: DateTime!
-    user: User!
-    article: Article
-    team: Team
 }
 
 type OAuth2User {
@@ -141,7 +149,7 @@ type Thread {
     user: User!
     team: Team
     event: Event
-    image: Image
+    firstArticle: Article!
     getArticles(page: Int!, pageSize: Int!): [Article]!
     upCount: Int!
     downCount: Int!
@@ -192,6 +200,7 @@ type Work {
     name: String!
     opened: Boolean!
     order: Int!
+    tasks: [Task]!
 }
 
 type Query {
@@ -204,6 +213,7 @@ type Query {
     getBoard(id: ID!): Board
     getBoardByName(name: String!): Board
     getBoardsByNames(names: [String]!): [Board]!
+    getNotification(id: ID!): Notification
     getProject(id: ID!): Project
     getTeam(id: ID!): Team
     getTeamByName(name: String!): Team
@@ -225,14 +235,15 @@ type Mutation {
     createImage(address: String!): Image
     createPosition(name: String!): Position
     createProject(team: ID!, name: String!, event: ID): Project
-    createReviews(project: ID!, honors: [UserHonorInput]!): Boolean!
     createRole(name: String!): Role
     createStar(user: ID!, article: ID!): Star
     createTag(name: String!): Tag
     createTask(task: TaskInput!): Task
+    createTaskReview(honor: TaskHonorInput!): Boolean!
     createTeam(name: String!): Team
     createThread(board: ID!, name: String!, team: ID, event: ID): Thread
     createUser(name: String!, email: String!, biography: String, image: ID): User
+    createUserReviews(project: ID!, honors: [UserHonorInput]!): Boolean!
     createVote(user: ID!, article: ID!, voteTypes: [ID]!): Vote
     createVoteType(name: String!): VoteType
     createWork(project: ID!, name: String!, order: Int): Work
