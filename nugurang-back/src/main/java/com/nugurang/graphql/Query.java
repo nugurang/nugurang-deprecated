@@ -5,18 +5,22 @@ import com.nugurang.dao.BoardDao;
 import com.nugurang.dao.NotificationDao;
 import com.nugurang.dao.PositionDao;
 import com.nugurang.dao.ProjectDao;
+import com.nugurang.dao.TaskDao;
 import com.nugurang.dao.TeamDao;
 import com.nugurang.dao.ThreadDao;
 import com.nugurang.dao.UserDao;
+import com.nugurang.dao.WorkDao;
 import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.BoardDto;
 import com.nugurang.dto.NotificationDto;
 import com.nugurang.dto.OAuth2UserDto;
 import com.nugurang.dto.PositionDto;
 import com.nugurang.dto.ProjectDto;
+import com.nugurang.dto.TaskDto;
 import com.nugurang.dto.TeamDto;
 import com.nugurang.dto.ThreadDto;
 import com.nugurang.dto.UserDto;
+import com.nugurang.dto.WorkDto;
 import com.nugurang.service.OAuth2Service;
 import com.nugurang.service.UserService;
 import graphql.kickstart.tools.GraphQLQueryResolver;
@@ -37,9 +41,11 @@ public class Query implements GraphQLQueryResolver {
     private final NotificationDao notificationDao;
     private final PositionDao positionDao;
     private final ProjectDao projectDao;
+    private final TaskDao taskDao;
     private final TeamDao teamDao;
     private final ThreadDao threadDao;
     private final UserDao userDao;
+    private final WorkDao workDao;
 
     String ping() {
         return "pong";
@@ -160,6 +166,12 @@ public class Query implements GraphQLQueryResolver {
             .collect(Collectors.toList());
     }
 
+    Optional<TaskDto> getTask(Long id) {
+        return taskDao
+            .findById(id)
+            .map((entity) -> entity.toDto());
+    }
+
     Optional<UserDto> getUser(Long id) {
         return userDao
             .findById(id)
@@ -179,6 +191,12 @@ public class Query implements GraphQLQueryResolver {
             .stream()
             .map((entity) -> entity.toDto())
             .collect(Collectors.toList());
+    }
+
+    Optional<WorkDto> getWork(Long id) {
+        return workDao
+            .findById(id)
+            .map((entity) -> entity.toDto());
     }
 
 }

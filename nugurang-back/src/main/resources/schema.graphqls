@@ -222,6 +222,7 @@ type Query {
     getBoardsByNames(names: [String]!): [Board]!
     getNotification(id: ID!): Notification
     getProject(id: ID!): Project
+    getTask(id: ID!): Task
     getTeam(id: ID!): Team
     getTeamByName(name: String!): Team
     getThread(id: ID!): Thread
@@ -231,6 +232,7 @@ type Query {
     getUser(id: ID!): User
     getUserByName(name: String!): User
     getUsers(page: Int!, pageSize: Int!): [User]!
+    getWork(id: ID!): Work
 }
 
 type Mutation {
