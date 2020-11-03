@@ -41,7 +41,6 @@ import com.nugurang.dto.UserHonorInputDto;
 import com.nugurang.dto.VoteDto;
 import com.nugurang.dto.VoteTypeDto;
 import com.nugurang.dto.WorkDto;
-import com.nugurang.entity.ArticleEntity;
 import com.nugurang.entity.BoardEntity;
 import com.nugurang.entity.EvaluationEntity;
 import com.nugurang.entity.FollowingEntity;
@@ -59,6 +58,7 @@ import com.nugurang.entity.UserHonorEntity;
 import com.nugurang.entity.WorkEntity;
 import com.nugurang.entity.XrefUserTaskEntity;
 import com.nugurang.entity.XrefUserTeamEntity;
+import com.nugurang.service.ArticleService;
 import com.nugurang.service.OAuth2Service;
 import com.nugurang.service.UserService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
@@ -73,6 +73,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class Mutation implements GraphQLMutationResolver {
+    private final ArticleService articleService;
     private final OAuth2Service oauth2Service;
     private final UserService userService;
     private final ArticleDao articleDao;
@@ -101,21 +102,10 @@ public class Mutation implements GraphQLMutationResolver {
         Long thread,
         Optional<Long> parent
     ) {
-        ArticleEntity articleEntity = articleDao.save(
-            ArticleEntity
-            .builder()
-            .title(articleInputDto.getTitle().orElse(null))
-            .content(articleInputDto.getContent())
-            .user(userService.getCurrentUser().get())
-            .thread(threadDao.findById(thread).get())
-            .parent(
-                parent
-                .flatMap((parentId) -> articleDao.findById(parentId))
-                .orElse(null)
-             )
-            .build()
+        return Optional.of(
+            articleService.createArticle(articleInputDto, thread, parent)
+            .toDto()
         );
-        return Optional.of(articleEntity.toDto());
     }
 
     Optional<BoardDto> createBoard(String name) {
@@ -344,7 +334,12 @@ public class Mutation implements GraphQLMutationResolver {
             .build()
         );
 
-        threadEntity = threadDao.save(threadEntity);
+        articleService.createArticle(
+            threadInputDto.getArticle(),
+            threadEntity.getId(),
+            Optional.empty()
+        );
+
         return Optional.of(threadEntity.toDto());
     }
 
