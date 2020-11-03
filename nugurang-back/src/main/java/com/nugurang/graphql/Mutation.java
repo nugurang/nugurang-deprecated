@@ -35,6 +35,7 @@ import com.nugurang.dto.TaskHonorInputDto;
 import com.nugurang.dto.TaskInputDto;
 import com.nugurang.dto.TeamDto;
 import com.nugurang.dto.ThreadDto;
+import com.nugurang.dto.ThreadInputDto;
 import com.nugurang.dto.UserDto;
 import com.nugurang.dto.UserHonorInputDto;
 import com.nugurang.dto.VoteDto;
@@ -43,7 +44,6 @@ import com.nugurang.dto.WorkDto;
 import com.nugurang.entity.ArticleEntity;
 import com.nugurang.entity.BoardEntity;
 import com.nugurang.entity.EvaluationEntity;
-import com.nugurang.entity.EventEntity;
 import com.nugurang.entity.FollowingEntity;
 import com.nugurang.entity.ImageEntity;
 import com.nugurang.entity.PositionEntity;
@@ -96,23 +96,25 @@ public class Mutation implements GraphQLMutationResolver {
     private final XrefUserTaskDao xrefUserTaskDao;
     private final XrefUserTeamDao xrefUserTeamDao;
 
-    Optional<ArticleDto> createArticle(ArticleInputDto articleInputDto) {
+    Optional<ArticleDto> createArticle(
+        ArticleInputDto articleInputDto,
+        Long thread,
+        Optional<Long> parent
+    ) {
         ArticleEntity articleEntity = articleDao.save(
             ArticleEntity
             .builder()
             .title(articleInputDto.getTitle().orElse(null))
             .content(articleInputDto.getContent())
             .user(userService.getCurrentUser().get())
-            .thread(threadDao.findById(articleInputDto.getThread()).get())
+            .thread(threadDao.findById(thread).get())
             .parent(
-                articleInputDto
-                .getParent()
-                .flatMap((parent) -> articleDao.findById(parent))
+                parent
+                .flatMap((parentId) -> articleDao.findById(parentId))
                 .orElse(null)
              )
             .build()
         );
-
         return Optional.of(articleEntity.toDto());
     }
 
@@ -314,18 +316,33 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.of(teamEntity.toDto());
     }
 
-    Optional<ThreadDto> createThread(Long board, String name, Long team, Optional<Long> event) {
+    @Transactional
+    Optional<ThreadDto> createThread(ThreadInputDto threadInputDto) {
         UserEntity userEntity = userService.getCurrentUser().get();
-        BoardEntity boardEntity = boardDao.findById(board).get();
-        EventEntity eventEntity = event.flatMap((eventId) -> eventDao.findById(eventId)).orElse(null);
-        ThreadEntity threadEntity = ThreadEntity
+        ThreadEntity threadEntity = threadDao.save(
+            ThreadEntity
             .builder()
-            .name(name)
+            .name(threadInputDto.getName())
+            .board(boardDao.findById(threadInputDto.getBoard()).get())
+            .xrefUserTeam(
+                threadInputDto
+                .getTeam()
+                .map((teamId) ->
+                    xrefUserTeamDao
+                    .findByUserIdAndTeamId(userEntity.getId(), teamId)
+                    .get()
+                )
+                .orElse(null)
+            )
+            .event(
+                threadInputDto
+                .getEvent()
+                .flatMap((eventId) -> eventDao.findById(eventId))
+                .orElse(null)
+            )
             .user(userEntity)
-            .board(boardEntity)
-            // .team(teamEntity)
-            .event(eventEntity)
-            .build();
+            .build()
+        );
 
         threadEntity = threadDao.save(threadEntity);
         return Optional.of(threadEntity.toDto());

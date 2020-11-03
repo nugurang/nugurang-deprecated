@@ -61,11 +61,6 @@ public class ThreadEntity implements BaseEntity<ThreadDto>, Serializable {
     @JoinColumn(name = "event")
     private EventEntity event;
 
-    /*
-    @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL)
-    private List<ArticleEntity> articles = new ArrayList<ArticleEntity>();
-    */
-
     @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL)
     private List<XrefThreadTagEntity> xrefTags = new ArrayList<>();
 
@@ -74,12 +69,12 @@ public class ThreadEntity implements BaseEntity<ThreadDto>, Serializable {
         String name,
         BoardEntity board,
         UserEntity user,
-        XrefUserTeamEntity team,
+        XrefUserTeamEntity xrefUserTeam,
         EventEntity event) {
         this.name = name;
         this.board = board;
         this.user = user;
-        this.xrefUserTeam = team;
+        this.xrefUserTeam = xrefUserTeam;
         this.event = event;
     }
 
@@ -89,6 +84,8 @@ public class ThreadEntity implements BaseEntity<ThreadDto>, Serializable {
             .builder()
             .id(id)
             .name(name)
+            .createdAt(createdAt)
+            .modifiedAt(modifiedAt)
             .build();
     }
 }

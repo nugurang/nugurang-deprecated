@@ -16,9 +16,5 @@ public class ArticleInputDto {
     @NotNull
     private Optional<String> title;
     @NotNull
-    private Long thread;
-    @NotNull
-    private Optional<Long> parent;
-    @NotNull
     private List<Long> images;
 }

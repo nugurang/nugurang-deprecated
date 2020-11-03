@@ -1,6 +1,6 @@
 package com.nugurang.dto;
 
-import java.time.OffsetDateTime;
+import java.util.Optional;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,13 +9,15 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class ThreadDto {
-    @NotNull
-    private Long id;
+public class ThreadInputDto {
     @NotNull
     private String name;
     @NotNull
-    private OffsetDateTime createdAt;
+    private ArticleInputDto article;
     @NotNull
-    private OffsetDateTime modifiedAt;
+    private Long board;
+    @NotNull
+    private Optional<Long> event;
+    @NotNull
+    private Optional<Long> team;
 }

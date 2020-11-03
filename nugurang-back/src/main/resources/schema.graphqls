@@ -3,8 +3,6 @@ scalar DateTime
 input ArticleInput {
     content: String!
     title: String
-    thread: ID!
-    parent: ID
     images: [ID]!
 }
 
@@ -31,6 +29,14 @@ input TaskInput {
     progress: ID
     users: [ID]!
     positions: [ID]!
+}
+
+input ThreadInput {
+    name: String!
+    article: ArticleInput!
+    board: ID!
+    event: ID
+    team: ID
 }
 
 type Article {
@@ -228,7 +234,7 @@ type Query {
 
 type Mutation {
     """CREATE"""
-    createArticle(article: ArticleInput!): Article
+    createArticle(article: ArticleInput!, thread: ID!, parent: ID): Article
     createBoard(name: String!): Board
     createEvent(board: ID!, name: String!, content: String, images: [ID]!): Event
     createFollowing(user: ID!): Boolean
@@ -241,7 +247,7 @@ type Mutation {
     createTask(task: TaskInput!): Task
     createTaskReview(honor: TaskHonorInput!): Boolean!
     createTeam(name: String!): Team
-    createThread(board: ID!, name: String!, team: ID, event: ID): Thread
+    createThread(thread: ThreadInput!): Thread
     createUser(name: String!, email: String!, biography: String, image: ID): User
     createUserReviews(project: ID!, honors: [UserHonorInput]!): Boolean!
     createVote(user: ID!, article: ID!, voteTypes: [ID]!): Vote
