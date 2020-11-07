@@ -220,6 +220,7 @@ type Query {
     getBoard(id: ID!): Board
     getBoardByName(name: String!): Board
     getBoardsByNames(names: [String]!): [Board]!
+    getImage(id: ID!): Image
     getNotification(id: ID!): Notification
     getProject(id: ID!): Project
     getTask(id: ID!): Task
