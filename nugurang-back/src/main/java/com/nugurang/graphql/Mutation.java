@@ -38,6 +38,7 @@ import com.nugurang.dto.ThreadDto;
 import com.nugurang.dto.ThreadInputDto;
 import com.nugurang.dto.UserDto;
 import com.nugurang.dto.UserHonorInputDto;
+import com.nugurang.dto.UserInputDto;
 import com.nugurang.dto.VoteDto;
 import com.nugurang.dto.VoteTypeDto;
 import com.nugurang.dto.WorkDto;
@@ -343,15 +344,15 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.of(threadEntity.toDto());
     }
 
-    Optional<UserDto> createUser(String name, String email, String biography, Optional<Long> image) {
+    Optional<UserDto> createUser(UserInputDto userInputDto) {
         UserEntity userEntity = UserEntity
             .builder()
             .oauth2Provider(oauth2Service.getProvider())
             .oauth2Id(oauth2Service.getId())
-            .name(name)
-            .email(email)
-            .biography(biography)
-            .image(image.flatMap((id) -> imageDao.findById(id)).orElse(null))
+            .name(userInputDto.getName())
+            .email(userInputDto.getEmail())
+            .biography(userInputDto.getBiography())
+            .image(userInputDto.getImage().flatMap((id) -> imageDao.findById(id)).orElse(null))
             .build();
         userEntity = userDao.save(userEntity);
         return Optional.of(userEntity.toDto());
@@ -416,10 +417,24 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.empty();
     }
 
-    Optional<UserDto> updateUser(
-        Long user, String name, String email, Long image
-    ) {
-        return Optional.empty();
+    Optional<UserDto> updateUser(Long user, UserInputDto userInputDto) {
+        return Optional.of(
+            userDao
+            .findById(user)
+            .map((userEntity) -> {
+                userEntity.setName(userInputDto.getName());
+                userEntity.setEmail(userInputDto.getEmail());
+                userEntity.setBiography(userInputDto.getBiography());
+                userEntity.setImage(
+                    userInputDto
+                    .getImage()
+                    .flatMap((id) -> imageDao.findById(id)).orElse(null)
+                );
+                return userEntity;
+            })
+            .get()
+            .toDto()
+        );
     }
 
     Optional<VoteDto> updateVote(Long vote, List<Long> voteTypes) {

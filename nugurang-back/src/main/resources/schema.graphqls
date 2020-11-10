@@ -16,6 +16,13 @@ input TaskHonorInput {
     honor: Int!
 }
 
+input UserInput {
+    name: String!
+    email: String!
+    biography: String
+    image: ID
+}
+
 input UserHonorInput {
     user: ID!
     honors: [PositionHonorInput]!
@@ -252,7 +259,7 @@ type Mutation {
     createTaskReview(honor: TaskHonorInput!): Boolean!
     createTeam(name: String!): Team
     createThread(thread: ThreadInput!): Thread
-    createUser(name: String!, email: String!, biography: String, image: ID): User
+    createUser(user: UserInput!): User
     createUserReviews(project: ID!, honors: [UserHonorInput]!): Boolean!
     createVote(user: ID!, article: ID!, voteTypes: [ID]!): Vote
     createVoteType(name: String!): VoteType
@@ -265,7 +272,7 @@ type Mutation {
     updateTask(task: ID!, work: ID!, name: String!, users: [ID]!, order: Int!, progress: Int!, difficulty: Int!, positions: [ID]!): Task
     updateTeam(team: ID!, name: String!, users: [ID]!): Team
     updateThread(thread: ID!, board: ID!, name: String, event: ID): Thread
-    updateUser(user: ID!, name: String!, email: String!, image: ID): User
+    updateUser(id: ID!, user: UserInput!): User
     updateVote(vote: ID!, voteTypes: [ID]!): Vote
     updateWork(work: ID!, project: ID!, name: String!, order: Int!): Work
     """DELETE"""
