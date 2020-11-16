@@ -11,4 +11,5 @@ import lombok.Data;
 public class TeamInputDto {
     @NotNull
     private String name;
+    private boolean placeholder;
 }
