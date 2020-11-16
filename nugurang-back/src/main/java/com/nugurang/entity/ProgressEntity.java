@@ -33,7 +33,7 @@ public class ProgressEntity implements BaseEntity<ProgressDto> {
     public ProgressDto toDto() {
         return ProgressDto
             .builder()
-            .id(name)
+            .id(id)
             .name(name)
             .build();
     }
