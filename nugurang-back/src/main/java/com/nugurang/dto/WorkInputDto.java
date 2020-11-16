@@ -9,15 +9,9 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class ThreadInputDto {
+public class WorkInputDto {
     @NotNull
     private String name;
     @NotNull
-    private ArticleInputDto firstArticle;
-    @NotNull
-    private Long board;
-    @NotNull
-    private Optional<Long> event;
-    @NotNull
-    private Optional<Long> team;
+    private Optional<Integer> order;
 }

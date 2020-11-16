@@ -62,7 +62,7 @@ input TeamInput {
 
 input ThreadInput {
     name: String!
-    article: ArticleInput!
+    firstArticle: ArticleInput!
     event: ID
     team: ID
 }
@@ -227,9 +227,19 @@ type UserEvaluation {
 }
 
 type UserHonor {
+    id: ID!
     honor: Int!
     user: User!
     position: Position!
+}
+
+type UserReview {
+    id: ID!
+    honor: Int!
+    position: Position!
+    fromUser: User!
+    toUser: User!
+    evaluation: UserEvaluation!
 }
 
 type Vote {

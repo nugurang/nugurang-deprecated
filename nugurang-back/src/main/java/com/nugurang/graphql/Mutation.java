@@ -23,7 +23,9 @@ import com.nugurang.dao.XrefUserTeamDao;
 import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.ArticleInputDto;
 import com.nugurang.dto.BoardDto;
+import com.nugurang.dto.BoardInputDto;
 import com.nugurang.dto.EventDto;
+import com.nugurang.dto.EventInputDto;
 import com.nugurang.dto.ImageDto;
 import com.nugurang.dto.PositionDto;
 import com.nugurang.dto.ProjectDto;
@@ -33,7 +35,9 @@ import com.nugurang.dto.StarDto;
 import com.nugurang.dto.TagDto;
 import com.nugurang.dto.TaskDto;
 import com.nugurang.dto.TaskInputDto;
+import com.nugurang.dto.TaskReviewInputDto;
 import com.nugurang.dto.TeamDto;
+import com.nugurang.dto.TeamInputDto;
 import com.nugurang.dto.ThreadDto;
 import com.nugurang.dto.ThreadInputDto;
 import com.nugurang.dto.UserDto;
@@ -42,6 +46,7 @@ import com.nugurang.dto.UserReviewInputDto;
 import com.nugurang.dto.VoteDto;
 import com.nugurang.dto.VoteTypeDto;
 import com.nugurang.dto.WorkDto;
+import com.nugurang.dto.WorkInputDto;
 import com.nugurang.entity.BoardEntity;
 import com.nugurang.entity.FollowingEntity;
 import com.nugurang.entity.ImageEntity;
@@ -62,7 +67,6 @@ import com.nugurang.service.ArticleService;
 import com.nugurang.service.OAuth2Service;
 import com.nugurang.service.UserService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -108,13 +112,18 @@ public class Mutation implements GraphQLMutationResolver {
         );
     }
 
-    Optional<BoardDto> createBoard(String name) {
-        BoardEntity boardEntity = BoardEntity.builder().name(name).build();
-        boardEntity = boardDao.save(boardEntity);
-        return Optional.of(boardEntity.toDto());
+    Optional<BoardDto> createBoard(BoardInputDto boardInputDto) {
+        return Optional.of(
+            boardDao.save(
+                BoardEntity
+                .builder()
+                .name(boardInputDto.getName())
+                .build()
+            ).toDto()
+        );
     }
 
-    Optional<EventDto> createEvent(Long board, String name, String content, List<Long> images) {
+    Optional<EventDto> createEvent(EventInputDto eventInputDto) {
         return Optional.empty();
     }
 
@@ -152,7 +161,7 @@ public class Mutation implements GraphQLMutationResolver {
         );
     }
 
-    Optional<ProjectDto> createProject(Long team, ProjectInputDto projectInputDto) {
+    Optional<ProjectDto> createProject(ProjectInputDto projectInputDto, Long team) {
         return Optional.of(
             projectDao
             .save(
@@ -185,13 +194,13 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     @Transactional
-    Optional<TaskDto> createTask(TaskInputDto taskInputDto) {
+    Optional<TaskDto> createTask(TaskInputDto taskInputDto, Long work) {
         TaskEntity taskEntity = taskDao.save(
             TaskEntity
             .builder()
             .name(taskInputDto.getName())
             .order(taskInputDto.getOrder().orElse(0))
-            .work(workDao.findById(taskInputDto.getWork()).get())
+            .work(workDao.findById(work).get())
             .progress(
                 taskInputDto
                 .getProgress()
@@ -237,13 +246,13 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.of(taskEntity.toDto());
     }
 
-    Optional<TeamDto> createTeam(String name) {
+    Optional<TeamDto> createTeam(TeamInputDto teamInputDto) {
         UserEntity userEntity = userService.getCurrentUser().get();
 
         TeamEntity teamEntity = teamDao.save(
             TeamEntity
             .builder()
-            .name(name)
+            .name(teamInputDto.getName())
             .build()
         );
 
@@ -262,13 +271,13 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     @Transactional
-    Optional<ThreadDto> createThread(ThreadInputDto threadInputDto) {
+    Optional<ThreadDto> createThread(ThreadInputDto threadInputDto, Long board) {
         UserEntity userEntity = userService.getCurrentUser().get();
         ThreadEntity threadEntity = threadDao.save(
             ThreadEntity
             .builder()
             .name(threadInputDto.getName())
-            .board(boardDao.findById(threadInputDto.getBoard()).get())
+            .board(boardDao.findById(board).get())
             .xrefUserTeam(
                 threadInputDto
                 .getTeam()
@@ -290,7 +299,7 @@ public class Mutation implements GraphQLMutationResolver {
         );
 
         articleService.createArticle(
-            threadInputDto.getArticle(),
+            threadInputDto.getFirstArticle(),
             threadEntity.getId(),
             Optional.empty()
         );
@@ -320,14 +329,14 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.empty();
     }
 
-    Optional<WorkDto> createWork(Long project, String name, Optional<Integer> order) {
+    Optional<WorkDto> createWork(WorkInputDto workInputDto, Long project) {
         return Optional.of(
             workDao.save(
                 WorkEntity
                 .builder()
-                .name(name)
+                .name(workInputDto.getName())
                 .opened(true)
-                .order(order.orElse(0))
+                .order(workInputDto.getOrder().orElse(0))
                 .project(projectDao.findById(project).get())
                 .build()
             )
@@ -335,33 +344,28 @@ public class Mutation implements GraphQLMutationResolver {
         );
     }
 
-    Optional<ArticleDto> updateArticle(
-        Long article, Long thread, Long parent, String title, String content
-    )  {
+    Optional<ArticleDto> updateArticle(ArticleInputDto articleInputDto, Long id)  {
         return Optional.empty();
     }
 
-    Optional<BoardDto> updateBoard(Long board, String name) {
+    Optional<BoardDto> updateBoard(BoardInputDto boardInputDto, Long id) {
         return Optional.empty();
     }
 
-    Optional<EventDto> updateEvent(
-        Long event, String title, String content, List<Long> images,
-        OffsetDateTime recruitingStart, OffsetDateTime recruitingEnd,
-        OffsetDateTime eventStart, OffsetDateTime eventEnd) {
+    Optional<EventDto> updateEvent(EventInputDto eventInputDto, Long id) {
         return Optional.empty();
     }
 
-    Optional<ProjectDto> updateProject(Long project, ProjectInputDto projectInputDto) {
+    Optional<ProjectDto> updateProject(ProjectInputDto projectInputDto, Long id) {
         return Optional.of(
             projectDao
-            .findById(project)
+            .findById(id)
             .map((projectEntity) -> {
                 projectEntity.setName(projectInputDto.getName());
                 projectEntity.setEvent(
                     projectInputDto
                     .getEvent()
-                    .flatMap((id) -> eventDao.findById(id)).orElse(null)
+                    .flatMap((eventId) -> eventDao.findById(eventId)).orElse(null)
                 );
                 return projectEntity;
             })
@@ -388,19 +392,19 @@ public class Mutation implements GraphQLMutationResolver {
         return true;
     }
     
-    Optional<TaskDto> updateTask(Long id, TaskInputDto taskInputDto) {
+    Optional<TaskDto> updateTask(TaskInputDto taskInputDto, Long id) {
         return Optional.empty();
     }
 
-    Boolean updateTaskReview(Long task, Integer honor) {
+    Boolean updateTaskReview(TaskReviewInputDto taskReviewInputDto) {
         return false;
     }
 
-    Optional<TeamDto> updateTeam(Long team, String name, List<Long> users) {
+    Optional<TeamDto> updateTeam(TeamInputDto teamInputDto, Long id) {
         return Optional.empty();
     }
 
-    Optional<ThreadDto> updateThread(Long thread, Long board, String name, Long event) {
+    Optional<ThreadDto> updateThread(ThreadInputDto threadInputDto, Long id) {
         return Optional.empty();
     }
 
@@ -425,13 +429,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     @Transactional
-    Boolean updateUserReviews(Long project, List<UserReviewInputDto> userReviews) {
-        UserEntity fromUser = userService.getCurrentUser().get();
-        ProjectEntity projectEntity = projectDao.findById(project).get();
-        UserEvaluationEntity userEvaluationEntity = projectEntity.getUserEvaluation();
-        if (userEvaluationEntity == null)
-            return false;
-
+    Boolean updateUserReviews(List<UserReviewInputDto> userReviews, Long userEvaluation) {
         List<UserReviewEntity> userReviewEntities = userReviewDao.saveAll(
             userReviews
             .stream()
@@ -444,7 +442,7 @@ public class Mutation implements GraphQLMutationResolver {
                         UserReviewEntity
                         .builder()
                         .honor(positionHonorInputDto.getHonor())
-                        .fromUser(fromUser)
+                        .fromUser(userService.getCurrentUser().get())
                         .toUser(
                             userDao.findById(userReviewInputDto.getToUser())
                             .get()
@@ -454,7 +452,7 @@ public class Mutation implements GraphQLMutationResolver {
                             .findById(positionHonorInputDto.getPosition())
                             .get()
                         )
-                        .userEvaluation(userEvaluationEntity)
+                        .userEvaluation(userEvaluationDao.findById(userEvaluation).get())
                         .build()
                     )
                 )
@@ -469,7 +467,7 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.empty();
     }
 
-    Optional<WorkDto> updateWork(Long work, Long project, String name, Integer order) {
+    Optional<WorkDto> updateWork(WorkInputDto workInputDto, Long id) {
         return Optional.empty();
     }
 

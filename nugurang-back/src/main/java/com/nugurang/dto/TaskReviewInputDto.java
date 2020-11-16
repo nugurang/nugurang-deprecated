@@ -8,13 +8,9 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class OAuth2UserDto {
+public class TaskReviewInputDto {
     @NotNull
-    private String id;
+    private Integer honor;
     @NotNull
-    private String provider;
-    @NotNull
-    private String name;
-    @NotNull
-    private String email;
+    private Long task;
 }

@@ -13,7 +13,5 @@ public class ProjectInputDto {
     @NotNull
     private String name;
     @NotNull
-    private Long team;
-    @NotNull
     private Optional<Long> event;
 }

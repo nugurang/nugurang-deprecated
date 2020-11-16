@@ -4,6 +4,7 @@ import com.nugurang.dto.ArticleDto;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -94,7 +95,7 @@ public class ArticleEntity implements BaseEntity<ArticleDto> {
         return ArticleDto
             .builder()
             .id(id)
-            .title(title)
+            .title(Optional.ofNullable(title))
             .content(content)
             .viewCount(viewCount)
             .createdAt(getCreatedAt())

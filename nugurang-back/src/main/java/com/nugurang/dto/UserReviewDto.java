@@ -8,13 +8,9 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class OAuth2UserDto {
+public class UserReviewDto {
     @NotNull
-    private String id;
+    private Long id;
     @NotNull
-    private String provider;
-    @NotNull
-    private String name;
-    @NotNull
-    private String email;
+    private Integer honor;
 }

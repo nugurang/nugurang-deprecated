@@ -8,13 +8,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class OAuth2UserDto {
-    @NotNull
-    private String id;
-    @NotNull
-    private String provider;
+public class TeamInputDto {
     @NotNull
     private String name;
-    @NotNull
-    private String email;
 }

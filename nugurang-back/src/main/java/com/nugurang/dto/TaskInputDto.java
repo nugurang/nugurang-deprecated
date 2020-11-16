@@ -18,8 +18,6 @@ public class TaskInputDto {
     @NotNull
     private Optional<Integer> order;
     @NotNull
-    private Long work;
-    @NotNull
     private Optional<Long> progress;
     @NotNull
     private List<Long> users;
