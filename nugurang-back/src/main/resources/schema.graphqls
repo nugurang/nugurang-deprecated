@@ -6,14 +6,28 @@ input ArticleInput {
     images: [ID]!
 }
 
+input BoardInput {
+    name: String!
+}
+
+input EventInput {
+    name: String!
+    content: String
+    recrutingStart: DateTime!
+    recrutingEnd: DateTime!
+    eventStart: DateTime!
+    eventEnd: DateTime!
+    images: [ID]!
+}
+
 input PositionHonorInput {
     position: ID!
     honor: Int!
 }
 
 input ProjectInput {
-    name: String!,
-    event: ID,
+    name: String!
+    event: ID
 }
 
 input UserInput {
@@ -32,18 +46,30 @@ input TaskInput {
     name: String!
     difficulty: Int
     order: Int
-    work: ID!
     progress: ID
     users: [ID]!
     positions: [ID]!
 }
 
+input TaskReviewInput {
+    honor: Int!
+    task: ID!
+}
+
+input TeamInput {
+    name: String!
+}
+
 input ThreadInput {
     name: String!
     article: ArticleInput!
-    board: ID!
     event: ID
     team: ID
+}
+
+input WorkInput {
+    name: String!
+    order: Int
 }
 
 type Article {
@@ -182,13 +208,14 @@ type User {
     honors: [UserHonor]!
     image: Image
     blog: Board
-    getTeams(page: Int!, pageSize: Int!): [Team]!
-    getUserEvaluations(page: Int!, pageSize: Int!): [UserEvaluation]!
-    getFollowings(page: Int!, pageSize: Int!): [User]!
-    getFollowers(page: Int!, pageSize: Int!): [User]!
-    getThreads(page: Int!, pageSize: Int!): [Thread]!
     getArticles(page: Int!, pageSize: Int!): [Article]!
+    getFollowers(page: Int!, pageSize: Int!): [User]!
+    getFollowings(page: Int!, pageSize: Int!): [User]!
     getNotifications(page: Int!, pageSize: Int!): [Notification]!
+    getProjects(page: Int!, pageSize: Int!): [Project]!
+    getTeams(page: Int!, pageSize: Int!): [Team]!
+    getThreads(page: Int!, pageSize: Int!): [Thread]!
+    getUserEvaluations(page: Int!, pageSize: Int!): [UserEvaluation]!
 }
 
 type UserEvaluation {
@@ -196,6 +223,7 @@ type UserEvaluation {
     startedAt: DateTime!
     days: Int! 
     project: Project!
+    reviews: [UserReview]!
 }
 
 type UserHonor {
@@ -254,42 +282,42 @@ type Query {
 type Mutation {
     """CREATE"""
     createArticle(article: ArticleInput!, thread: ID!, parent: ID): Article
-    createBoard(name: String!): Board
-    createEvent(board: ID!, name: String!, content: String, images: [ID]!): Event
+    createBoard(board: BoardInput!): Board
+    createEvent(event: EventInput!): Event
     createFollowing(user: ID!): Boolean
     createImage(address: String!): Image
     createPosition(name: String!): Position
-    createProject(team: ID!, project: ProjectInput!): Project
+    createProject(project: ProjectInput!, team: ID!): Project
     createRole(name: String!): Role
     createStar(user: ID!, article: ID!): Star
     createTag(name: String!): Tag
-    createTask(task: TaskInput!): Task
-    createTeam(name: String!): Team
-    createThread(thread: ThreadInput!): Thread
+    createTask(task: TaskInput!, work: ID!): Task
+    createTeam(team: TeamInput!): Team
+    createThread(thread: ThreadInput!, board: ID!): Thread
     createUser(user: UserInput!): User
     createVote(user: ID!, article: ID!, voteTypes: [ID]!): Vote
     createVoteType(name: String!): VoteType
-    createWork(project: ID!, name: String!, order: Int): Work
+    createWork(work: WorkInput!, project: ID!): Work
     """UPDATE"""
-    updateArticle(article: ID!, thread: ID!, parent: ID!, title: String, content: String!): Article
-    updateBoard(board: ID!, name: String!): Board
-    updateEvent(event: ID!, title: String!, content: String!, images: [ID]!, recrutingStart: DateTime!, recrutingEnd: DateTime!, eventStart: DateTime!, eventEnd: DateTime!): Event
-    updateProject(id: ID!, project: ProjectInput!): Project
+    updateArticle(article: ArticleInput!, id: ID!): Article
+    updateBoard(board: BoardInput!, id: ID!): Board
+    updateEvent(event: EventInput!, id: ID!): Event
+    updateProject(project: ProjectInput!, id: ID!): Project
     updateProjectFinish(id: ID!): Boolean!
-    updateTask(id: ID!, task: TaskInput!): Task
-    updateTaskReview(task: ID!, honor: Int): Boolean!
-    updateTeam(team: ID!, name: String!, users: [ID]!): Team
-    updateThread(thread: ID!, board: ID!, name: String, event: ID): Thread
+    updateTask(task: TaskInput!, id: ID!): Task
+    updateTaskReview(taskReview: TaskReviewInput!): Boolean!
+    updateTeam(team: TeamInput!, id: ID!): Team
+    updateThread(thread: ThreadInput!, id: ID!): Thread
     updateUser(user: UserInput!): User
-    updateUserReviews(evaluation: ID!, reviews: [UserReviewInput]!): Boolean!
+    updateUserReviews(reviews: [UserReviewInput]!, evaluation: ID!): Boolean!
     updateVote(vote: ID!, voteTypes: [ID]!): Vote
-    updateWork(work: ID!, project: ID!, name: String!, order: Int!): Work
+    updateWork(work: WorkInput!, id: ID!): Work
 
     """DELETE"""
     deleteArticle(id: ID!): Boolean!
     deleteBoard(id: ID!): Boolean!
     deleteEvent(id: ID!): Boolean!
-    deleteFollowing(user: ID!): Boolean
+    deleteFollowing(id: ID!): Boolean
     deleteImage(id: ID!): Boolean!
     deleteProject(id: ID!): Boolean!
     deleteRole(id: ID!): Boolean!
