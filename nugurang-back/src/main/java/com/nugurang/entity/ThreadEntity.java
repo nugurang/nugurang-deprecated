@@ -1,7 +1,6 @@
 package com.nugurang.entity;
 
 import com.nugurang.dto.ThreadDto;
-import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "thread")
-public class ThreadEntity implements BaseEntity<ThreadDto>, Serializable {
+public class ThreadEntity implements BaseEntity<ThreadDto> {
     @Id
     @GeneratedValue
     private Long id;

@@ -1,7 +1,6 @@
 package com.nugurang.entity;
 
 import com.nugurang.dto.ProgressDto;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -21,7 +20,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "progress")
-public class ProgressEntity implements Serializable, BaseEntity<ProgressDto> {
+public class ProgressEntity implements BaseEntity<ProgressDto> {
     @Id
     @GeneratedValue
     private Long id;

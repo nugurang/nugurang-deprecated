@@ -1,6 +1,5 @@
 package com.nugurang.entity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -20,7 +19,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "tag")
-public class TagEntity implements Serializable {
+public class TagEntity {
     @Id
     @GeneratedValue
     private Long id;

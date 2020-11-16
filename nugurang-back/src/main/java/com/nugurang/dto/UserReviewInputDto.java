@@ -9,9 +9,9 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class UserHonorInputDto {
+public class UserReviewInputDto {
     @NotNull
-    private Long user;
+    private Long toUser;
     @NotNull
     private List<PositionHonorInputDto> honors;
 }

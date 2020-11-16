@@ -1,7 +1,6 @@
 package com.nugurang.entity;
 
 import com.nugurang.dto.TeamDto;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -21,7 +20,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "team")
-public class TeamEntity implements BaseEntity<TeamDto>, Serializable {
+public class TeamEntity implements BaseEntity<TeamDto> {
     @Id
     @GeneratedValue
     private Long id;

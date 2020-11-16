@@ -1,7 +1,6 @@
 package com.nugurang.entity;
 
 import com.nugurang.dto.PositionDto;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -21,7 +20,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "position")
-public class PositionEntity implements BaseEntity<PositionDto>, Serializable {
+public class PositionEntity implements BaseEntity<PositionDto> {
     @Id
     @GeneratedValue
     private Long id;

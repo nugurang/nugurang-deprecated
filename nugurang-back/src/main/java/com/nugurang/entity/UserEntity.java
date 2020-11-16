@@ -1,7 +1,6 @@
 package com.nugurang.entity;
 
 import com.nugurang.dto.UserDto;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -29,7 +28,7 @@ import lombok.Setter;
         @UniqueConstraint(columnNames = {"oauth2_provider", "oauth2_id"}),
     }
 )
-public class UserEntity implements BaseEntity<UserDto>, Serializable {
+public class UserEntity implements BaseEntity<UserDto> {
     @Id
     @GeneratedValue
     private Long id;

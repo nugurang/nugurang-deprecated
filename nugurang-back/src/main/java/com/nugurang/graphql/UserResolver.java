@@ -4,6 +4,7 @@ import com.nugurang.dao.ArticleDao;
 import com.nugurang.dao.BoardDao;
 import com.nugurang.dao.ImageDao;
 import com.nugurang.dao.NotificationDao;
+import com.nugurang.dao.ProjectDao;
 import com.nugurang.dao.TeamDao;
 import com.nugurang.dao.ThreadDao;
 import com.nugurang.dao.UserDao;
@@ -12,9 +13,11 @@ import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.BoardDto;
 import com.nugurang.dto.ImageDto;
 import com.nugurang.dto.NotificationDto;
+import com.nugurang.dto.ProjectDto;
 import com.nugurang.dto.TeamDto;
 import com.nugurang.dto.ThreadDto;
 import com.nugurang.dto.UserDto;
+import com.nugurang.dto.UserEvaluationDto;
 import com.nugurang.dto.UserHonorDto;
 import graphql.kickstart.tools.GraphQLResolver;
 import java.util.List;
@@ -28,8 +31,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserResolver implements GraphQLResolver<UserDto> {
     private final ArticleDao articleDao;
-    private final ImageDao imageDao;
     private final BoardDao boardDao;
+    private final ImageDao imageDao;
+    private final ProjectDao projectDao;
     private final TeamDao teamDao;
     private final ThreadDao threadDao;
     private final UserDao userDao;
@@ -63,22 +67,6 @@ public class UserResolver implements GraphQLResolver<UserDto> {
         return Optional.empty();
     }
 
-    public List<TeamDto> getTeams(UserDto userDto, Integer page, Integer pageSize) {
-        return teamDao
-            .findAllByUserId(userDto.getId(), PageRequest.of(page, pageSize))
-            .stream()
-            .map((entity) -> entity.toDto())
-            .collect(Collectors.toList());
-    }
-
-    public List<ThreadDto> getThreads(UserDto userDto, Integer page, Integer pageSize) {
-        return threadDao
-            .findAllByUserId(userDto.getId(), PageRequest.of(page, pageSize))
-            .stream()
-            .map((entity) -> entity.toDto())
-            .collect(Collectors.toList());
-    }
-
     public List<ArticleDto> getArticles(UserDto userDto, Integer page, Integer pageSize) {
         return articleDao
             .findAllByUserId(userDto.getId(), PageRequest.of(page, pageSize))
@@ -108,6 +96,39 @@ public class UserResolver implements GraphQLResolver<UserDto> {
         return notificationDao
             .findAllByUserId(userDto.getId(), PageRequest.of(page, pageSize))
             .stream()
+            .map((entity) -> entity.toDto())
+            .collect(Collectors.toList());
+    }
+
+    public List<ProjectDto> getProjects(UserDto userDto, Integer page, Integer pageSize) {
+        return projectDao
+            .findAllByUserId(userDto.getId(), PageRequest.of(page, pageSize))
+            .stream()
+            .map((entity) -> entity.toDto())
+            .collect(Collectors.toList());
+    }
+
+    public List<TeamDto> getTeams(UserDto userDto, Integer page, Integer pageSize) {
+        return teamDao
+            .findAllByUserId(userDto.getId(), PageRequest.of(page, pageSize))
+            .stream()
+            .map((entity) -> entity.toDto())
+            .collect(Collectors.toList());
+    }
+
+    public List<ThreadDto> getThreads(UserDto userDto, Integer page, Integer pageSize) {
+        return threadDao
+            .findAllByUserId(userDto.getId(), PageRequest.of(page, pageSize))
+            .stream()
+            .map((entity) -> entity.toDto())
+            .collect(Collectors.toList());
+    }
+
+    public List<UserEvaluationDto> getUserEvaluations(UserDto userDto, Integer page, Integer pageSize) {
+        return projectDao
+            .findAllByUserId(userDto.getId(), PageRequest.of(page, pageSize))
+            .stream()
+            .map((projectEntity) -> projectEntity.getUserEvaluation())
             .map((entity) -> entity.toDto())
             .collect(Collectors.toList());
     }

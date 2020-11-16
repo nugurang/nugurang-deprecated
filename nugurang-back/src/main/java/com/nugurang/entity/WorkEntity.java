@@ -1,7 +1,6 @@
 package com.nugurang.entity;
 
 import com.nugurang.dto.WorkDto;
-import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,7 +28,7 @@ import lombok.Setter;
         @UniqueConstraint(columnNames = {"project", "name", "order"})
     }
 )
-public class WorkEntity implements Serializable, BaseEntity<WorkDto> {
+public class WorkEntity implements BaseEntity<WorkDto> {
     @Id
     @GeneratedValue
     private Long id;

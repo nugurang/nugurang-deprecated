@@ -1,7 +1,6 @@
 package com.nugurang.entity;
 
 import com.nugurang.dto.EventDto;
-import java.io.Serializable;
 import java.time.OffsetDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +17,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "event")
-public class EventEntity implements Serializable, BaseEntity<EventDto> {
+public class EventEntity implements BaseEntity<EventDto> {
     @Id
     @GeneratedValue
     private Long id;

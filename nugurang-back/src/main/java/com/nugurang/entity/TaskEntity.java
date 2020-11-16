@@ -1,7 +1,6 @@
 package com.nugurang.entity;
 
 import com.nugurang.dto.TaskDto;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -30,7 +29,7 @@ import lombok.Setter;
         @UniqueConstraint(columnNames = {"work", "name", "order"})
     }
 ) 
-public class TaskEntity implements BaseEntity<TaskDto>, Serializable {
+public class TaskEntity implements BaseEntity<TaskDto> {
     @Id
     @GeneratedValue
     private Long id;

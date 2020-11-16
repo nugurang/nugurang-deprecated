@@ -1,5 +1,6 @@
 package com.nugurang.dto;
 
+import java.time.OffsetDateTime;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,9 +9,11 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class TaskHonorInputDto {
+public class UserEvaluationDto {
     @NotNull
-    private Long task;
+    private Long id;
     @NotNull
-    private Integer honor;
+    private OffsetDateTime startedAt;
+    @NotNull
+    private Integer days;
 }

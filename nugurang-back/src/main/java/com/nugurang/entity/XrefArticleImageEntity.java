@@ -1,6 +1,5 @@
 package com.nugurang.entity;
 
-import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -23,7 +22,7 @@ import lombok.Setter;
         @UniqueConstraint(columnNames = {"article", "image"})
     }
 )
-public class XrefArticleImageEntity implements Serializable {
+public class XrefArticleImageEntity {
     @Id
     @GeneratedValue
     private Long id;

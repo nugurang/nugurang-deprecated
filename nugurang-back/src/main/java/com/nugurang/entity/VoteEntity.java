@@ -1,6 +1,5 @@
 package com.nugurang.entity;
 
-import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -23,7 +22,7 @@ import lombok.Setter;
         @UniqueConstraint(columnNames = {"user", "article"})
     }
 )
-public class VoteEntity implements Serializable {
+public class VoteEntity {
     @Id
     @GeneratedValue
     private Long id;

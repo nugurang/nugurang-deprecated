@@ -1,7 +1,6 @@
 package com.nugurang.entity;
 
 import com.nugurang.dto.ArticleDto;
-import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "article")
-public class ArticleEntity implements BaseEntity<ArticleDto>, Serializable {
+public class ArticleEntity implements BaseEntity<ArticleDto> {
     @Id
     @GeneratedValue
     private Long id;

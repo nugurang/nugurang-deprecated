@@ -1,5 +1,6 @@
 package com.nugurang.dto;
 
+import java.util.Optional;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,11 +9,11 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class ProjectDto {
-    @NotNull
-    private Long id;
+public class ProjectInputDto {
     @NotNull
     private String name;
     @NotNull
-    private Boolean finished;
+    private Long team;
+    @NotNull
+    private Optional<Long> event;
 }

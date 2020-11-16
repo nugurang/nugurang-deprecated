@@ -1,7 +1,6 @@
 package com.nugurang.entity;
 
 import com.nugurang.dto.ImageDto;
-import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +16,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "image")
-public class ImageEntity implements BaseEntity<ImageDto>, Serializable {
+public class ImageEntity implements BaseEntity<ImageDto> {
     @Id
     @GeneratedValue
     private Long id;

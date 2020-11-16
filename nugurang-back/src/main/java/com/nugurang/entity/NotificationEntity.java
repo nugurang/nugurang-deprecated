@@ -1,7 +1,6 @@
 package com.nugurang.entity;
 
 import com.nugurang.dto.NotificationDto;
-import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.Optional;
 import javax.persistence.Column;
@@ -31,7 +30,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
         @UniqueConstraint(columnNames = {"user", "article"})
     }
 )
-public class NotificationEntity implements Serializable, BaseEntity<NotificationDto> {
+public class NotificationEntity implements BaseEntity<NotificationDto> {
     @Id
     @GeneratedValue
     private Long id;

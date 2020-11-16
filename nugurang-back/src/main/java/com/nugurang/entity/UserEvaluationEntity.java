@@ -1,14 +1,12 @@
 package com.nugurang.entity;
 
-import java.io.Serializable;
+import com.nugurang.dto.UserEvaluationDto;
 import java.time.OffsetDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,17 +23,24 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Setter
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "evaluation")
-public class EvaluationEntity implements Serializable {
+@Table(name = "user_evaluation")
+public class UserEvaluationEntity implements BaseEntity<UserEvaluationDto> {
     @Id
     @GeneratedValue
     private Long id;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private OffsetDateTime createdAt;
+    private OffsetDateTime startedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "project", nullable = false, unique = true)
-    private ProjectEntity project;
+    @Column(nullable = false)
+    private Integer days;
+
+    public UserEvaluationDto toDto() {
+        return UserEvaluationDto
+            .builder()
+            .startedAt(startedAt)
+            .days(days)
+            .build();
+    }
 }

@@ -1,6 +1,5 @@
 package com.nugurang.entity;
 
-import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +15,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "role")
-public class RoleEntity implements Serializable {
+public class RoleEntity {
     @Id
     @GeneratedValue
     private Long id;
