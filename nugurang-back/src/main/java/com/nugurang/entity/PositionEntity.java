@@ -42,7 +42,7 @@ public class PositionEntity implements BaseEntity<PositionDto> {
             .builder()
             .id(id)
             .name(name)
-            .description(Optional.of(description))
+            .description(Optional.ofNullable(description))
             .build();
     }
 }
