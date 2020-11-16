@@ -5,6 +5,7 @@ import com.nugurang.dao.BoardDao;
 import com.nugurang.dao.ImageDao;
 import com.nugurang.dao.NotificationDao;
 import com.nugurang.dao.PositionDao;
+import com.nugurang.dao.ProgressDao;
 import com.nugurang.dao.ProjectDao;
 import com.nugurang.dao.TaskDao;
 import com.nugurang.dao.TeamDao;
@@ -17,6 +18,7 @@ import com.nugurang.dto.ImageDto;
 import com.nugurang.dto.NotificationDto;
 import com.nugurang.dto.OAuth2UserDto;
 import com.nugurang.dto.PositionDto;
+import com.nugurang.dto.ProgressDto;
 import com.nugurang.dto.ProjectDto;
 import com.nugurang.dto.TaskDto;
 import com.nugurang.dto.TeamDto;
@@ -43,6 +45,7 @@ public class Query implements GraphQLQueryResolver {
     private final ImageDao imageDao;
     private final NotificationDao notificationDao;
     private final PositionDao positionDao;
+    private final ProgressDao progressDao;
     private final ProjectDao projectDao;
     private final TaskDao taskDao;
     private final TeamDao teamDao;
@@ -81,6 +84,13 @@ public class Query implements GraphQLQueryResolver {
 
     List<PositionDto> positions() {
         return positionDao.findAll()
+            .stream()
+            .map((entity) -> entity.toDto())
+            .collect(Collectors.toList());
+    }
+
+    List<ProgressDto> progresses() {
+        return progressDao.findAll()
             .stream()
             .map((entity) -> entity.toDto())
             .collect(Collectors.toList());

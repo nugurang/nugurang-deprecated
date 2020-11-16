@@ -148,11 +148,13 @@ public class Mutation implements GraphQLMutationResolver {
         UserEntity toUser = userDao.findById(user).get();
         if (fromUser.getId() == toUser.getId())
             return false;
-        followingDao.save(FollowingEntity
+        followingDao.save(
+            FollowingEntity
             .builder()
             .fromUser(fromUser)
             .toUser(toUser)
-            .build());
+            .build()
+        );
         return true;
     }
 
@@ -404,7 +406,6 @@ public class Mutation implements GraphQLMutationResolver {
 
         projectEntity.setFinished(true);
         projectEntity.setUserEvaluation(userEvaluationEntity);
-
         return true;
     }
     

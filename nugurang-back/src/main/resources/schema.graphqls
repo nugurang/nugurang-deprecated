@@ -269,6 +269,7 @@ type Query {
     currentUser: User
     currentOAuth2User: OAuth2User
     positions: [Position]!
+    progresses: [Progress]!
     getArticle(id: ID!): Article
     getBoard(id: ID!): Board
     getBoardByName(name: String!): Board
