@@ -31,6 +31,7 @@ import com.nugurang.dto.EventDto;
 import com.nugurang.dto.EventInputDto;
 import com.nugurang.dto.ImageDto;
 import com.nugurang.dto.PositionDto;
+import com.nugurang.dto.PositionInputDto;
 import com.nugurang.dto.ProjectDto;
 import com.nugurang.dto.ProjectInputDto;
 import com.nugurang.dto.RoleDto;
@@ -173,12 +174,19 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.of(imageEntity.toDto());
     }
 
-    Optional<PositionDto> createPosition(String name) {
+    Optional<PositionDto> createPosition(PositionInputDto positionInputDto) {
         return Optional.of(
             positionDao.save(
                 PositionEntity
                 .builder()
-                .name(name)
+                .name(positionInputDto.getName())
+                .description(positionInputDto.getDescription().orElse(null))
+                .image(
+                    positionInputDto
+                    .getImage()
+                    .flatMap((imageId) -> imageDao.findById(imageId))
+                    .orElse(null)
+                )
                 .build()
             ).toDto()
         );
@@ -223,6 +231,7 @@ public class Mutation implements GraphQLMutationResolver {
             .builder()
             .name(taskInputDto.getName())
             .order(taskInputDto.getOrder().orElse(0))
+            .difficulty(taskInputDto.getDifficulty().orElse(0))
             .work(workDao.findById(work).get())
             .progress(
                 taskInputDto

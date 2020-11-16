@@ -20,6 +20,12 @@ input EventInput {
     images: [ID]!
 }
 
+input PositionInput {
+    name: String!
+    description: String
+    image: ID!
+}
+
 input PositionHonorInput {
     position: ID!
     honor: Int!
@@ -132,6 +138,8 @@ type OAuth2User {
 type Position {
     id: ID!
     name: String!
+    description: String
+    image: Image
 }
 
 type Progress {
@@ -305,7 +313,7 @@ type Mutation {
     createEvent(event: EventInput!): Event
     createFollowing(user: ID!): Boolean
     createImage(address: String!): Image
-    createPosition(name: String!): Position
+    createPosition(position: PositionInput!): Position
     createProject(project: ProjectInput!, team: ID!): Project
     createRole(name: String!): Role
     createStar(user: ID!, article: ID!): Star

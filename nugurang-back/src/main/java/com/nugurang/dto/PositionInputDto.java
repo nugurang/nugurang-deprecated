@@ -9,11 +9,13 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class PositionDto {
+public class PositionInputDto {
     @NotNull
     private Long id;
     @NotNull
     private String name;
     @NotNull
     private Optional<String> description;
+    @NotNull
+    private Optional<Long> image;
 }

@@ -1,21 +1,23 @@
 package com.nugurang.entity;
 
 import com.nugurang.dto.PositionDto;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.CascadeType;
+import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Getter
 @Setter
 @Entity
@@ -28,22 +30,19 @@ public class PositionEntity implements BaseEntity<PositionDto> {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "position", cascade = CascadeType.ALL)
-    private List<TaskHonorEntity> taskHonors = new ArrayList<>();
+    @Column(nullable = true)
+    private String description;
 
-    @OneToMany(mappedBy = "position", cascade = CascadeType.ALL)
-    private List<UserHonorEntity> userHonors = new ArrayList<>();
-
-    @Builder
-    public PositionEntity(String name) {
-        this.name = name;
-    }
+    @ManyToOne
+    @JoinColumn(name = "image", nullable = false)
+    private ImageEntity image;
 
     public PositionDto toDto() {
         return PositionDto
             .builder()
             .id(id)
             .name(name)
+            .description(Optional.of(description))
             .build();
     }
 }
