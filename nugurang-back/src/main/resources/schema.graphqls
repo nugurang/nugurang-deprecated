@@ -23,7 +23,7 @@ input EventInput {
 input PositionInput {
     name: String!
     description: String
-    image: ID!
+    image: ID
 }
 
 input PositionHonorInput {
