@@ -10,11 +10,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -28,17 +30,10 @@ public class ProgressEntity implements BaseEntity<ProgressDto> {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "progress", cascade = CascadeType.ALL)
-    private List<TaskEntity> tasks = new ArrayList<>();
-
-    @Builder
-    public ProgressEntity(String name) {
-        this.name = name;
-    }
-
     public ProgressDto toDto() {
         return ProgressDto
             .builder()
+            .id(name)
             .name(name)
             .build();
     }

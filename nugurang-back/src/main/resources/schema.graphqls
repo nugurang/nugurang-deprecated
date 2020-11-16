@@ -291,6 +291,7 @@ type Query {
 }
 
 type Mutation {
+
     """CREATE"""
     createArticle(article: ArticleInput!, thread: ID!, parent: ID): Article
     createBoard(board: BoardInput!): Board
@@ -309,6 +310,7 @@ type Mutation {
     createVote(user: ID!, article: ID!, voteTypes: [ID]!): Vote
     createVoteType(name: String!): VoteType
     createWork(work: WorkInput!, project: ID!): Work
+
     """UPDATE"""
     updateArticle(article: ArticleInput!, id: ID!): Article
     updateBoard(board: BoardInput!, id: ID!): Board
