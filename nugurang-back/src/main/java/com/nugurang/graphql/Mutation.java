@@ -11,6 +11,7 @@ import com.nugurang.dao.ProjectDao;
 import com.nugurang.dao.RoleDao;
 import com.nugurang.dao.TaskDao;
 import com.nugurang.dao.TaskHonorDao;
+import com.nugurang.dao.TaskReviewDao;
 import com.nugurang.dao.TeamDao;
 import com.nugurang.dao.ThreadDao;
 import com.nugurang.dao.UserDao;
@@ -56,6 +57,7 @@ import com.nugurang.entity.ProjectEntity;
 import com.nugurang.entity.RoleEntity;
 import com.nugurang.entity.TaskEntity;
 import com.nugurang.entity.TaskHonorEntity;
+import com.nugurang.entity.TaskReviewEntity;
 import com.nugurang.entity.TeamEntity;
 import com.nugurang.entity.ThreadEntity;
 import com.nugurang.entity.UserEntity;
@@ -91,6 +93,7 @@ public class Mutation implements GraphQLMutationResolver {
     private final RoleDao roleDao;
     private final TaskDao taskDao;
     private final TaskHonorDao taskHonorDao;
+    private final TaskReviewDao taskReviewDao;
     private final TeamDao teamDao;
     private final ThreadDao threadDao;
     private final UserDao userDao;
@@ -409,8 +412,23 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.empty();
     }
 
+    @Transactional
     Boolean updateTaskReview(TaskReviewInputDto taskReviewInputDto) {
-        return false;
+        TaskEntity taskEntity = taskDao.findById(taskReviewInputDto.getTask()).get();
+        UserEntity userEntity = userService.getCurrentUser().get();
+
+        taskReviewDao.deleteByTaskIdAndUserId(taskEntity.getId(), userEntity.getId());
+
+        taskReviewDao.save(
+            TaskReviewEntity
+            .builder()
+            .honor(taskReviewInputDto.getHonor())
+            .task(taskEntity)
+            .user(userEntity)
+            .build()
+        );
+
+        return true;
     }
 
     Optional<TeamDto> updateTeam(TeamInputDto teamInputDto, Long id) {
@@ -443,6 +461,16 @@ public class Mutation implements GraphQLMutationResolver {
 
     @Transactional
     Boolean updateUserReviews(List<UserReviewInputDto> userReviews, Long userEvaluation) {
+        UserEvaluationEntity userEvaluationEntity = userEvaluationDao
+            .findById(userEvaluation)
+            .get();
+
+        UserEntity currentUserEntity = userService.getCurrentUser().get();
+
+        userReviewDao.deleteAllByUserEvaluationIdAndFromUserId(
+            userEvaluationEntity.getId(),
+            currentUserEntity.getId()
+        );
         List<UserReviewEntity> userReviewEntities = userReviewDao.saveAll(
             userReviews
             .stream()
@@ -455,7 +483,7 @@ public class Mutation implements GraphQLMutationResolver {
                         UserReviewEntity
                         .builder()
                         .honor(positionHonorInputDto.getHonor())
-                        .fromUser(userService.getCurrentUser().get())
+                        .fromUser(currentUserEntity)
                         .toUser(
                             userDao.findById(userReviewInputDto.getToUser())
                             .get()
@@ -465,7 +493,7 @@ public class Mutation implements GraphQLMutationResolver {
                             .findById(positionHonorInputDto.getPosition())
                             .get()
                         )
-                        .userEvaluation(userEvaluationDao.findById(userEvaluation).get())
+                        .userEvaluation(userEvaluationEntity)
                         .build()
                     )
                 )
