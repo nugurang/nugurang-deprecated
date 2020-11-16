@@ -280,7 +280,7 @@ type Mutation {
     updateTaskReview(task: ID!, honor: Int): Boolean!
     updateTeam(team: ID!, name: String!, users: [ID]!): Team
     updateThread(thread: ID!, board: ID!, name: String, event: ID): Thread
-    updateUser(id: ID!, user: UserInput!): User
+    updateUser(user: UserInput!): User
     updateUserReviews(evaluation: ID!, reviews: [UserReviewInput]!): Boolean!
     updateVote(vote: ID!, voteTypes: [ID]!): Vote
     updateWork(work: ID!, project: ID!, name: String!, order: Int!): Work

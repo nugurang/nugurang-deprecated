@@ -404,10 +404,10 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.empty();
     }
 
-    Optional<UserDto> updateUser(Long user, UserInputDto userInputDto) {
+    Optional<UserDto> updateUser(UserInputDto userInputDto) {
         return Optional.of(
-            userDao
-            .findById(user)
+            userService
+            .getCurrentUser()
             .map((userEntity) -> {
                 userEntity.setName(userInputDto.getName());
                 userEntity.setEmail(userInputDto.getEmail());
@@ -417,7 +417,7 @@ public class Mutation implements GraphQLMutationResolver {
                     .getImage()
                     .flatMap((id) -> imageDao.findById(id)).orElse(null)
                 );
-                return userEntity;
+                return userDao.save(userEntity);
             })
             .get()
             .toDto()
