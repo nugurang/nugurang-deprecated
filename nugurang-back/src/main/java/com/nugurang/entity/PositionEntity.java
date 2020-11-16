@@ -34,7 +34,7 @@ public class PositionEntity implements BaseEntity<PositionDto> {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "image", nullable = false)
+    @JoinColumn(name = "image", nullable = true)
     private ImageEntity image;
 
     public PositionDto toDto() {
