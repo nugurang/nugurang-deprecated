@@ -12,7 +12,7 @@ input BoardInput {
 
 input EventInput {
     name: String!
-    content: String
+    description: String
     recrutingStart: DateTime!
     recrutingEnd: DateTime!
     eventStart: DateTime!
@@ -94,8 +94,8 @@ type Board {
 
 type Event {
     id: ID!
-    title: String!
-    content: String!
+    name: String!
+    description: String!
     images: [Image]!
     recruitingStart: DateTime!
     recruitingEnd: DateTime!

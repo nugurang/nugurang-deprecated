@@ -13,9 +13,9 @@ public class EventDto {
     @NotNull
     private Long id;
     @NotNull
-    private String title;
+    private String name;
     @NotNull
-    private String content;
+    private String description;
     @NotNull
     private OffsetDateTime recruitingStart;
     @NotNull

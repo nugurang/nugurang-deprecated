@@ -7,12 +7,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Getter
 @Setter
 @Entity
@@ -23,10 +26,10 @@ public class EventEntity implements BaseEntity<EventDto> {
     private Long id;
 
     @Column(nullable = false)
-    private String title;
+    private String name;
 
     @Column(nullable = false)
-    private String content;
+    private String description;
 
     @Column(nullable = false)
     private OffsetDateTime recruitingStart;
@@ -40,24 +43,11 @@ public class EventEntity implements BaseEntity<EventDto> {
     @Column(nullable = false)
     private OffsetDateTime eventEnd;
 
-    @Builder
-    public EventEntity(
-        String title, String content,
-        OffsetDateTime recruitingStart, OffsetDateTime recruitingEnd,
-        OffsetDateTime eventStart, OffsetDateTime eventEnd) {
-        this.title = title;
-        this.content = content;
-        this.recruitingStart = recruitingStart;
-        this.recruitingEnd = recruitingEnd;
-        this.eventStart = eventStart;
-        this.eventEnd = eventEnd;
-    }
-
     public EventDto toDto() {
         return EventDto
             .builder()
-            .title(title)
-            .content(content)
+            .name(name)
+            .description(description)
             .recruitingStart(recruitingStart)
             .recruitingEnd(recruitingEnd)
             .eventStart(eventStart)

@@ -48,6 +48,7 @@ import com.nugurang.dto.VoteTypeDto;
 import com.nugurang.dto.WorkDto;
 import com.nugurang.dto.WorkInputDto;
 import com.nugurang.entity.BoardEntity;
+import com.nugurang.entity.EventEntity;
 import com.nugurang.entity.FollowingEntity;
 import com.nugurang.entity.ImageEntity;
 import com.nugurang.entity.PositionEntity;
@@ -124,7 +125,19 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Optional<EventDto> createEvent(EventInputDto eventInputDto) {
-        return Optional.empty();
+        return Optional.of(
+            eventDao.save(
+                EventEntity
+                .builder()
+                .name(eventInputDto.getName())
+                .description(eventInputDto.getDescription())
+                .recruitingStart(eventInputDto.getRecruitingStart())
+                .recruitingEnd(eventInputDto.getRecruitingEnd())
+                .eventStart(eventInputDto.getEventStart())
+                .eventEnd(eventInputDto.getEventEnd())
+                .build()
+            ).toDto()
+        );
     }
 
     Boolean createFollowing(Long user) {

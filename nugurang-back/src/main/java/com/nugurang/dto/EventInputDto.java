@@ -14,7 +14,7 @@ public class EventInputDto {
     @NotNull
     private String name;
     @NotNull
-    private String content;
+    private String description;
     @NotNull
     private OffsetDateTime recruitingStart;
     @NotNull
