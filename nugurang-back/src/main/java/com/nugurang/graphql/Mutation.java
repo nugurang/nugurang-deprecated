@@ -48,7 +48,6 @@ import com.nugurang.dto.UserInputDto;
 import com.nugurang.dto.UserReviewInputDto;
 import com.nugurang.dto.VoteDto;
 import com.nugurang.dto.VoteInputDto;
-import com.nugurang.dto.VoteTypeDto;
 import com.nugurang.dto.WorkDto;
 import com.nugurang.dto.WorkInputDto;
 import com.nugurang.entity.BoardEntity;
@@ -357,10 +356,6 @@ public class Mutation implements GraphQLMutationResolver {
             )
             .toDto()
         );
-    }
-
-    Optional<VoteTypeDto> createVoteType(String name) {
-        return Optional.empty();
     }
 
     Optional<WorkDto> createWork(WorkInputDto workInputDto, Long project) {

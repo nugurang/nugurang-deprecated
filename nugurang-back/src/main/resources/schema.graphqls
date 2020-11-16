@@ -315,7 +315,6 @@ type Mutation {
     createThread(thread: ThreadInput!, board: ID!): Thread
     createUser(user: UserInput!): User
     createVote(vote: VoteInput!): Vote
-    createVoteType(name: String!): VoteType
     createWork(work: WorkInput!, project: ID!): Work
 
     """UPDATE"""
