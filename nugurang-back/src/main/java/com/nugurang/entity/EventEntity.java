@@ -46,6 +46,7 @@ public class EventEntity implements BaseEntity<EventDto> {
     public EventDto toDto() {
         return EventDto
             .builder()
+            .id(id)
             .name(name)
             .description(description)
             .recruitingStart(recruitingStart)

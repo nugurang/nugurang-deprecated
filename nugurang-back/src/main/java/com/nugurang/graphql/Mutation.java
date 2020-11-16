@@ -18,6 +18,8 @@ import com.nugurang.dao.UserDao;
 import com.nugurang.dao.UserEvaluationDao;
 import com.nugurang.dao.UserHonorDao;
 import com.nugurang.dao.UserReviewDao;
+import com.nugurang.dao.VoteDao;
+import com.nugurang.dao.VoteTypeDao;
 import com.nugurang.dao.WorkDao;
 import com.nugurang.dao.XrefUserTaskDao;
 import com.nugurang.dao.XrefUserTeamDao;
@@ -45,6 +47,7 @@ import com.nugurang.dto.UserDto;
 import com.nugurang.dto.UserInputDto;
 import com.nugurang.dto.UserReviewInputDto;
 import com.nugurang.dto.VoteDto;
+import com.nugurang.dto.VoteInputDto;
 import com.nugurang.dto.VoteTypeDto;
 import com.nugurang.dto.WorkDto;
 import com.nugurang.dto.WorkInputDto;
@@ -63,6 +66,7 @@ import com.nugurang.entity.ThreadEntity;
 import com.nugurang.entity.UserEntity;
 import com.nugurang.entity.UserEvaluationEntity;
 import com.nugurang.entity.UserReviewEntity;
+import com.nugurang.entity.VoteEntity;
 import com.nugurang.entity.WorkEntity;
 import com.nugurang.entity.XrefUserTaskEntity;
 import com.nugurang.entity.XrefUserTeamEntity;
@@ -100,6 +104,8 @@ public class Mutation implements GraphQLMutationResolver {
     private final UserEvaluationDao userEvaluationDao;
     private final UserHonorDao userHonorDao;
     private final UserReviewDao userReviewDao;
+    private final VoteDao voteDao;
+    private final VoteTypeDao voteTypeDao;
     private final EventDao eventDao;
     private final WorkDao workDao;
     private final XrefUserTaskDao xrefUserTaskDao;
@@ -339,8 +345,18 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.of(userEntity.toDto());
     }
 
-    Optional<VoteDto> createVote(Long user, Long article, List<Long> voteTypes) {
-        return Optional.empty();
+    Optional<VoteDto> createVote(VoteInputDto voteInputDto) {
+        return Optional.of(
+            voteDao.save(
+                VoteEntity
+                .builder()
+                .user(userService.getCurrentUser().get())
+                .article(articleDao.findById(voteInputDto.getArticle()).get())
+                .voteType(voteTypeDao.findById(voteInputDto.getVoteType()).get())
+                .build()
+            )
+            .toDto()
+        );
     }
 
     Optional<VoteTypeDto> createVoteType(String name) {

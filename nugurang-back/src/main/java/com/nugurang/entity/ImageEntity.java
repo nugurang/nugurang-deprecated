@@ -6,12 +6,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Getter
 @Setter
 @Entity
@@ -23,11 +26,6 @@ public class ImageEntity implements BaseEntity<ImageDto> {
 
     @Column(nullable = false) 
     private String address;
-
-    @Builder
-    public ImageEntity(String address) {
-        this.address = address;
-    }
 
     public ImageDto toDto() {
         return ImageDto

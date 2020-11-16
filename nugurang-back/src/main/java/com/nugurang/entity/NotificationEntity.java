@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,9 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Getter
 @Setter
 @Entity
@@ -51,12 +54,6 @@ public class NotificationEntity implements BaseEntity<NotificationDto> {
     @ManyToOne
     @JoinColumn(name = "article")
     private ArticleEntity article;
-
-    @Builder
-    public NotificationEntity(UserEntity user, ArticleEntity article) {
-        this.user = user;
-        this.article = article;
-    }
 
     public NotificationDto toDto() {
         return NotificationDto

@@ -1,5 +1,6 @@
 package com.nugurang.entity;
 
+import com.nugurang.dto.VoteDto;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -7,13 +8,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Getter
 @Setter
 @Table(
@@ -22,7 +26,7 @@ import lombok.Setter;
         @UniqueConstraint(columnNames = {"user", "article"})
     }
 )
-public class VoteEntity {
+public class VoteEntity implements BaseEntity<VoteDto> {
     @Id
     @GeneratedValue
     private Long id;
@@ -39,10 +43,10 @@ public class VoteEntity {
     @JoinColumn(name = "vote_type", nullable = false)
     private VoteTypeEntity voteType;
 
-    @Builder
-    public VoteEntity(UserEntity user, ArticleEntity article, VoteTypeEntity voteType) {
-        this.user = user;
-        this.article = article;
-        this.voteType = voteType;
+    public VoteDto toDto() {
+        return VoteDto
+            .builder()
+            .id(id)
+            .build();
     }
 }

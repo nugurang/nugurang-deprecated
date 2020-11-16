@@ -11,6 +11,7 @@ import com.nugurang.dao.TaskDao;
 import com.nugurang.dao.TeamDao;
 import com.nugurang.dao.ThreadDao;
 import com.nugurang.dao.UserDao;
+import com.nugurang.dao.VoteTypeDao;
 import com.nugurang.dao.WorkDao;
 import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.BoardDto;
@@ -24,6 +25,7 @@ import com.nugurang.dto.TaskDto;
 import com.nugurang.dto.TeamDto;
 import com.nugurang.dto.ThreadDto;
 import com.nugurang.dto.UserDto;
+import com.nugurang.dto.VoteTypeDto;
 import com.nugurang.dto.WorkDto;
 import com.nugurang.service.OAuth2Service;
 import com.nugurang.service.UserService;
@@ -51,6 +53,7 @@ public class Query implements GraphQLQueryResolver {
     private final TeamDao teamDao;
     private final ThreadDao threadDao;
     private final UserDao userDao;
+    private final VoteTypeDao voteTypeDao;
     private final WorkDao workDao;
 
     String ping() {
@@ -91,6 +94,13 @@ public class Query implements GraphQLQueryResolver {
 
     List<ProgressDto> progresses() {
         return progressDao.findAll()
+            .stream()
+            .map((entity) -> entity.toDto())
+            .collect(Collectors.toList());
+    }
+
+    List<VoteTypeDto> voteTypes() {
+        return voteTypeDao.findAll()
             .stream()
             .map((entity) -> entity.toDto())
             .collect(Collectors.toList());

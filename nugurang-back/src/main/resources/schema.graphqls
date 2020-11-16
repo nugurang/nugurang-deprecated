@@ -30,18 +30,6 @@ input ProjectInput {
     event: ID
 }
 
-input UserInput {
-    name: String!
-    email: String!
-    biography: String
-    image: ID
-}
-
-input UserReviewInput {
-    toUser: ID!
-    honors: [PositionHonorInput]!
-}
-
 input TaskInput {
     name: String!
     difficulty: Int
@@ -65,6 +53,24 @@ input ThreadInput {
     firstArticle: ArticleInput!
     event: ID
     team: ID
+}
+
+input UserInput {
+    name: String!
+    email: String!
+    biography: String
+    image: ID
+}
+
+input UserReviewInput {
+    toUser: ID!
+    honors: [PositionHonorInput]!
+}
+
+input VoteInput {
+    user: ID!
+    article: ID!
+    voteType: ID!
 }
 
 input WorkInput {
@@ -270,6 +276,7 @@ type Query {
     currentOAuth2User: OAuth2User
     positions: [Position]!
     progresses: [Progress]!
+    voteTypes: [VoteType]!
     getArticle(id: ID!): Article
     getBoard(id: ID!): Board
     getBoardByName(name: String!): Board
@@ -307,7 +314,7 @@ type Mutation {
     createTeam(team: TeamInput!): Team
     createThread(thread: ThreadInput!, board: ID!): Thread
     createUser(user: UserInput!): User
-    createVote(user: ID!, article: ID!, voteTypes: [ID]!): Vote
+    createVote(vote: VoteInput!): Vote
     createVoteType(name: String!): VoteType
     createWork(work: WorkInput!, project: ID!): Work
 
