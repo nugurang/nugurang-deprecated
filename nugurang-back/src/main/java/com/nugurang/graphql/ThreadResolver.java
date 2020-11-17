@@ -79,19 +79,8 @@ public class ThreadResolver implements GraphQLResolver<ThreadDto> {
             .collect(Collectors.toList());
     }
 
-    public Integer upCount(ThreadDto threadDto) {
-        return 0;
-    }
-
-    public Integer downCount(ThreadDto threadDto) {
-        return 0;
-    }
-
-    public Integer starCount(ThreadDto threadDto) {
-        return 0;
-    }
-
-    public Integer commentCount(ThreadDto threadDto) {
-        return 0;
+    public Long commentCount(ThreadDto threadDto) {
+        return articleDao
+            .countByThreadId(threadDto.getId()) - 1;
     }
 }

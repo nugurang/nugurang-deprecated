@@ -100,6 +100,9 @@ type Article {
     parent: Article
     images: [Image]!
     tags: [Tag]!
+    upCount: Int!
+    downCount: Int!
+    starCount: Int!
 }
 
 type Board {
@@ -205,9 +208,6 @@ type Thread {
     event: Event
     firstArticle: Article!
     getArticles(page: Int!, pageSize: Int!): [Article]!
-    upCount: Int!
-    downCount: Int!
-    starCount: Int!
     commentCount: Int!
     tags: [Tag]!
 }
