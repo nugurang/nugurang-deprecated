@@ -43,7 +43,7 @@ input TagInput {
 input TaskInput {
     name: String!
     difficulty: Int
-    order: Int!
+    order: Int
     progress: ID
     users: [ID]!
     positions: [ID]!
