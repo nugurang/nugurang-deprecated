@@ -36,6 +36,7 @@ import com.nugurang.dto.ProjectDto;
 import com.nugurang.dto.ProjectInputDto;
 import com.nugurang.dto.RoleDto;
 import com.nugurang.dto.TagDto;
+import com.nugurang.dto.TagInputDto;
 import com.nugurang.dto.TaskDto;
 import com.nugurang.dto.TaskInputDto;
 import com.nugurang.dto.TaskReviewInputDto;
@@ -215,7 +216,7 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.empty();
     }
 
-    Optional<TagDto> createTag(String name) {
+    Optional<TagDto> createTag(TagInputDto tagInputDto) {
         return Optional.empty();
     }
 
