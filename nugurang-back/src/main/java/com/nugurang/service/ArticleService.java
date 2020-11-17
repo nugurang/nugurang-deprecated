@@ -26,6 +26,7 @@ public class ArticleService {
             .builder()
             .title(articleInputDto.getTitle().orElse(null))
             .content(articleInputDto.getContent())
+            .viewCount(0L)
             .user(userService.getCurrentUser().get())
             .thread(threadDao.findById(thread).get())
             .parent(
