@@ -286,6 +286,8 @@ public class Mutation implements GraphQLMutationResolver {
     @Transactional
     Optional<TeamDto> createTeam(TeamInputDto teamInputDto) {
 
+        UserEntity currentUserEntity = userService.getCurrentUser().get();
+
         TeamEntity teamEntity = teamDao.save(
             TeamEntity
             .builder()
@@ -298,7 +300,7 @@ public class Mutation implements GraphQLMutationResolver {
         xrefUserTeamDao.save(
             XrefUserTeamEntity
             .builder()
-            .user(userService.getCurrentUser().get())
+            .user(currentUserEntity)
             .team(teamEntity)
             .role(roleEntity)
             .build()
@@ -308,6 +310,7 @@ public class Mutation implements GraphQLMutationResolver {
             teamInputDto
             .getUsers()
             .stream()
+            .filter((userId) -> userId != currentUserEntity.getId())
             .map((userId) -> userDao.findById(userId).get())
             .map((userEntity) ->
                  XrefUserTeamEntity
@@ -511,6 +514,7 @@ public class Mutation implements GraphQLMutationResolver {
             teamInputDto
             .getUsers()
             .stream()
+            .filter((userId) -> userId != id)
             .map((userId) -> userDao.findById(userId).get())
             .map((userEntity) ->
                  XrefUserTeamEntity
