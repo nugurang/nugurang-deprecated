@@ -138,6 +138,12 @@ public class Query implements GraphQLQueryResolver {
             .map((entity) -> entity.toDto());
     }
 
+    Optional<ImageDto> getImageByAddress(String address) {
+        return imageDao
+            .findByAddress(address)
+            .map((entity) -> entity.toDto());
+    }
+
     Optional<NotificationDto> getNotification(Long id) {
         return notificationDao
             .findById(id)
