@@ -56,6 +56,7 @@ input TaskReviewInput {
 
 input TeamInput {
     name: String!
+    users: [ID]!
 }
 
 input ThreadInput {

@@ -44,16 +44,19 @@ public class ThreadResolver implements GraphQLResolver<ThreadDto> {
         return threadDao
             .findById(threadDto.getId())
             .map((threadEntity) -> threadEntity.getUser())
-            .map((userEntity) -> userEntity.toDto())
+            .map((entity) -> entity.toDto())
             .get();
     }
 
     public Optional<TeamDto> team(ThreadDto threadDto) {
-        return Optional.empty();
+        return null;
     }
 
     public Optional<EventDto> event(ThreadDto threadDto) {
-        return Optional.empty();
+        return threadDao
+            .findById(threadDto.getId())
+            .map((threadEntity) -> threadEntity.getEvent())
+            .map((entity) -> entity.toDto());
     }
 
     public List<TagDto> tags(ThreadDto threadDto) {

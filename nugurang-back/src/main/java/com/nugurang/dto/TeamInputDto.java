@@ -1,5 +1,6 @@
 package com.nugurang.dto;
 
+import java.util.List;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,5 +12,6 @@ import lombok.Data;
 public class TeamInputDto {
     @NotNull
     private String name;
-    private boolean placeholder;
+    @NotNull
+    List<Long> users;
 }
