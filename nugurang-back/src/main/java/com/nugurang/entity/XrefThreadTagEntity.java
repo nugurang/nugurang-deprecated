@@ -7,13 +7,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Getter
 @Setter
 @Table(
@@ -34,10 +37,4 @@ public class XrefThreadTagEntity {
     @ManyToOne
     @JoinColumn(name = "tag", nullable = false)
     private TagEntity tag;
-
-    @Builder
-    public XrefThreadTagEntity(ThreadEntity thread, TagEntity tag) {
-        this.thread = thread;
-        this.tag = tag;
-    }
 }

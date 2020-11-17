@@ -7,37 +7,34 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Getter
 @Setter
 @Table(
-    name = "star",
+    name = "xref_article_tag",
     uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"user", "article"})
+        @UniqueConstraint(columnNames = {"article", "tag"})
     }
 )
-public class StarEntity {
+public class XrefArticleTagEntity {
     @Id
     @GeneratedValue
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user", nullable = false)
-    private UserEntity user;
-
-    @ManyToOne
     @JoinColumn(name = "article", nullable = false)
     private ArticleEntity article;
 
-    @Builder
-    public StarEntity(UserEntity user, ArticleEntity article) {
-        this.user = user;
-        this.article = article;
-    }
+    @ManyToOne
+    @JoinColumn(name = "tag", nullable = false)
+    private TagEntity tag;
 }

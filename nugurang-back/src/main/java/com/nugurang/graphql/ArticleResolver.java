@@ -6,6 +6,7 @@ import com.nugurang.dao.ThreadDao;
 import com.nugurang.dao.UserDao;
 import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.ImageDto;
+import com.nugurang.dto.TagDto;
 import com.nugurang.dto.ThreadDto;
 import com.nugurang.dto.UserDto;
 import graphql.kickstart.tools.GraphQLResolver;
@@ -53,5 +54,9 @@ public class ArticleResolver implements GraphQLResolver<ArticleDto> {
             .stream()
             .map((entity) -> entity.toDto())
             .collect(Collectors.toList());
+    }
+
+    public List<TagDto> tags(ArticleDto articleDto) {
+        return null;
     }
 }

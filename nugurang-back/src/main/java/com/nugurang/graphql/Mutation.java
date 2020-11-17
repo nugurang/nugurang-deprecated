@@ -35,7 +35,6 @@ import com.nugurang.dto.PositionInputDto;
 import com.nugurang.dto.ProjectDto;
 import com.nugurang.dto.ProjectInputDto;
 import com.nugurang.dto.RoleDto;
-import com.nugurang.dto.StarDto;
 import com.nugurang.dto.TagDto;
 import com.nugurang.dto.TaskDto;
 import com.nugurang.dto.TaskInputDto;
@@ -216,10 +215,6 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.empty();
     }
 
-    Optional<StarDto> createStar(Long user, Long article) {
-        return Optional.empty();
-    }
-
     Optional<TagDto> createTag(String name) {
         return Optional.empty();
     }
@@ -230,7 +225,16 @@ public class Mutation implements GraphQLMutationResolver {
             TaskEntity
             .builder()
             .name(taskInputDto.getName())
-            .order(taskInputDto.getOrder().orElse(0))
+            .order(
+                taskInputDto
+                .getOrder()
+                .orElseGet(() ->
+                    taskDao
+                    .findFirstByOrderByOrderDesc()
+                    .map((prevTaskEntity) -> prevTaskEntity.getOrder() + 1)
+                    .orElse(0)
+                )
+            )
             .difficulty(taskInputDto.getDifficulty().orElse(0))
             .work(workDao.findById(work).get())
             .progress(
@@ -374,7 +378,16 @@ public class Mutation implements GraphQLMutationResolver {
                 .builder()
                 .name(workInputDto.getName())
                 .opened(true)
-                .order(workInputDto.getOrder().orElse(0))
+                .order(
+                    workInputDto
+                    .getOrder()
+                    .orElseGet(() ->
+                        workDao
+                        .findFirstByOrderByOrderDesc()
+                        .map((prevWorkEntity) -> prevWorkEntity.getOrder() + 1)
+                        .orElse(0)
+                    )
+                )
                 .project(projectDao.findById(project).get())
                 .build()
             )

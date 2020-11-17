@@ -8,13 +8,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Getter
 @Setter
 @Table(
@@ -37,13 +40,6 @@ public class TaskHonorEntity implements BaseEntity<TaskHonorDto> {
     @ManyToOne
     @JoinColumn(name = "position", nullable = false)
     private PositionEntity position;
-
-    @Builder
-    public TaskHonorEntity(Integer honor, TaskEntity task, PositionEntity position) {
-        this.honor = honor;
-        this.task = task;
-        this.position = position;
-    }
 
     public TaskHonorDto toDto() {
         return TaskHonorDto

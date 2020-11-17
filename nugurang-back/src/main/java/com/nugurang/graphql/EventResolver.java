@@ -3,6 +3,7 @@ package com.nugurang.graphql;
 import com.nugurang.dao.ImageDao;
 import com.nugurang.dto.EventDto;
 import com.nugurang.dto.ImageDto;
+import com.nugurang.dto.TagDto;
 import graphql.kickstart.tools.GraphQLResolver;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,10 @@ public class EventResolver implements GraphQLResolver<EventDto> {
     private final ImageDao imageDao;
 
     public List<ImageDto> images(EventDto eventDto) {
+        return null;
+    }
+
+    public List<TagDto> tags(EventDto eventDto) {
         return null;
     }
 }

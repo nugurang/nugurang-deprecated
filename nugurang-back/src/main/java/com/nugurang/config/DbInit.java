@@ -30,7 +30,7 @@ public class DbInit {
     public void init() {
         for (String roleName : List.of("OWNER", "MEMBER"))
             roleDao.save(RoleEntity.builder().name(roleName).build());
-        for (String voteTypeName : List.of("UP", "DOWN"))
+        for (String voteTypeName : List.of("UP", "DOWN, STAR"))
             voteTypeDao.save(VoteTypeEntity.builder().name(voteTypeName).build());
         for (String progressName : List.of("TODO", "DOING", "DONE"))
             progressDao.save(ProgressEntity.builder().name(progressName).build());

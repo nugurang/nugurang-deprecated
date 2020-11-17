@@ -3,6 +3,7 @@ package com.nugurang.graphql;
 import com.nugurang.dao.PositionDao;
 import com.nugurang.dao.ProgressDao;
 import com.nugurang.dao.TaskDao;
+import com.nugurang.dao.TaskHonorDao;
 import com.nugurang.dao.UserDao;
 import com.nugurang.dao.WorkDao;
 import com.nugurang.dto.ProgressDto;
@@ -24,6 +25,7 @@ public class TaskResolver implements GraphQLResolver<TaskDto> {
     private final ProgressDao progressDao;
     private final PositionDao positionDao;
     private final TaskDao taskDao;
+    private final TaskHonorDao taskHonorDao;
     private final UserDao userDao;
 
     public WorkDto work(TaskDto taskDto) {
@@ -43,14 +45,11 @@ public class TaskResolver implements GraphQLResolver<TaskDto> {
     }
 
     public List<TaskHonorDto> honors(TaskDto taskDto) {
-        return taskDao.findById(taskDto.getId())
-            .map((taskEntity) ->
-                taskEntity
-                .getTaskHonors()
-                .stream()
-                .map((taskHonorEntity) -> taskHonorEntity.toDto())
-                .collect(Collectors.toList())
-            ).get();
+        return taskHonorDao
+            .findAllByTaskId(taskDto.getId())
+            .stream()
+            .map((entity) -> entity.toDto())
+            .collect(Collectors.toList());
     }
 
     public List<UserDto> users(TaskDto taskDto) {

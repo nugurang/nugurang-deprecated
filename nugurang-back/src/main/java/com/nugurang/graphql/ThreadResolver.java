@@ -9,6 +9,7 @@ import com.nugurang.dao.UserDao;
 import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.BoardDto;
 import com.nugurang.dto.EventDto;
+import com.nugurang.dto.TagDto;
 import com.nugurang.dto.TeamDto;
 import com.nugurang.dto.ThreadDto;
 import com.nugurang.dto.UserDto;
@@ -53,6 +54,10 @@ public class ThreadResolver implements GraphQLResolver<ThreadDto> {
 
     public Optional<EventDto> event(ThreadDto threadDto) {
         return Optional.empty();
+    }
+
+    public List<TagDto> tags(ThreadDto threadDto) {
+        return null;
     }
 
     public ArticleDto firstArticle(ThreadDto threadDto) {

@@ -36,10 +36,14 @@ input ProjectInput {
     event: ID
 }
 
+input TagInput {
+    name: String!
+}
+
 input TaskInput {
     name: String!
     difficulty: Int
-    order: Int
+    order: Int!
     progress: ID
     users: [ID]!
     positions: [ID]!
@@ -95,6 +99,7 @@ type Article {
     user: User!
     parent: Article
     images: [Image]!
+    tags: [Tag]!
 }
 
 type Board {
@@ -108,11 +113,12 @@ type Event {
     id: ID!
     name: String!
     description: String!
-    images: [Image]!
     recruitingStart: DateTime!
     recruitingEnd: DateTime!
     eventStart: DateTime!
     eventEnd: DateTime!
+    images: [Image]!
+    tags: [Tag]!
 }
 
 type Image {
@@ -161,12 +167,6 @@ type Role {
     name: String!
 }
 
-type Star {
-    id: ID!
-    user: User!
-    article: Article!
-}
-
 type Tag {
     id: ID!
     name: String!
@@ -209,6 +209,7 @@ type Thread {
     downCount: Int!
     starCount: Int!
     commentCount: Int!
+    tags: [Tag]!
 }
 
 type User {
@@ -316,8 +317,7 @@ type Mutation {
     createPosition(position: PositionInput!): Position
     createProject(project: ProjectInput!, team: ID!): Project
     createRole(name: String!): Role
-    createStar(user: ID!, article: ID!): Star
-    createTag(name: String!): Tag
+    createTag(tag: TagInput!): Tag
     createTask(task: TaskInput!, work: ID!): Task
     createTeam(team: TeamInput!): Team
     createThread(thread: ThreadInput!, board: ID!): Thread
