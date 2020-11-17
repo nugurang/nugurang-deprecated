@@ -490,8 +490,40 @@ public class Mutation implements GraphQLMutationResolver {
         return true;
     }
 
+    @Transactional
     Optional<TeamDto> updateTeam(TeamInputDto teamInputDto, Long id) {
-        return Optional.empty();
+        TeamEntity teamEntity = teamDao.findById(id).get();
+
+        RoleEntity roleEntity = roleDao.findByName("OWNER").get();
+
+        xrefUserTeamDao.deleteAllByTeamId(id);
+
+        xrefUserTeamDao.save(
+            XrefUserTeamEntity
+            .builder()
+            .user(userService.getCurrentUser().get())
+            .team(teamEntity)
+            .role(roleEntity)
+            .build()
+        );
+
+        xrefUserTeamDao.saveAll(
+            teamInputDto
+            .getUsers()
+            .stream()
+            .map((userId) -> userDao.findById(userId).get())
+            .map((userEntity) ->
+                 XrefUserTeamEntity
+                .builder()
+                .user(userEntity)
+                .team(teamEntity)
+                .role(roleEntity)
+                .build()
+            )
+            .collect(Collectors.toList())
+        );
+
+        return Optional.of(teamEntity.toDto());
     }
 
     Optional<ThreadDto> updateThread(ThreadInputDto threadInputDto, Long id) {

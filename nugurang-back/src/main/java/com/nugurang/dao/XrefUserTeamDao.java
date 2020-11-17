@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface XrefUserTeamDao extends JpaRepository<XrefUserTeamEntity, Long> {
 
     Optional<XrefUserTeamEntity> findByUserIdAndTeamId(Long user, Long team);
+
+    void deleteAllByTeamId(Long team);
 }
