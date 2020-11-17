@@ -63,8 +63,12 @@ public class UserResolver implements GraphQLResolver<UserDto> {
             .map((imageEntity) -> imageEntity.toDto());
     }
 
-    public Optional<BoardDto> blog(UserDto userDto) {
-        return Optional.empty();
+    public BoardDto blog(UserDto userDto) {
+        return userDao
+            .findById(userDto.getId())
+            .get()
+            .getBlog()
+            .toDto();
     }
 
     public List<ArticleDto> getArticles(UserDto userDto, Integer page, Integer pageSize) {

@@ -353,6 +353,14 @@ public class Mutation implements GraphQLMutationResolver {
             .email(userInputDto.getEmail())
             .biography(userInputDto.getBiography())
             .image(userInputDto.getImage().flatMap((id) -> imageDao.findById(id)).orElse(null))
+            .blog(
+                boardDao.save(
+                    BoardEntity
+                    .builder()
+                    .name(userInputDto.getName())
+                    .build()
+                )
+            )
             .build();
         userEntity = userDao.save(userEntity);
         return Optional.of(userEntity.toDto());

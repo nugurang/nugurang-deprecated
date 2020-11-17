@@ -222,7 +222,7 @@ type User {
     totalHonor: Int!
     honors: [UserHonor]!
     image: Image
-    blog: Board
+    blog: Board!
     getArticles(page: Int!, pageSize: Int!): [Article]!
     getFollowers(page: Int!, pageSize: Int!): [User]!
     getFollowings(page: Int!, pageSize: Int!): [User]!
