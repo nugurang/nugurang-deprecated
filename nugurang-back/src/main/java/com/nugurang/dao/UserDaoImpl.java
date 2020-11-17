@@ -4,11 +4,13 @@ import static com.nugurang.entity.QFollowingEntity.followingEntity;
 import static com.nugurang.entity.QUserEntity.userEntity;
 import static com.nugurang.entity.QXrefUserBoardEntity.xrefUserBoardEntity;
 import static com.nugurang.entity.QXrefUserProjectEntity.xrefUserProjectEntity;
+import static com.nugurang.entity.QXrefUserTaskEntity.xrefUserTaskEntity;
 import static com.nugurang.entity.QXrefUserTeamEntity.xrefUserTeamEntity;
 
 import com.nugurang.entity.UserEntity;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -68,6 +70,15 @@ public class UserDaoImpl implements UserDaoCustom {
             .fetchResults();
 
         return new PageImpl<>(results.getResults(), pageable, results.getTotal());
+    }
+
+    public List<UserEntity> findAllByTaskId(Long task) {
+        return queryFactory
+            .selectFrom(userEntity)
+            .innerJoin(xrefUserTaskEntity)
+            .on(userEntity.id.eq(xrefUserTaskEntity.user.id))
+            .where(xrefUserTaskEntity.task.id.eq(task))
+            .fetch();
     }
 
     public Page<UserEntity> findAllByTeamId(Long team, Pageable pageable) {

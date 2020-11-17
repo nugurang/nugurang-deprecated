@@ -51,24 +51,13 @@ public class TaskResolver implements GraphQLResolver<TaskDto> {
                 .map((taskHonorEntity) -> taskHonorEntity.toDto())
                 .collect(Collectors.toList())
             ).get();
-
-        /*
-        return taskHonorDao
-            .findAllByTaskId(taskDto.getId())
-            .stream()
-            .flatMap((entity) -> entity.toDto())
-            .collect(Collectors.toList());
-        */
     }
 
     public List<UserDto> users(TaskDto taskDto) {
-        return null;
-        /*
         return userDao
             .findAllByTaskId(taskDto.getId())
             .stream()
-            .flatMap((entity) -> entity.toDto())
+            .map((entity) -> entity.toDto())
             .collect(Collectors.toList());
-            */
     }
 }
