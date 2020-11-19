@@ -39,6 +39,7 @@ public class UserEvaluationEntity implements BaseEntity<UserEvaluationDto> {
     public UserEvaluationDto toDto() {
         return UserEvaluationDto
             .builder()
+            .id(id)
             .startedAt(startedAt)
             .days(days)
             .build();
