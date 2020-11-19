@@ -1,5 +1,6 @@
 package com.nugurang.entity;
 
+import com.nugurang.dto.UserReviewDto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,7 +29,7 @@ import lombok.Setter;
         })
     }
 )
-public class UserReviewEntity {
+public class UserReviewEntity implements BaseEntity<UserReviewDto> {
     @Id
     @GeneratedValue
     private Long id;
@@ -51,4 +52,12 @@ public class UserReviewEntity {
     @ManyToOne
     @JoinColumn(name = "user_evaluation", nullable = false)
     private UserEvaluationEntity userEvaluation;
+
+    public UserReviewDto toDto() {
+        return UserReviewDto
+            .builder()
+            .id(id)
+            .honor(honor)
+            .build();
+    }
 }

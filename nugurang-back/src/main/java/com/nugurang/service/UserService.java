@@ -13,10 +13,9 @@ public class UserService {
     private final OAuth2Service oauth2Service;
 
     public Optional<UserEntity> getCurrentUser() {
-        return userDao
-            .findByOauth2ProviderAndOauth2Id(
-                    oauth2Service.getProvider(),
-                    oauth2Service.getId()
-            );
+        return userDao.findByOauth2ProviderAndOauth2Id(
+            oauth2Service.getProvider(),
+            oauth2Service.getId()
+        );
     }
 }
