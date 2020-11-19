@@ -283,7 +283,7 @@ public class Mutation implements GraphQLMutationResolver {
             .progress(
                 taskInputDto
                 .getProgress()
-                .flatMap((progressId) -> progressDao.findById(progressId))
+                .map((progressId) -> progressDao.findById(progressId).get())
                 .orElseGet(() -> progressDao.findByName(ProgressName.TODO.name()).get())
             )
             .build()
@@ -522,7 +522,21 @@ public class Mutation implements GraphQLMutationResolver {
     }
     
     Optional<TaskDto> updateTask(TaskInputDto taskInputDto, Long id) {
-        return Optional.empty();
+        TaskEntity taskEntity = taskDao.findById(id).get();
+        taskEntity.setName(taskInputDto.getName());
+
+        if (taskInputDto.getOrder().isPresent())
+            taskEntity.setOrder(taskInputDto.getOrder().get());
+
+        if (taskInputDto.getDifficulty().isPresent())
+            taskEntity.setDifficulty(taskInputDto.getDifficulty().get());
+
+        if (taskInputDto.getProgress().isPresent()) {
+            taskEntity.setProgress(
+                progressDao.findById(taskInputDto.getProgress().get()).get()
+            );
+        }
+        return Optional.of(taskDao.save(taskEntity).toDto());
     }
 
     @Transactional
