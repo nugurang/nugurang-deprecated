@@ -62,6 +62,7 @@ dependencies {
         'com.graphql-java-kickstart:voyager-spring-boot-starter:7.+',
         'com.graphql-java:graphql-java-extended-scalars:1.+',
         'com.graphql-java:graphql-java-spring-boot-starter-webmvc:1.+',
+        'com.vladmihalcea:hibernate-types-52:2.+',
         'org.springframework.boot:spring-boot-starter-actuator',
         'org.springframework.boot:spring-boot-starter-data-jpa',
         'org.springframework.boot:spring-boot-starter-oauth2-client',
@@ -105,6 +106,10 @@ checkstyle {
     ignoreFailures = false
     maxWarnings = 0
     maxErrors = 0
+}
+
+checkstyleMain {
+    logging.setLevel(LogLevel.LIFECYCLE)
 }
 
 checkstyleTest {

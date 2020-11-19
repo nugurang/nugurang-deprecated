@@ -1,6 +1,6 @@
 package com.nugurang.dto;
 
-import java.time.OffsetDateTime;
+import java.util.List;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +9,9 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class NotificationDto {
+public class ProjectInvitationInputDto {
     @NotNull
-    private Long id;
+    private Long project;
     @NotNull
-    private OffsetDateTime createdAt;
-    @NotNull
-    private String[] data;
+    private List<Long> users;
 }

@@ -36,6 +36,11 @@ input ProjectInput {
     event: ID
 }
 
+input ProjectInvitationInput {
+    project: ID!
+    users: [ID]!
+}
+
 input TagInput {
     name: String!
 }
@@ -56,6 +61,11 @@ input TaskReviewInput {
 
 input TeamInput {
     name: String!
+}
+
+input TeamInvitationInput {
+    team: ID!
+    users: [ID]!
 }
 
 input ThreadInput {
@@ -131,10 +141,15 @@ type Image {
 
 type Notification {
     id: ID!
-    title: String!
-    content: String
     createdAt: DateTime!
+    data: [String]!
+    type: NotificationType!
     user: User!
+}
+
+type NotificationType {
+    id: ID!
+    name: String!
 }
 
 type OAuth2User {
@@ -163,6 +178,12 @@ type Project {
     getUsers(page: Int!, pageSize: Int!): [User]!
     event: Event
     works: [Work]!
+}
+
+type ProjectInvitation {
+    id: ID!
+    project: Project!
+    user: User!
 }
 
 type Role {
@@ -197,6 +218,12 @@ type Team {
     name: String!
     projects: [Project]!
     getUsers(page: Int!, pageSize: Int!): [User]!
+}
+
+type TeamInvitation {
+    id: ID!
+    team: ID!
+    user: ID!
 }
 
 type Thread {
@@ -285,6 +312,7 @@ type Query {
     currentOAuth2User: OAuth2User
     positions: [Position]!
     progresses: [Progress]!
+    notificationTypes: [NotificationType]!
     voteTypes: [VoteType]!
     getArticle(id: ID!): Article
     getBoard(id: ID!): Board
@@ -317,10 +345,11 @@ type Mutation {
     createImage(address: String!): Image
     createPosition(position: PositionInput!): Position
     createProject(project: ProjectInput!, team: ID!): Project
-    createRole(name: String!): Role
+    createProjectInvitations(invitation: ProjectInvitationInput!): [ProjectInvitation]!
     createTag(tag: TagInput!): Tag
     createTask(task: TaskInput!, work: ID!): Task
     createTeam(team: TeamInput!): Team
+    createTeamInvitations(invitation: TeamInvitationInput!): [TeamInvitation]!
     createThread(thread: ThreadInput!, board: ID!): Thread
     createUser(user: UserInput!): User
     createVote(vote: VoteInput!): Vote
@@ -332,9 +361,11 @@ type Mutation {
     updateEvent(event: EventInput!, id: ID!): Event
     updateProject(project: ProjectInput!, id: ID!): Project
     updateProjectFinish(id: ID!): Boolean!
+    updateProjectInvitationAccepted(id: ID!): Boolean!
     updateTask(task: TaskInput!, id: ID!): Task
     updateTaskReview(taskReview: TaskReviewInput!): Boolean!
     updateTeam(team: TeamInput!, id: ID!): Team
+    updateTeamInvitationAccepted(id: ID!): Boolean!
     updateThread(thread: ThreadInput!, id: ID!): Thread
     updateUser(user: UserInput!): User
     updateUserReviews(reviews: [UserReviewInput]!, evaluation: ID!): Boolean!

@@ -2,6 +2,7 @@ package com.nugurang.graphql;
 
 import com.nugurang.dao.NotificationDao;
 import com.nugurang.dto.NotificationDto;
+import com.nugurang.dto.NotificationTypeDto;
 import com.nugurang.dto.UserDto;
 import graphql.kickstart.tools.GraphQLResolver;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +16,16 @@ public class NotificationResolver implements GraphQLResolver<NotificationDto> {
     public UserDto user(NotificationDto notificationDto) {
         return notificationDao
             .findById(notificationDto.getId())
-            .map((notificationEntity) -> notificationEntity.getUser())
-            .map((userEntity) -> userEntity.toDto())
-            .get();
+            .get()
+            .getUser()
+            .toDto();
+    }
+
+    public NotificationTypeDto type(NotificationDto notificationDto) {
+        return notificationDao
+            .findById(notificationDto.getId())
+            .get()
+            .getNotificationType()
+            .toDto();
     }
 }

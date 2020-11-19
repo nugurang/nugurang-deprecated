@@ -6,5 +6,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserReviewDao extends JpaRepository<UserReviewEntity, Long> {
+
     void deleteAllByUserEvaluationIdAndFromUserId(Long userEvaluation, Long fromUser);
+
+    void deleteByUserEvaluationIdAndFromUserIdAndToUserId(
+        Long userEvaluation,
+        Long fromUser,
+        Long toUser
+    );
 }
