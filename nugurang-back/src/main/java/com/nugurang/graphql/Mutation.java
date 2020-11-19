@@ -286,8 +286,6 @@ public class Mutation implements GraphQLMutationResolver {
     @Transactional
     Optional<TeamDto> createTeam(TeamInputDto teamInputDto) {
 
-        UserEntity currentUserEntity = userService.getCurrentUser().get();
-
         TeamEntity teamEntity = teamDao.save(
             TeamEntity
             .builder()
@@ -300,27 +298,10 @@ public class Mutation implements GraphQLMutationResolver {
         xrefUserTeamDao.save(
             XrefUserTeamEntity
             .builder()
-            .user(currentUserEntity)
+            .user(userService.getCurrentUser().get())
             .team(teamEntity)
             .role(roleEntity)
             .build()
-        );
-
-        xrefUserTeamDao.saveAll(
-            teamInputDto
-            .getUsers()
-            .stream()
-            .filter((userId) -> userId != currentUserEntity.getId())
-            .map((userId) -> userDao.findById(userId).get())
-            .map((userEntity) ->
-                 XrefUserTeamEntity
-                .builder()
-                .user(userEntity)
-                .team(teamEntity)
-                .role(roleEntity)
-                .build()
-            )
-            .collect(Collectors.toList())
         );
 
         return Optional.of(teamEntity.toDto());
@@ -496,38 +477,14 @@ public class Mutation implements GraphQLMutationResolver {
     @Transactional
     Optional<TeamDto> updateTeam(TeamInputDto teamInputDto, Long id) {
         TeamEntity teamEntity = teamDao.findById(id).get();
+        teamEntity.setName(teamInputDto.getName());
 
-        RoleEntity roleEntity = roleDao.findByName("OWNER").get();
-
-        xrefUserTeamDao.deleteAllByTeamId(id);
-
-        xrefUserTeamDao.save(
-            XrefUserTeamEntity
-            .builder()
-            .user(userService.getCurrentUser().get())
-            .team(teamEntity)
-            .role(roleEntity)
-            .build()
-        );
-
-        xrefUserTeamDao.saveAll(
-            teamInputDto
-            .getUsers()
-            .stream()
-            .filter((userId) -> userId != id)
-            .map((userId) -> userDao.findById(userId).get())
-            .map((userEntity) ->
-                 XrefUserTeamEntity
-                .builder()
-                .user(userEntity)
-                .team(teamEntity)
-                .role(roleEntity)
-                .build()
+        return Optional.of(
+            teamDao.save(
+                teamEntity
             )
-            .collect(Collectors.toList())
+            .toDto()
         );
-
-        return Optional.of(teamEntity.toDto());
     }
 
     Optional<ThreadDto> updateThread(ThreadInputDto threadInputDto, Long id) {
