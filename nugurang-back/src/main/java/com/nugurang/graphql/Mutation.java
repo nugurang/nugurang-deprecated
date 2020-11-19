@@ -1,5 +1,7 @@
 package com.nugurang.graphql;
 
+import com.nugurang.constant.ProgressName;
+import com.nugurang.constant.RoleName;
 import com.nugurang.dao.ArticleDao;
 import com.nugurang.dao.BoardDao;
 import com.nugurang.dao.EventDao;
@@ -23,6 +25,7 @@ import com.nugurang.dao.UserReviewDao;
 import com.nugurang.dao.VoteDao;
 import com.nugurang.dao.VoteTypeDao;
 import com.nugurang.dao.WorkDao;
+import com.nugurang.dao.XrefUserProjectDao;
 import com.nugurang.dao.XrefUserTaskDao;
 import com.nugurang.dao.XrefUserTeamDao;
 import com.nugurang.dto.ArticleDto;
@@ -63,7 +66,6 @@ import com.nugurang.entity.ImageEntity;
 import com.nugurang.entity.PositionEntity;
 import com.nugurang.entity.ProjectEntity;
 import com.nugurang.entity.ProjectInvitationEntity;
-import com.nugurang.entity.RoleEntity;
 import com.nugurang.entity.TaskEntity;
 import com.nugurang.entity.TaskHonorEntity;
 import com.nugurang.entity.TaskReviewEntity;
@@ -75,6 +77,7 @@ import com.nugurang.entity.UserEvaluationEntity;
 import com.nugurang.entity.UserReviewEntity;
 import com.nugurang.entity.VoteEntity;
 import com.nugurang.entity.WorkEntity;
+import com.nugurang.entity.XrefUserProjectEntity;
 import com.nugurang.entity.XrefUserTaskEntity;
 import com.nugurang.entity.XrefUserTeamEntity;
 import com.nugurang.service.ArticleService;
@@ -117,6 +120,7 @@ public class Mutation implements GraphQLMutationResolver {
     private final VoteTypeDao voteTypeDao;
     private final EventDao eventDao;
     private final WorkDao workDao;
+    private final XrefUserProjectDao xrefUserProjectDao;
     private final XrefUserTaskDao xrefUserTaskDao;
     private final XrefUserTeamDao xrefUserTeamDao;
 
@@ -201,24 +205,32 @@ public class Mutation implements GraphQLMutationResolver {
         );
     }
 
+    @Transactional
     Optional<ProjectDto> createProject(ProjectInputDto projectInputDto, Long team) {
-        return Optional.of(
-            projectDao
-            .save(
-                ProjectEntity
-                .builder()
-                .name(projectInputDto.getName())
-                .finished(false)
-                .team(teamDao.findById(team).get())
-                .event(
-                    projectInputDto
-                    .getEvent()
-                    .flatMap((id) -> eventDao.findById(id)).orElse(null)
-                )
-                .build()
+        ProjectEntity projectEntity = projectDao.save(
+            ProjectEntity
+            .builder()
+            .name(projectInputDto.getName())
+            .finished(false)
+            .team(teamDao.findById(team).get())
+            .event(
+                projectInputDto
+                .getEvent()
+                .flatMap((id) -> eventDao.findById(id)).orElse(null)
             )
-            .toDto()
+            .build()
         );
+
+        xrefUserProjectDao.save(
+            XrefUserProjectEntity
+            .builder()
+            .user(userService.getCurrentUser().get())
+            .project(projectEntity)
+            .role(roleDao.findByName(RoleName.OWNER.name()).get())
+            .build()
+        );
+
+        return Optional.of(projectEntity.toDto());
     }
 
     List<ProjectInvitationDto> createProjectInvitations(ProjectInvitationInputDto projectInvitationInputDto) {
@@ -272,7 +284,7 @@ public class Mutation implements GraphQLMutationResolver {
                 taskInputDto
                 .getProgress()
                 .flatMap((progressId) -> progressDao.findById(progressId))
-                .orElseGet(() -> progressDao.findByName("TODO").get())
+                .orElseGet(() -> progressDao.findByName(ProgressName.TODO.name()).get())
             )
             .build()
         );
@@ -323,14 +335,12 @@ public class Mutation implements GraphQLMutationResolver {
             .build()
         );
 
-        RoleEntity roleEntity = roleDao.findByName("OWNER").get();
-
         xrefUserTeamDao.save(
             XrefUserTeamEntity
             .builder()
             .user(userService.getCurrentUser().get())
             .team(teamEntity)
-            .role(roleEntity)
+            .role(roleDao.findByName(RoleName.OWNER.name()).get())
             .build()
         );
 

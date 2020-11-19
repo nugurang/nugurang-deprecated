@@ -1,5 +1,8 @@
 package com.nugurang.config;
 
+import com.nugurang.constant.ProgressName;
+import com.nugurang.constant.RoleName;
+import com.nugurang.constant.VoteTypeName;
 import com.nugurang.dao.ArticleDao;
 import com.nugurang.dao.BoardDao;
 import com.nugurang.dao.ProgressDao;
@@ -28,11 +31,11 @@ public class DbInit {
 
     @PostConstruct
     public void init() {
-        for (String roleName : List.of("OWNER", "MEMBER"))
+        for (String roleName : List.of(RoleName.OWNER.name(), RoleName.MEMBER.name()))
             roleDao.save(RoleEntity.builder().name(roleName).build());
-        for (String voteTypeName : List.of("UP", "DOWN, STAR"))
+        for (String voteTypeName : List.of(VoteTypeName.UP.name(), VoteTypeName.DOWN.name(), VoteTypeName.STAR.name()))
             voteTypeDao.save(VoteTypeEntity.builder().name(voteTypeName).build());
-        for (String progressName : List.of("TODO", "DOING", "DONE"))
+        for (String progressName : List.of(ProgressName.TODO.name(), ProgressName.DOING.name(), ProgressName.DONE.name()))
             progressDao.save(ProgressEntity.builder().name(progressName).build());
     }
 }
