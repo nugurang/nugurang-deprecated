@@ -16,7 +16,7 @@ public class NotificationService {
     private final NotificationDao notificationDao;
     private final NotificationTypeDao notificationTypeDao;
 
-    NotificationEntity createProjectInvitationNotification(
+    public NotificationEntity createProjectInvitationNotification(
         ProjectEntity projectEntity, UserEntity userEntity
     ) {
         return notificationDao.save(
@@ -34,7 +34,7 @@ public class NotificationService {
         );
     }
 
-    NotificationEntity createTeamInvitationNotification(
+    public NotificationEntity createTeamInvitationNotification(
         TeamEntity teamEntity, UserEntity userEntity
     ) {
         return notificationDao.save(

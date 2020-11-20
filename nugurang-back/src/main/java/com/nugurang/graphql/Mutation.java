@@ -83,6 +83,7 @@ import com.nugurang.entity.XrefUserProjectEntity;
 import com.nugurang.entity.XrefUserTaskEntity;
 import com.nugurang.entity.XrefUserTeamEntity;
 import com.nugurang.service.ArticleService;
+import com.nugurang.service.NotificationService;
 import com.nugurang.service.OAuth2Service;
 import com.nugurang.service.UserService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
@@ -97,6 +98,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class Mutation implements GraphQLMutationResolver {
     private final ArticleService articleService;
+    private final NotificationService notificationService;
     private final OAuth2Service oauth2Service;
     private final UserService userService;
     private final ArticleDao articleDao;
@@ -240,8 +242,15 @@ public class Mutation implements GraphQLMutationResolver {
         return projectInvitationInputDto
             .getUsers()
             .stream()
-            .map((userId) ->
-                projectInvitationDao.save(
+            .map((userId) -> userDao.findById(userId).get())
+            .map((userEntity) -> {
+                ProjectEntity projectEntity = projectDao
+                    .findById(projectInvitationInputDto.getProject())
+                    .get();
+
+                notificationService.createProjectInvitationNotification(projectEntity, userEntity);
+
+                return projectInvitationDao.save(
                     ProjectInvitationEntity
                     .builder()
                     .status(
@@ -249,20 +258,12 @@ public class Mutation implements GraphQLMutationResolver {
                         .findByName(InvitationStatusName.UNACCEPTED.name())
                         .get()
                     )
-                    .project(
-                        projectDao
-                        .findById(projectInvitationInputDto.getProject())
-                        .get()
-                    )
-                    .user(
-                        userDao
-                        .findById(userId)
-                        .get()
-                    )
+                    .project(projectEntity)
+                    .user(userEntity)
                     .build()
                 )
-                .toDto()
-            )
+                .toDto();
+            })
             .collect(Collectors.toList());
     }
 
@@ -359,8 +360,14 @@ public class Mutation implements GraphQLMutationResolver {
         return teamInvitationInputDto
             .getUsers()
             .stream()
-            .map((userId) ->
-                teamInvitationDao.save(
+            .map((userId) -> userDao.findById(userId).get())
+            .map((userEntity) -> {
+                TeamEntity teamEntity = teamDao
+                    .findById(teamInvitationInputDto.getTeam())
+                    .get();
+                notificationService.createTeamInvitationNotification(teamEntity, userEntity);
+
+                return teamInvitationDao.save(
                     TeamInvitationEntity
                     .builder()
                     .status(
@@ -368,19 +375,12 @@ public class Mutation implements GraphQLMutationResolver {
                         .findByName(InvitationStatusName.UNACCEPTED.name())
                         .get()
                     )
-                    .team(
-                        teamDao
-                        .findById(teamInvitationInputDto.getTeam())
-                        .get()
-                    )
-                    .user(
-                        userDao
-                        .findById(userId)
-                        .get()
-                    )
+                    .team(teamEntity)
+                    .user(userEntity)
                     .build()
-                ).toDto()
-            )
+                )
+                .toDto();
+            })
             .collect(Collectors.toList());
     }
 
