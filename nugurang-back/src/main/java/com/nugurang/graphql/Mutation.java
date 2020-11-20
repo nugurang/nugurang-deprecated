@@ -511,8 +511,43 @@ public class Mutation implements GraphQLMutationResolver {
         );
     }
 
+    @Transactional
     Boolean updateProjectInvitationAccepted(Long projectInvitation) {
-        return false;
+        ProjectInvitationEntity projectInvitationEntity = projectInvitationDao
+            .findById(projectInvitation)
+            .get();
+
+        projectInvitationEntity.setStatus(
+            invitationStatusDao.findByName(InvitationStatusName.ACCEPTED.name())
+            .get()
+        );
+
+        projectInvitationDao.save(projectInvitationEntity);
+
+        xrefUserProjectDao.save(
+            XrefUserProjectEntity
+            .builder()
+            .user(projectInvitationEntity.getUser())
+            .project(projectInvitationEntity.getProject())
+            .build()
+        );
+
+        return true;
+    }
+
+    Boolean updateProjectInvitationDenied(Long projectInvitation) {
+        ProjectInvitationEntity projectInvitationEntity = projectInvitationDao
+            .findById(projectInvitation)
+            .get();
+
+        projectInvitationEntity.setStatus(
+            invitationStatusDao.findByName(InvitationStatusName.DENIED.name())
+            .get()
+        );
+
+        projectInvitationDao.save(projectInvitationEntity);
+
+        return true;
     }
 
     Boolean updateProjectFinish(Long project) {
@@ -585,7 +620,41 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Boolean updateTeamInvitationAccepted(Long teamInvitation) {
-        return false;
+        TeamInvitationEntity teamInvitationEntity = teamInvitationDao
+            .findById(teamInvitation)
+            .get();
+
+        teamInvitationEntity.setStatus(
+            invitationStatusDao.findByName(InvitationStatusName.ACCEPTED.name())
+            .get()
+        );
+
+        teamInvitationDao.save(teamInvitationEntity);
+
+        xrefUserTeamDao.save(
+            XrefUserTeamEntity
+            .builder()
+            .user(teamInvitationEntity.getUser())
+            .team(teamInvitationEntity.getTeam())
+            .build()
+        );
+
+        return true;
+    }
+
+    Boolean updateTeamInvitationDenied(Long teamInvitation) {
+        TeamInvitationEntity teamInvitationEntity = teamInvitationDao
+            .findById(teamInvitation)
+            .get();
+
+        teamInvitationEntity.setStatus(
+            invitationStatusDao.findByName(InvitationStatusName.DENIED.name())
+            .get()
+        );
+
+        teamInvitationDao.save(teamInvitationEntity);
+
+        return true;
     }
 
     Optional<ThreadDto> updateThread(ThreadInputDto threadInputDto, Long id) {

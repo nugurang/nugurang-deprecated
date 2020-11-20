@@ -318,9 +318,10 @@ type Query {
     boards: [Board]!
     currentUser: User
     currentOAuth2User: OAuth2User
+    invitationStatus: [InvitationStatus]!
+    notificationTypes: [NotificationType]!
     positions: [Position]!
     progresses: [Progress]!
-    notificationTypes: [NotificationType]!
     voteTypes: [VoteType]!
     getArticle(id: ID!): Article
     getBoard(id: ID!): Board
@@ -370,10 +371,12 @@ type Mutation {
     updateProject(project: ProjectInput!, id: ID!): Project
     updateProjectFinish(id: ID!): Boolean!
     updateProjectInvitationAccepted(id: ID!): Boolean!
+    updateProjectInvitationDenied(id: ID!): Boolean!
     updateTask(task: TaskInput!, id: ID!): Task
     updateTaskReview(taskReview: TaskReviewInput!): Boolean!
     updateTeam(team: TeamInput!, id: ID!): Team
     updateTeamInvitationAccepted(id: ID!): Boolean!
+    updateTeamInvitationDenied(id: ID!): Boolean!
     updateThread(thread: ThreadInput!, id: ID!): Thread
     updateUser(user: UserInput!): User
     updateUserReviews(reviews: [UserReviewInput]!, evaluation: ID!): Boolean!

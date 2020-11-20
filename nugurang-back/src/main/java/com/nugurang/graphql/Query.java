@@ -3,6 +3,7 @@ package com.nugurang.graphql;
 import com.nugurang.dao.ArticleDao;
 import com.nugurang.dao.BoardDao;
 import com.nugurang.dao.ImageDao;
+import com.nugurang.dao.InvitationStatusDao;
 import com.nugurang.dao.NotificationDao;
 import com.nugurang.dao.NotificationTypeDao;
 import com.nugurang.dao.PositionDao;
@@ -17,6 +18,7 @@ import com.nugurang.dao.WorkDao;
 import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.BoardDto;
 import com.nugurang.dto.ImageDto;
+import com.nugurang.dto.InvitationStatusDto;
 import com.nugurang.dto.NotificationDto;
 import com.nugurang.dto.NotificationTypeDto;
 import com.nugurang.dto.OAuth2UserDto;
@@ -47,6 +49,7 @@ public class Query implements GraphQLQueryResolver {
     private final ArticleDao articleDao;
     private final BoardDao boardDao;
     private final ImageDao imageDao;
+    private final InvitationStatusDao invitationStatusDao;
     private final NotificationDao notificationDao;
     private final NotificationTypeDao notificationTypeDao;
     private final PositionDao positionDao;
@@ -86,6 +89,13 @@ public class Query implements GraphQLQueryResolver {
             .email(oauth2Service.getEmail())
             .build()
         );
+    }
+
+    List<InvitationStatusDto> invitationStatus() {
+        return invitationStatusDao.findAll()
+            .stream()
+            .map((entity) -> entity.toDto())
+            .collect(Collectors.toList());
     }
 
     List<NotificationTypeDto> notificationTypes() {
