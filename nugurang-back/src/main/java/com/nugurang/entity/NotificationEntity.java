@@ -24,8 +24,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @TypeDefs({
     @TypeDef(
-            name = "string-array",
-            typeClass = StringArrayType.class
+        name = "string-array",
+        typeClass = StringArrayType.class
     )
 })
 @AllArgsConstructor
@@ -41,13 +41,12 @@ public class NotificationEntity implements BaseEntity<NotificationDto> {
     @GeneratedValue
     private Long id;
 
+    @Column(nullable = false)
+    private Boolean isRead;
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private OffsetDateTime createdAt;
-
-    @ManyToOne
-    @JoinColumn(name = "notification_type", nullable = false)
-    private NotificationTypeEntity notificationType;
 
     @Type(type = "string-array")
     @Column(
@@ -57,6 +56,10 @@ public class NotificationEntity implements BaseEntity<NotificationDto> {
     private String[] data;
 
     @ManyToOne
+    @JoinColumn(name = "notification_type", nullable = false)
+    private NotificationTypeEntity notificationType;
+
+    @ManyToOne
     @JoinColumn(name = "user", nullable = false)
     private UserEntity user;
 
@@ -64,6 +67,7 @@ public class NotificationEntity implements BaseEntity<NotificationDto> {
         return NotificationDto
             .builder()
             .id(id)
+            .isRead(isRead)
             .createdAt(createdAt)
             .data(data)
             .build();

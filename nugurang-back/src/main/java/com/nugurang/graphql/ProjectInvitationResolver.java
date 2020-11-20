@@ -1,6 +1,7 @@
 package com.nugurang.graphql;
 
 import com.nugurang.dao.ProjectInvitationDao;
+import com.nugurang.dto.InvitationStatusDto;
 import com.nugurang.dto.ProjectDto;
 import com.nugurang.dto.ProjectInvitationDto;
 import com.nugurang.dto.UserDto;
@@ -18,6 +19,14 @@ public class ProjectInvitationResolver implements GraphQLResolver<ProjectInvitat
             .findById(projectInvitationDto.getId())
             .get()
             .getProject()
+            .toDto();
+    }
+
+    public InvitationStatusDto status(ProjectInvitationDto projectInvitationDto) {
+        return projectInvitationDao
+            .findById(projectInvitationDto.getId())
+            .get()
+            .getStatus()
             .toDto();
     }
 

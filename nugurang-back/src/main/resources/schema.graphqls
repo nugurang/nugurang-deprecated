@@ -139,8 +139,14 @@ type Image {
     address: String!
 }
 
+type InvitationStatus {
+    id: ID!
+    name: String!
+}
+
 type Notification {
     id: ID!
+    isRead: Boolean!
     createdAt: DateTime!
     data: [String]!
     type: NotificationType!
@@ -182,6 +188,7 @@ type Project {
 
 type ProjectInvitation {
     id: ID!
+    status: InvitationStatus!
     project: Project!
     user: User!
 }
@@ -222,6 +229,7 @@ type Team {
 
 type TeamInvitation {
     id: ID!
+    status: InvitationStatus!
     team: ID!
     user: ID!
 }

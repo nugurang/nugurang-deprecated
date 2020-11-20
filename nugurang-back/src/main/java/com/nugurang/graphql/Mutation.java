@@ -1,5 +1,6 @@
 package com.nugurang.graphql;
 
+import com.nugurang.constant.InvitationStatusName;
 import com.nugurang.constant.ProgressName;
 import com.nugurang.constant.RoleName;
 import com.nugurang.dao.ArticleDao;
@@ -7,6 +8,7 @@ import com.nugurang.dao.BoardDao;
 import com.nugurang.dao.EventDao;
 import com.nugurang.dao.FollowingDao;
 import com.nugurang.dao.ImageDao;
+import com.nugurang.dao.InvitationStatusDao;
 import com.nugurang.dao.PositionDao;
 import com.nugurang.dao.ProgressDao;
 import com.nugurang.dao.ProjectDao;
@@ -101,6 +103,7 @@ public class Mutation implements GraphQLMutationResolver {
     private final BoardDao boardDao;
     private final FollowingDao followingDao;
     private final ImageDao imageDao;
+    private final InvitationStatusDao invitationStatusDao;
     private final PositionDao positionDao;
     private final ProgressDao progressDao;
     private final ProjectDao projectDao;
@@ -241,6 +244,11 @@ public class Mutation implements GraphQLMutationResolver {
                 projectInvitationDao.save(
                     ProjectInvitationEntity
                     .builder()
+                    .status(
+                        invitationStatusDao
+                        .findByName(InvitationStatusName.UNACCEPTED.name())
+                        .get()
+                    )
                     .project(
                         projectDao
                         .findById(projectInvitationInputDto.getProject())
@@ -355,6 +363,11 @@ public class Mutation implements GraphQLMutationResolver {
                 teamInvitationDao.save(
                     TeamInvitationEntity
                     .builder()
+                    .status(
+                        invitationStatusDao
+                        .findByName(InvitationStatusName.UNACCEPTED.name())
+                        .get()
+                    )
                     .team(
                         teamDao
                         .findById(teamInvitationInputDto.getTeam())

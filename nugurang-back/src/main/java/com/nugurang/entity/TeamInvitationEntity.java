@@ -30,6 +30,10 @@ public class TeamInvitationEntity implements BaseEntity<TeamInvitationDto> {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "status")
+    private InvitationStatusEntity status;
+
+    @ManyToOne
     @JoinColumn(name = "team")
     private TeamEntity team;
 

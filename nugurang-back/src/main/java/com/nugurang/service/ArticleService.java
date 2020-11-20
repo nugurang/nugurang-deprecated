@@ -4,7 +4,6 @@ import com.nugurang.dao.ArticleDao;
 import com.nugurang.dao.ThreadDao;
 import com.nugurang.dto.ArticleInputDto;
 import com.nugurang.entity.ArticleEntity;
-import com.nugurang.service.UserService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

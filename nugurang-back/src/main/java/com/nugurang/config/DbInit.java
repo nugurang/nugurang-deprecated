@@ -1,15 +1,16 @@
 package com.nugurang.config;
 
+import com.nugurang.constant.NotificationTypeName;
 import com.nugurang.constant.ProgressName;
 import com.nugurang.constant.RoleName;
 import com.nugurang.constant.VoteTypeName;
-import com.nugurang.dao.ArticleDao;
-import com.nugurang.dao.BoardDao;
+import com.nugurang.dao.NotificationTypeDao;
 import com.nugurang.dao.ProgressDao;
 import com.nugurang.dao.RoleDao;
 import com.nugurang.dao.ThreadDao;
 import com.nugurang.dao.UserDao;
 import com.nugurang.dao.VoteTypeDao;
+import com.nugurang.entity.NotificationTypeEntity;
 import com.nugurang.entity.ProgressEntity;
 import com.nugurang.entity.RoleEntity;
 import com.nugurang.entity.VoteTypeEntity;
@@ -21,8 +22,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @RequiredArgsConstructor
 public class DbInit {
-    private final ArticleDao articleDao;
-    private final BoardDao boardDao;
+    private final NotificationTypeDao notificationTypeDao;
     private final ProgressDao progressDao;
     private final RoleDao roleDao;
     private final ThreadDao threadDao;
@@ -37,5 +37,17 @@ public class DbInit {
             voteTypeDao.save(VoteTypeEntity.builder().name(voteTypeName).build());
         for (String progressName : List.of(ProgressName.TODO.name(), ProgressName.DOING.name(), ProgressName.DONE.name()))
             progressDao.save(ProgressEntity.builder().name(progressName).build());
+        for (String notificationTypeName : List.of(
+                NotificationTypeName.PROJECT_INVITATION.name(),
+                NotificationTypeName.TEAM_INVITATION.name()
+            )) {
+            notificationTypeDao.save(
+                NotificationTypeEntity
+                .builder()
+                .name(notificationTypeName)
+                .build()
+            );
+        }
+
     }
 }

@@ -30,6 +30,10 @@ public class ProjectInvitationEntity implements BaseEntity<ProjectInvitationDto>
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "status")
+    private InvitationStatusEntity status;
+
+    @ManyToOne
     @JoinColumn(name = "project")
     private ProjectEntity project;
 
