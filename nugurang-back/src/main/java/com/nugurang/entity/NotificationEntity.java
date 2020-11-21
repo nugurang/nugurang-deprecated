@@ -1,7 +1,6 @@
 package com.nugurang.entity;
 
 import com.nugurang.dto.NotificationDto;
-import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import java.time.OffsetDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,18 +15,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@TypeDefs({
-    @TypeDef(
-        name = "string-array",
-        typeClass = StringArrayType.class
-    )
-})
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -48,13 +38,6 @@ public class NotificationEntity implements BaseEntity<NotificationDto> {
     @Column(nullable = false, updatable = false)
     private OffsetDateTime createdAt;
 
-    @Type(type = "string-array")
-    @Column(
-        name = "data",
-        columnDefinition = "text[]"
-    )
-    private String[] data;
-
     @ManyToOne
     @JoinColumn(name = "notification_type", nullable = false)
     private NotificationTypeEntity notificationType;
@@ -69,7 +52,6 @@ public class NotificationEntity implements BaseEntity<NotificationDto> {
             .id(id)
             .isRead(isRead)
             .createdAt(createdAt)
-            .data(data)
             .build();
     }
 }

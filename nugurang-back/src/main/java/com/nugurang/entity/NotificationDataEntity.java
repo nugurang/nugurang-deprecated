@@ -1,10 +1,11 @@
 package com.nugurang.entity;
 
-import com.nugurang.dto.NotificationTypeDto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,20 +19,16 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-@Table(name = "notification_type")
-public class NotificationTypeEntity implements BaseEntity<NotificationTypeDto> {
+@Table(name = "notification_data")
+public class NotificationDataEntity {
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String name;
+    @Column(nullable = false)
+    private String value;
 
-    public NotificationTypeDto toDto() {
-        return NotificationTypeDto
-            .builder()
-            .id(id)
-            .name(name)
-            .build();
-    }
+    @ManyToOne
+    @JoinColumn(name = "notification", nullable = false)
+    private NotificationEntity notification;
 }

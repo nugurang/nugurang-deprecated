@@ -16,6 +16,4 @@ public class NotificationDto {
     private Boolean isRead;
     @NotNull
     private OffsetDateTime createdAt;
-    @NotNull
-    private String[] data;
 }

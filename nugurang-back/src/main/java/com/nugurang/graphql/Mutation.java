@@ -356,6 +356,7 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.of(teamEntity.toDto());
     }
 
+    @Transactional
     List<TeamInvitationDto> createTeamInvitations(TeamInvitationInputDto teamInvitationInputDto) {
         return teamInvitationInputDto
             .getUsers()
@@ -365,6 +366,7 @@ public class Mutation implements GraphQLMutationResolver {
                 TeamEntity teamEntity = teamDao
                     .findById(teamInvitationInputDto.getTeam())
                     .get();
+
                 notificationService.createTeamInvitationNotification(teamEntity, userEntity);
 
                 return teamInvitationDao.save(
