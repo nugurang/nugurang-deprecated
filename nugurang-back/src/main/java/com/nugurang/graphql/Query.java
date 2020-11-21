@@ -248,6 +248,12 @@ public class Query implements GraphQLQueryResolver {
             .collect(Collectors.toList());
     }
 
+    Optional<VoteTypeDto> getVoteTypeByName(String name) {
+        return voteTypeDao
+            .findByName(name)
+            .map((entity) -> entity.toDto());
+    }
+
     Optional<WorkDto> getWork(Long id) {
         return workDao
             .findById(id)

@@ -20,6 +20,13 @@ input EventInput {
     images: [ID]!
 }
 
+input MatchRequestInput {
+    days: Int!
+    minTeamSize: Int!
+    maxTeamSize: Int
+    event: ID!
+}
+
 input PositionInput {
     name: String!
     description: String
@@ -132,6 +139,15 @@ type Event {
     eventEnd: DateTime!
     images: [Image]!
     tags: [Tag]!
+}
+
+type MatchRequest {
+    createdAt: DateTime!
+    days: Int!
+    minTeamSize: Int!
+    maxTeamSize: Int
+    event: Event!
+    user: User!
 }
 
 type Image {
@@ -341,6 +357,7 @@ type Query {
     getUser(id: ID!): User
     getUserByName(name: String!): User
     getUsers(page: Int!, pageSize: Int!): [User]!
+    getVoteTypeByName(name: String!): VoteType
     getWork(id: ID!): Work
 }
 
@@ -352,6 +369,7 @@ type Mutation {
     createEvent(event: EventInput!): Event
     createFollowing(user: ID!): Boolean
     createImage(address: String!): Image
+    createMatchRequest(request: MatchRequestInput!): MatchRequest
     createPosition(position: PositionInput!): Position
     createProject(project: ProjectInput!, team: ID!): Project
     createProjectInvitations(invitation: ProjectInvitationInput!): [ProjectInvitation]!

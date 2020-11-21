@@ -57,10 +57,13 @@ public class UserResolver implements GraphQLResolver<UserDto> {
     }
 
     public Optional<ImageDto> image(UserDto userDto) {
-        return userDao
+        return Optional.ofNullable(
+            userDao
             .findById(userDto.getId())
-            .map((userEntity) -> userEntity.getImage())
-            .map((imageEntity) -> imageEntity.toDto());
+            .get()
+            .getImage()
+        )
+        .map((imageEntity) -> imageEntity.toDto());
     }
 
     public BoardDto blog(UserDto userDto) {
@@ -77,7 +80,6 @@ public class UserResolver implements GraphQLResolver<UserDto> {
             .stream()
             .map((entity) -> entity.toDto())
             .collect(Collectors.toList());
-
     }
 
     public List<UserDto> getFollowings(UserDto userDto, Integer page, Integer pageSize) {

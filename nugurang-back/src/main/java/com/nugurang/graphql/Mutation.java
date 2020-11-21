@@ -37,6 +37,8 @@ import com.nugurang.dto.BoardInputDto;
 import com.nugurang.dto.EventDto;
 import com.nugurang.dto.EventInputDto;
 import com.nugurang.dto.ImageDto;
+import com.nugurang.dto.MatchRequestDto;
+import com.nugurang.dto.MatchRequestInputDto;
 import com.nugurang.dto.PositionDto;
 import com.nugurang.dto.PositionInputDto;
 import com.nugurang.dto.ProjectDto;
@@ -190,6 +192,10 @@ public class Mutation implements GraphQLMutationResolver {
             .build()
         );
         return Optional.of(imageEntity.toDto());
+    }
+
+    Optional<MatchRequestDto> createMatchRequest(MatchRequestInputDto matchRequestInputDto) {
+        return null;
     }
 
     Optional<PositionDto> createPosition(PositionInputDto positionInputDto) {
