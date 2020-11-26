@@ -371,6 +371,7 @@ type Query {
     getBoardsByNames(names: [String]!): [Board]!
     getImage(id: ID!): Image
     getImageByAddress(address: String!): Image
+    getMatchTypeByName(name: String!): MatchType
     getNotification(id: ID!): Notification
     getProject(id: ID!): Project
     getTask(id: ID!): Task

@@ -194,6 +194,12 @@ public class Query implements GraphQLQueryResolver {
             .map((entity) -> entity.toDto());
     }
 
+    Optional<MatchTypeDto> getMatchTypeByName(String name) {
+        return matchTypeDao
+            .findByName(name)
+            .map((entity) -> entity.toDto());
+    }
+
     Optional<NotificationDto> getNotification(Long id) {
         return notificationDao
             .findById(id)
