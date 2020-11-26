@@ -1,15 +1,18 @@
 package com.nugurang.config;
 
+import com.nugurang.constant.InvitationStatusName;
 import com.nugurang.constant.MatchTypeName;
 import com.nugurang.constant.NotificationTypeName;
 import com.nugurang.constant.ProgressName;
 import com.nugurang.constant.RoleName;
 import com.nugurang.constant.VoteTypeName;
+import com.nugurang.dao.InvitationStatusDao;
 import com.nugurang.dao.MatchTypeDao;
 import com.nugurang.dao.NotificationTypeDao;
 import com.nugurang.dao.ProgressDao;
 import com.nugurang.dao.RoleDao;
 import com.nugurang.dao.VoteTypeDao;
+import com.nugurang.entity.InvitationStatusEntity;
 import com.nugurang.entity.MatchTypeEntity;
 import com.nugurang.entity.NotificationTypeEntity;
 import com.nugurang.entity.ProgressEntity;
@@ -23,6 +26,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @RequiredArgsConstructor
 public class DbInit {
+    private final InvitationStatusDao invitationStatusDao;
     private final MatchTypeDao matchTypeDao;
     private final NotificationTypeDao notificationTypeDao;
     private final ProgressDao progressDao;
@@ -31,6 +35,16 @@ public class DbInit {
 
     @PostConstruct
     public void init() {
+        for (String invitationStatusName : List.of(
+                InvitationStatusName.UNACCEPTED.name(),
+                InvitationStatusName.DENIED.name(),
+                InvitationStatusName.ACCEPTED.name()
+            )) {
+            invitationStatusDao.save(
+                InvitationStatusEntity.builder().name(invitationStatusName).build()
+            );
+        }
+
         for (String roleName : List.of(RoleName.OWNER.name(), RoleName.MEMBER.name()))
             roleDao.save(RoleEntity.builder().name(roleName).build());
 
