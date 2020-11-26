@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class NotificationResolver implements GraphQLResolver<NotificationDto> {
-    NotificationDao notificationDao;
-    NotificationDataDao notificationDataDao;
+    private final NotificationDao notificationDao;
+    private final NotificationDataDao notificationDataDao;
 
     public UserDto user(NotificationDto notificationDto) {
         return notificationDao
