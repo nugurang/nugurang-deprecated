@@ -10,7 +10,7 @@ import TextField from '@material-ui/core/TextField';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import ImageIcon from '@material-ui/icons/Image';
 
-import Layout from '../..components/Layout';
+import Layout from '../../components/Layout';
 import PageTitleBar from '../../components/PageTitleBar';
 import SectionBox from '../../components/SectionBox';
 import SectionTitleBar from '../../components/SectionTitleBar';
@@ -95,6 +95,8 @@ function CreateThread() {
                   label="Enter content"
                   variant="outlined"
                   onClick={handleNewContentChange}
+                  multiline
+                  rows={8}
                 />
               </FormControl>
             </Grid>
