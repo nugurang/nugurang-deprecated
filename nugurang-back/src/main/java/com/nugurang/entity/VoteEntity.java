@@ -23,7 +23,7 @@ import lombok.Setter;
 @Table(
     name = "vote",
     uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"user", "article"})
+        @UniqueConstraint(columnNames = {"user", "article", "vote_type"})
     }
 )
 public class VoteEntity implements BaseEntity<VoteDto> {
