@@ -1,8 +1,7 @@
 package com.nugurang.entity;
 
-import com.nugurang.dto.MatchRequestDto;
+import com.nugurang.dto.MatchDto;
 import java.time.OffsetDateTime;
-import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -26,8 +25,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Setter
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "match_request")
-public class MatchRequestEntity implements BaseEntity<MatchRequestDto> {
+@Table(name = "match")
+public class MatchEntity implements BaseEntity<MatchDto> {
     @Id
     @GeneratedValue
     private Long id;
@@ -35,15 +34,6 @@ public class MatchRequestEntity implements BaseEntity<MatchRequestDto> {
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private OffsetDateTime createdAt;
-
-    @Column(nullable = false)
-    private Integer days;
-
-    @Column(nullable = false)
-    private Integer minTeamSize;
-
-    @Column(nullable = true)
-    private Integer maxTeamSize;
 
     @ManyToOne
     @JoinColumn(name = "type")
@@ -57,15 +47,16 @@ public class MatchRequestEntity implements BaseEntity<MatchRequestDto> {
     @JoinColumn(name = "user")
     private UserEntity user;
 
+    @ManyToOne
+    @JoinColumn(name = "team")
+    private TeamEntity team;
+
     @Override
-    public MatchRequestDto toDto() {
-        return MatchRequestDto
+    public MatchDto toDto() {
+        return MatchDto
             .builder()
             .id(id)
             .createdAt(createdAt)
-            .days(days)
-            .minTeamSize(minTeamSize)
-            .maxTeamSize(Optional.ofNullable(maxTeamSize))
             .build();
     }
 }

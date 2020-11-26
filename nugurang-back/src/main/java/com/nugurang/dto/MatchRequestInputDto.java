@@ -19,4 +19,8 @@ public class MatchRequestInputDto {
     private Integer minTeamSize;
     @NotNull
     private Optional<Integer> maxTeamSize;
+    @NotNull
+    private Long type;
+    @NotNull
+    private Long event;
 }

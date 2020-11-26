@@ -9,6 +9,8 @@ import com.nugurang.dao.EventDao;
 import com.nugurang.dao.FollowingDao;
 import com.nugurang.dao.ImageDao;
 import com.nugurang.dao.InvitationStatusDao;
+import com.nugurang.dao.MatchRequestDao;
+import com.nugurang.dao.MatchTypeDao;
 import com.nugurang.dao.PositionDao;
 import com.nugurang.dao.ProgressDao;
 import com.nugurang.dao.ProjectDao;
@@ -67,6 +69,7 @@ import com.nugurang.entity.BoardEntity;
 import com.nugurang.entity.EventEntity;
 import com.nugurang.entity.FollowingEntity;
 import com.nugurang.entity.ImageEntity;
+import com.nugurang.entity.MatchRequestEntity;
 import com.nugurang.entity.PositionEntity;
 import com.nugurang.entity.ProjectEntity;
 import com.nugurang.entity.ProjectInvitationEntity;
@@ -108,6 +111,8 @@ public class Mutation implements GraphQLMutationResolver {
     private final FollowingDao followingDao;
     private final ImageDao imageDao;
     private final InvitationStatusDao invitationStatusDao;
+    private final MatchRequestDao matchRequestDao;
+    private final MatchTypeDao matchTypeDao;
     private final PositionDao positionDao;
     private final ProgressDao progressDao;
     private final ProjectDao projectDao;
@@ -195,7 +200,20 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Optional<MatchRequestDto> createMatchRequest(MatchRequestInputDto matchRequestInputDto) {
-        return null;
+        return Optional.of(
+            matchRequestDao.save(
+                MatchRequestEntity
+                .builder()
+                .days(matchRequestInputDto.getDays())
+                .minTeamSize(matchRequestInputDto.getMinTeamSize())
+                .maxTeamSize(matchRequestInputDto.getMaxTeamSize().orElse(null))
+                .type(matchTypeDao.findById(matchRequestInputDto.getType()).get())
+                .event(eventDao.findById(matchRequestInputDto.getEvent()).get())
+                .user(userService.getCurrentUser().get())
+                .build()
+            )
+            .toDto()
+        );
     }
 
     Optional<PositionDto> createPosition(PositionInputDto positionInputDto) {

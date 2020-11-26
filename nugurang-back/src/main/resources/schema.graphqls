@@ -24,6 +24,7 @@ input MatchRequestInput {
     days: Int!
     minTeamSize: Int!
     maxTeamSize: Int
+    type: ID!
     event: ID!
 }
 
@@ -141,13 +142,29 @@ type Event {
     tags: [Tag]!
 }
 
+type Match {
+    id: ID!
+    createdAt: DateTime!
+    type: MatchType!
+    event: Event!
+    user: User!
+    team: Team!
+}
+
 type MatchRequest {
+    id: ID!
     createdAt: DateTime!
     days: Int!
     minTeamSize: Int!
     maxTeamSize: Int
+    type: MatchType!
     event: Event!
     user: User!
+}
+
+type MatchType {
+    id: ID!
+    name: String!
 }
 
 type Image {
@@ -196,6 +213,7 @@ type Progress {
 type Project {
     id: ID!
     name: String!
+    finished: Boolean!
     team: Team!
     getUsers(page: Int!, pageSize: Int!): [User]!
     event: Event
@@ -331,14 +349,22 @@ type Work {
 
 type Query {
     ping: String!
-    boards: [Board]!
+
     currentUser: User
     currentOAuth2User: OAuth2User
+    matches: [Match]!
+    matchRequests: [MatchRequest]!
+    # taskReviews: [TaskReview]!
+    # userEvaluations: [UserEvaluation]!
+
+    boards: [Board]!
     invitationStatus: [InvitationStatus]!
+    matchTypes: [MatchType]!
     notificationTypes: [NotificationType]!
     positions: [Position]!
     progresses: [Progress]!
     voteTypes: [VoteType]!
+
     getArticle(id: ID!): Article
     getBoard(id: ID!): Board
     getBoardByName(name: String!): Board
@@ -348,6 +374,7 @@ type Query {
     getNotification(id: ID!): Notification
     getProject(id: ID!): Project
     getTask(id: ID!): Task
+    # getTaskReviewByTask(id: ID!): TaskReview!
     getTeam(id: ID!): Team
     getTeamByName(name: String!): Team
     getThread(id: ID!): Thread
