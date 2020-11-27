@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class TaskResolver implements GraphQLResolver<TaskDto> {
-
     private final WorkDao workerDao;
     private final ProgressDao progressDao;
     private final PositionDao positionDao;

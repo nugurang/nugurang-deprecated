@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class ProjectInvitationResolver implements GraphQLResolver<ProjectInvitationDto> {
-    ProjectInvitationDao projectInvitationDao;
+    private final ProjectInvitationDao projectInvitationDao;
 
     public ProjectDto project(ProjectInvitationDto projectInvitationDto) {
         return projectInvitationDao
