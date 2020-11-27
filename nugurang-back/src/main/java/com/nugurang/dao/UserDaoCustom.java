@@ -13,6 +13,8 @@ public interface UserDaoCustom {
 
     Page<UserEntity> findAllByFollowingId(Long following, Pageable pageable);
 
+    List<UserEntity> findAllByProjectId(Long project);
+
     Page<UserEntity> findAllByProjectId(Long project, Pageable pageable);
 
     List<UserEntity> findAllByTaskId(Long task);

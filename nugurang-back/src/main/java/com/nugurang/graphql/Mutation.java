@@ -17,7 +17,6 @@ import com.nugurang.dao.ProjectDao;
 import com.nugurang.dao.ProjectInvitationDao;
 import com.nugurang.dao.RoleDao;
 import com.nugurang.dao.TaskDao;
-import com.nugurang.dao.TaskHonorDao;
 import com.nugurang.dao.TaskReviewDao;
 import com.nugurang.dao.TeamDao;
 import com.nugurang.dao.TeamInvitationDao;
@@ -29,6 +28,7 @@ import com.nugurang.dao.UserReviewDao;
 import com.nugurang.dao.VoteDao;
 import com.nugurang.dao.VoteTypeDao;
 import com.nugurang.dao.WorkDao;
+import com.nugurang.dao.XrefTaskPositionDao;
 import com.nugurang.dao.XrefUserProjectDao;
 import com.nugurang.dao.XrefUserTaskDao;
 import com.nugurang.dao.XrefUserTeamDao;
@@ -74,16 +74,17 @@ import com.nugurang.entity.PositionEntity;
 import com.nugurang.entity.ProjectEntity;
 import com.nugurang.entity.ProjectInvitationEntity;
 import com.nugurang.entity.TaskEntity;
-import com.nugurang.entity.TaskHonorEntity;
 import com.nugurang.entity.TaskReviewEntity;
 import com.nugurang.entity.TeamEntity;
 import com.nugurang.entity.TeamInvitationEntity;
 import com.nugurang.entity.ThreadEntity;
 import com.nugurang.entity.UserEntity;
 import com.nugurang.entity.UserEvaluationEntity;
+//import com.nugurang.entity.UserHonorEntity;
 import com.nugurang.entity.UserReviewEntity;
 import com.nugurang.entity.VoteEntity;
 import com.nugurang.entity.WorkEntity;
+import com.nugurang.entity.XrefTaskPositionEntity;
 import com.nugurang.entity.XrefUserProjectEntity;
 import com.nugurang.entity.XrefUserTaskEntity;
 import com.nugurang.entity.XrefUserTeamEntity;
@@ -119,7 +120,7 @@ public class Mutation implements GraphQLMutationResolver {
     private final ProjectInvitationDao projectInvitationDao;
     private final RoleDao roleDao;
     private final TaskDao taskDao;
-    private final TaskHonorDao taskHonorDao;
+    private final XrefTaskPositionDao xrefTaskPositionDao;
     private final TaskReviewDao taskReviewDao;
     private final TeamDao teamDao;
     private final TeamInvitationDao teamInvitationDao;
@@ -272,9 +273,7 @@ public class Mutation implements GraphQLMutationResolver {
                     .findById(projectInvitationInputDto.getProject())
                     .get();
 
-                notificationService.createProjectInvitationNotification(projectEntity, userEntity);
-
-                return projectInvitationDao.save(
+                ProjectInvitationEntity projectInvitationEntity = projectInvitationDao.save(
                     ProjectInvitationEntity
                     .builder()
                     .status(
@@ -285,8 +284,13 @@ public class Mutation implements GraphQLMutationResolver {
                     .project(projectEntity)
                     .user(userEntity)
                     .build()
-                )
-                .toDto();
+                );
+
+                notificationService.createProjectInvitationNotification(
+                    projectInvitationEntity,
+                    userEntity
+                );
+                return projectInvitationEntity.toDto();
             })
             .collect(Collectors.toList());
     }
@@ -337,7 +341,7 @@ public class Mutation implements GraphQLMutationResolver {
             .collect(Collectors.toList())
         );
 
-        taskHonorDao.saveAll(
+        xrefTaskPositionDao.saveAll(
             taskInputDto
             .getPositions()
             .stream()
@@ -345,9 +349,8 @@ public class Mutation implements GraphQLMutationResolver {
                 positionDao.findById(positionId).get()
             )
             .map((positionEntity) ->
-                TaskHonorEntity
+                XrefTaskPositionEntity
                 .builder()
-                .honor(0)
                 .task(taskEntity)
                 .position(positionEntity)
                 .build()
@@ -391,9 +394,8 @@ public class Mutation implements GraphQLMutationResolver {
                     .findById(teamInvitationInputDto.getTeam())
                     .get();
 
-                notificationService.createTeamInvitationNotification(teamEntity, userEntity);
 
-                return teamInvitationDao.save(
+                TeamInvitationEntity teamInvitationEntity = teamInvitationDao.save(
                     TeamInvitationEntity
                     .builder()
                     .status(
@@ -404,8 +406,13 @@ public class Mutation implements GraphQLMutationResolver {
                     .team(teamEntity)
                     .user(userEntity)
                     .build()
-                )
-                .toDto();
+                );
+
+                notificationService.createTeamInvitationNotification(
+                    teamInvitationEntity, userEntity
+                );
+
+                return teamInvitationEntity.toDto();
             })
             .collect(Collectors.toList());
     }
@@ -591,7 +598,42 @@ public class Mutation implements GraphQLMutationResolver {
         projectEntity.setFinished(true);
         projectEntity.setUserEvaluation(userEvaluationEntity);
 
-        projectDao.save(projectEntity);
+        projectEntity = projectDao.save(projectEntity);
+        /*
+        for (UserEntity userEntity : userDao.findAllByProjectId(projectEntity.getId())) {
+            for (TaskEntity taskEntity : taskDao.findAllByUserId(userEntity.getId())) {
+
+                int honor = taskEntity.getDifficulty() * taskReviewDao
+                    .findAllByTaskId(taskEntity.getId())
+                    .stream()
+                    .map((taskReviewEntity) -> taskReviewEntity.getHonor())
+                    .collect(Collectors.summingInt(Integer::intValue));
+
+                List<PositionEntity> positionEntities = positionDao.findAllByUserIdAndTaskId(
+                    userEntity.getId(), taskEntity.getId()
+                );
+
+                honor /= positionEntities.size();
+
+                for (PositionEntity positionEntity : positionEntities) {
+
+                    UserHonorEntity userHonorEntity = userHonorDao.findByUserIdAndPositionId(
+                        userEntity.getId(), positionEntity.getId()
+                    ).orElse(
+                        UserHonorEntity
+                        .builder()
+                        .user(userEntity)
+                        .honor(0)
+                        .position(positionEntity)
+                        .build()
+                    );
+                    userHonorEntity.setHonor(userHonorEntity.getHonor() + honor);
+                    userHonorDao.save(userHonorEntity);
+                }
+            }
+        }
+        */
+
         return true;
     }
     
@@ -651,7 +693,8 @@ public class Mutation implements GraphQLMutationResolver {
             .get();
 
         teamInvitationEntity.setStatus(
-            invitationStatusDao.findByName(InvitationStatusName.ACCEPTED.name())
+            invitationStatusDao
+            .findByName(InvitationStatusName.ACCEPTED.name())
             .get()
         );
 

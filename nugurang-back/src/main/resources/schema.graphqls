@@ -244,14 +244,8 @@ type Task {
     order: Int!
     work: Work!
     progress: Progress!
-    honors: [TaskHonor]!
+    positions: [Position]!
     users: [User]!
-}
-
-type TaskHonor {
-    honor: Int!
-    task: Task!
-    position: Position!
 }
 
 type Team {
@@ -374,10 +368,12 @@ type Query {
     getMatchTypeByName(name: String!): MatchType
     getNotification(id: ID!): Notification
     getProject(id: ID!): Project
+    getProjectInvitation(id: ID!): ProjectInvitation
     getTask(id: ID!): Task
     # getTaskReviewByTask(id: ID!): TaskReview!
     getTeam(id: ID!): Team
     getTeamByName(name: String!): Team
+    getTeamInvitation(id: ID!): TeamInvitation
     getThread(id: ID!): Thread
     getThreadsByBoards(boards: [ID]!, page: Int!, pageSize: Int!): [Thread]!
     getThreadsByBoardNames(boards: [String]!, page: Int!, pageSize: Int!): [Thread]!
