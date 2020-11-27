@@ -6,8 +6,8 @@ import com.nugurang.dao.NotificationDataDao;
 import com.nugurang.dao.NotificationTypeDao;
 import com.nugurang.entity.NotificationDataEntity;
 import com.nugurang.entity.NotificationEntity;
-import com.nugurang.entity.ProjectEntity;
-import com.nugurang.entity.TeamEntity;
+import com.nugurang.entity.ProjectInvitationEntity;
+import com.nugurang.entity.TeamInvitationEntity;
 import com.nugurang.entity.UserEntity;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +42,7 @@ public class NotificationService {
 
     @Transactional
     public NotificationEntity createProjectInvitationNotification(
-        ProjectEntity projectEntity, UserEntity userEntity
+        ProjectInvitationEntity projectInvitationEntity, UserEntity userEntity
     ) {
         NotificationEntity notificationEntity = notificationDao.save(
             NotificationEntity
@@ -57,14 +57,17 @@ public class NotificationService {
             .build()
         );
 
-        createNotificationData(notificationEntity, List.of(projectEntity.getName()));
+        createNotificationData(
+            notificationEntity,
+            List.of(projectInvitationEntity.getId().toString())
+        );
 
         return notificationEntity;
     }
 
     @Transactional
     public NotificationEntity createTeamInvitationNotification(
-        TeamEntity teamEntity, UserEntity userEntity
+        TeamInvitationEntity teamInvitationEntity, UserEntity userEntity
     ) {
         NotificationEntity notificationEntity = notificationDao.save(
             NotificationEntity
@@ -79,8 +82,10 @@ public class NotificationService {
             .build()
         );
 
-        createNotificationData(notificationEntity, List.of(teamEntity.getName()));
-
+        createNotificationData(
+            notificationEntity,
+            List.of(teamInvitationEntity.getId().toString())
+        );
         return notificationEntity;
     }
 }

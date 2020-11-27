@@ -1,6 +1,5 @@
 package com.nugurang.entity;
 
-import com.nugurang.dto.TaskHonorDto;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -21,17 +20,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(
-    name = "task_honor",
+    name = "xref_task_position",
     uniqueConstraints = {
         @UniqueConstraint(columnNames = {"task", "position"})
     }
 )
-public class TaskHonorEntity implements BaseEntity<TaskHonorDto> {
+public class XrefTaskPositionEntity {
     @Id
     @GeneratedValue
     private Long id;
-
-    private Integer honor;
 
     @ManyToOne
     @JoinColumn(name = "task", nullable = false)
@@ -40,12 +37,4 @@ public class TaskHonorEntity implements BaseEntity<TaskHonorDto> {
     @ManyToOne
     @JoinColumn(name = "position", nullable = false)
     private PositionEntity position;
-
-    public TaskHonorDto toDto() {
-        return TaskHonorDto
-            .builder()
-            .id(id)
-            .honor(honor)
-            .build();
-    }
 }

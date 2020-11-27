@@ -12,8 +12,10 @@ import com.nugurang.dao.NotificationTypeDao;
 import com.nugurang.dao.PositionDao;
 import com.nugurang.dao.ProgressDao;
 import com.nugurang.dao.ProjectDao;
+import com.nugurang.dao.ProjectInvitationDao;
 import com.nugurang.dao.TaskDao;
 import com.nugurang.dao.TeamDao;
+import com.nugurang.dao.TeamInvitationDao;
 import com.nugurang.dao.ThreadDao;
 import com.nugurang.dao.UserDao;
 import com.nugurang.dao.VoteTypeDao;
@@ -31,8 +33,10 @@ import com.nugurang.dto.OAuth2UserDto;
 import com.nugurang.dto.PositionDto;
 import com.nugurang.dto.ProgressDto;
 import com.nugurang.dto.ProjectDto;
+import com.nugurang.dto.ProjectInvitationDto;
 import com.nugurang.dto.TaskDto;
 import com.nugurang.dto.TeamDto;
+import com.nugurang.dto.TeamInvitationDto;
 import com.nugurang.dto.ThreadDto;
 import com.nugurang.dto.UserDto;
 import com.nugurang.dto.VoteTypeDto;
@@ -64,8 +68,10 @@ public class Query implements GraphQLQueryResolver {
     private final PositionDao positionDao;
     private final ProgressDao progressDao;
     private final ProjectDao projectDao;
+    private final ProjectInvitationDao projectInvitationDao;
     private final TaskDao taskDao;
     private final TeamDao teamDao;
+    private final TeamInvitationDao teamInvitationDao;
     private final ThreadDao threadDao;
     private final UserDao userDao;
     private final VoteTypeDao voteTypeDao;
@@ -212,6 +218,12 @@ public class Query implements GraphQLQueryResolver {
             .map((entity) -> entity.toDto());
     }
 
+    Optional<ProjectInvitationDto> getProjectInvitation(Long id) {
+        return projectInvitationDao
+            .findById(id)
+            .map((entity) -> entity.toDto());
+    }
+
     Optional<TeamDto> getTeam(Long id) {
         return teamDao
             .findById(id)
@@ -221,6 +233,12 @@ public class Query implements GraphQLQueryResolver {
     Optional<TeamDto> getTeamByName(String name) {
         return teamDao
             .findByName(name)
+            .map((entity) -> entity.toDto());
+    }
+
+    Optional<TeamInvitationDto> getTeamInvitation(Long id) {
+        return teamInvitationDao
+            .findById(id)
             .map((entity) -> entity.toDto());
     }
 
