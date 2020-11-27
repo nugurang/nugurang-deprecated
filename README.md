@@ -21,4 +21,4 @@ Back end framework
 * [Spring Boot](https://spring.io/projects/spring-boot)
 
 Machine learning framework
-* [TensorFlow](https://www.tensorflow.org/)
+* [Scikit-Learn](https://https://scikit-learn.org/stable/)
