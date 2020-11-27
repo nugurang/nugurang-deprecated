@@ -22,7 +22,7 @@ import lombok.Setter;
 @Entity
 @Table(
     name = "project_invitation",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"project", "user"})
+    uniqueConstraints = @UniqueConstraint(columnNames = {"project", "from_user", "to_user"})
 )
 public class ProjectInvitationEntity implements BaseEntity<ProjectInvitationDto> {
     @Id
@@ -38,8 +38,12 @@ public class ProjectInvitationEntity implements BaseEntity<ProjectInvitationDto>
     private ProjectEntity project;
 
     @ManyToOne
-    @JoinColumn(name = "user")
-    private UserEntity user;
+    @JoinColumn(name = "from_user")
+    private UserEntity fromUser;
+
+    @ManyToOne
+    @JoinColumn(name = "to_user")
+    private UserEntity toUser;
 
     @Override
     public ProjectInvitationDto toDto() {

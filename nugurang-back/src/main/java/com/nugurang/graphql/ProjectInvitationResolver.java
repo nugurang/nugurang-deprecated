@@ -30,11 +30,19 @@ public class ProjectInvitationResolver implements GraphQLResolver<ProjectInvitat
             .toDto();
     }
 
-    public UserDto user(ProjectInvitationDto projectInvitationDto) {
+    public UserDto fromUser(ProjectInvitationDto projectInvitationDto) {
         return projectInvitationDao
             .findById(projectInvitationDto.getId())
             .get()
-            .getUser()
+            .getFromUser()
+            .toDto();
+    }
+
+    public UserDto toUser(ProjectInvitationDto projectInvitationDto) {
+        return projectInvitationDao
+            .findById(projectInvitationDto.getId())
+            .get()
+            .getToUser()
             .toDto();
     }
 }

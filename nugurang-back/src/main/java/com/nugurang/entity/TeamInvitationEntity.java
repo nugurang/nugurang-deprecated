@@ -22,7 +22,7 @@ import lombok.Setter;
 @Entity
 @Table(
     name = "team_invitation",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"team", "user"})
+    uniqueConstraints = @UniqueConstraint(columnNames = {"team", "from_user", "to_user"})
 )
 public class TeamInvitationEntity implements BaseEntity<TeamInvitationDto> {
     @Id
@@ -38,8 +38,12 @@ public class TeamInvitationEntity implements BaseEntity<TeamInvitationDto> {
     private TeamEntity team;
 
     @ManyToOne
-    @JoinColumn(name = "user")
-    private UserEntity user;
+    @JoinColumn(name = "from_user")
+    private UserEntity fromUser;
+
+    @ManyToOne
+    @JoinColumn(name = "to_user")
+    private UserEntity toUser;
 
     @Override
     public TeamInvitationDto toDto() {

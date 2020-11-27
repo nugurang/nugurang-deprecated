@@ -224,7 +224,8 @@ type ProjectInvitation {
     id: ID!
     status: InvitationStatus!
     project: Project!
-    user: User!
+    fromUser: User!
+    toUser: User!
 }
 
 type Role {
@@ -258,8 +259,9 @@ type Team {
 type TeamInvitation {
     id: ID!
     status: InvitationStatus!
-    team: ID!
-    user: ID!
+    team: Team!
+    fromUser: User!
+    toUser: User!
 }
 
 type Thread {

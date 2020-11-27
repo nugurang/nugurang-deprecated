@@ -31,11 +31,19 @@ public class TeamInvitationResolver implements GraphQLResolver<TeamInvitationDto
             .toDto();
     }
 
-    public UserDto user(TeamInvitationDto teamInvitationDto) {
+    public UserDto fromUser(TeamInvitationDto teamInvitationDto) {
         return teamInvitationDao
             .findById(teamInvitationDto.getId())
             .get()
-            .getUser()
+            .getFromUser()
+            .toDto();
+    }
+
+    public UserDto toUser(TeamInvitationDto teamInvitationDto) {
+        return teamInvitationDao
+            .findById(teamInvitationDto.getId())
+            .get()
+            .getToUser()
             .toDto();
     }
 }

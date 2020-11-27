@@ -264,6 +264,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     List<ProjectInvitationDto> createProjectInvitations(ProjectInvitationInputDto projectInvitationInputDto) {
+        UserEntity currentUserEntity = userService.getCurrentUser().get();
         return projectInvitationInputDto
             .getUsers()
             .stream()
@@ -282,7 +283,8 @@ public class Mutation implements GraphQLMutationResolver {
                         .get()
                     )
                     .project(projectEntity)
-                    .user(userEntity)
+                    .fromUser(currentUserEntity)
+                    .toUser(userEntity)
                     .build()
                 );
 
@@ -385,6 +387,7 @@ public class Mutation implements GraphQLMutationResolver {
 
     @Transactional
     List<TeamInvitationDto> createTeamInvitations(TeamInvitationInputDto teamInvitationInputDto) {
+        UserEntity currentUserEntity = userService.getCurrentUser().get();
         return teamInvitationInputDto
             .getUsers()
             .stream()
@@ -404,7 +407,8 @@ public class Mutation implements GraphQLMutationResolver {
                         .get()
                     )
                     .team(teamEntity)
-                    .user(userEntity)
+                    .fromUser(currentUserEntity)
+                    .toUser(userEntity)
                     .build()
                 );
 
@@ -560,7 +564,7 @@ public class Mutation implements GraphQLMutationResolver {
         xrefUserProjectDao.save(
             XrefUserProjectEntity
             .builder()
-            .user(projectInvitationEntity.getUser())
+            .user(projectInvitationEntity.getToUser())
             .project(projectInvitationEntity.getProject())
             .build()
         );
@@ -703,7 +707,7 @@ public class Mutation implements GraphQLMutationResolver {
         xrefUserTeamDao.save(
             XrefUserTeamEntity
             .builder()
-            .user(teamInvitationEntity.getUser())
+            .user(teamInvitationEntity.getToUser())
             .team(teamInvitationEntity.getTeam())
             .build()
         );
