@@ -566,6 +566,7 @@ public class Mutation implements GraphQLMutationResolver {
             .builder()
             .user(projectInvitationEntity.getToUser())
             .project(projectInvitationEntity.getProject())
+            .role(roleDao.findByName(RoleName.MEMBER.name()).get())
             .build()
         );
 
@@ -709,6 +710,7 @@ public class Mutation implements GraphQLMutationResolver {
             .builder()
             .user(teamInvitationEntity.getToUser())
             .team(teamInvitationEntity.getTeam())
+            .role(roleDao.findByName(RoleName.MEMBER.name()).get())
             .build()
         );
 
