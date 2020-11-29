@@ -28,8 +28,8 @@ const CREATE_IMAGE = gql`
 `;
 
 const CREATE_THREAD = gql`
-  mutation createThread($thread: ThreadInput!) {
-    createThread (thread: $thread) {
+  mutation createThread($board: ID!, $thread: ThreadInput!) {
+    createThread (board: $board, thread: $thread) {
       id
     }
   }
@@ -129,7 +129,7 @@ function CreateThread() {
               image = imageRes.data.createImage.id;
             }
             console.log(newTitle.current.value);
-            const threadRes = await createThread({ variables: { thread: {board: router.query.board, name: newTitle.current.value, firstArticle: {title: newTitle.current.value, content: newContent.current.value, images: [image]}}}});
+            const threadRes = await createThread({ variables: { board: router.query.board, thread: {name: newTitle.current.value, firstArticle: {title: newTitle.current.value, content: newContent.current.value, images: [image]}}}});
             router.push(`/threads/${threadRes.data.createThread.id}`);
           }}
         >
