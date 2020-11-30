@@ -11,6 +11,6 @@ public class MatchTask {
 
     @Scheduled(fixedDelay = 1000)
     private void scheduleTest() {
-        logger.info("match task");
+        //logger.info("match task");
     }
 }
