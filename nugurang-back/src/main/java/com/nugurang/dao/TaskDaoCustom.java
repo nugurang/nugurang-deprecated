@@ -5,5 +5,7 @@ import java.util.List;
 
 public interface TaskDaoCustom {
 
+    List<TaskEntity> findAllByProjectId(Long project);
+
     List<TaskEntity> findAllByUserId(Long user);
 }

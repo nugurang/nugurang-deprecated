@@ -11,7 +11,5 @@ public interface TaskDao extends JpaRepository<TaskEntity, Long>, TaskDaoCustom 
 
     Optional<TaskEntity> findFirstByOrderByOrderDesc();
 
-    List<TaskEntity> findAllByUserId(Long user);
-
     List<TaskEntity> findAllByWorkId(Long work);
 }
