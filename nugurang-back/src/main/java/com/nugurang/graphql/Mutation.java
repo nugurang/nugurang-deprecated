@@ -80,7 +80,7 @@ import com.nugurang.entity.TeamInvitationEntity;
 import com.nugurang.entity.ThreadEntity;
 import com.nugurang.entity.UserEntity;
 import com.nugurang.entity.UserEvaluationEntity;
-//import com.nugurang.entity.UserHonorEntity;
+import com.nugurang.entity.UserHonorEntity;
 import com.nugurang.entity.UserReviewEntity;
 import com.nugurang.entity.VoteEntity;
 import com.nugurang.entity.WorkEntity;
