@@ -11,6 +11,6 @@ public class UserEvaluationTask {
 
     @Scheduled(fixedDelay = 1000)
     private void scheduleTest() {
-        logger.info("user evaluation task");
+        //logger.info("user evaluation task");
     }
 }
