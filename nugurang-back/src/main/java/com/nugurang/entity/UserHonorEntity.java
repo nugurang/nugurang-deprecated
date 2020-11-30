@@ -50,6 +50,7 @@ public class UserHonorEntity implements BaseEntity<UserHonorDto> {
     public UserHonorDto toDto() {
         return UserHonorDto
             .builder()
+            .id(id)
             .honor(honor)
             .build();
     }
