@@ -5,7 +5,6 @@ import java.time.OffsetDateTime;
 import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -16,8 +15,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,16 +22,17 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @Setter
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "match_request")
 public class MatchRequestEntity implements BaseEntity<MatchRequestDto> {
     @Id
     @GeneratedValue
     private Long id;
 
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     private OffsetDateTime createdAt;
+
+    @Column(nullable = false)
+    private OffsetDateTime expiredAt;
 
     @Column(nullable = false)
     private Integer days;
@@ -63,7 +61,7 @@ public class MatchRequestEntity implements BaseEntity<MatchRequestDto> {
             .builder()
             .id(id)
             .createdAt(createdAt)
-            .days(days)
+            .expiredAt(expiredAt)
             .minTeamSize(minTeamSize)
             .maxTeamSize(Optional.ofNullable(maxTeamSize))
             .build();

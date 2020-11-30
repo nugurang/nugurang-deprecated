@@ -13,7 +13,7 @@ public class UserEvaluationDto {
     @NotNull
     private Long id;
     @NotNull
-    private OffsetDateTime startedAt;
+    private OffsetDateTime createdAt;
     @NotNull
-    private Integer days;
+    private OffsetDateTime expiredAt;
 }

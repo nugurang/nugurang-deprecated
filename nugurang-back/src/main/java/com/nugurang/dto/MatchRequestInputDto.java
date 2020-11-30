@@ -14,7 +14,11 @@ public class MatchRequestInputDto {
     @NotNull
     private OffsetDateTime createdAt;
     @NotNull
-    private Integer days;
+    private Optional<Integer> days;
+    @NotNull
+    private Optional<Integer> hours;
+    @NotNull
+    private Optional<Integer> minutes;
     @NotNull
     private Integer minTeamSize;
     @NotNull

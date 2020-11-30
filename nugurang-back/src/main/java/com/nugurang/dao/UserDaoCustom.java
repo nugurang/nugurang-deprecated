@@ -17,6 +17,8 @@ public interface UserDaoCustom {
 
     Page<UserEntity> findAllByProjectId(Long project, Pageable pageable);
 
+    List<UserEntity> findAllByProjectIdIn(List<Long> projects);
+
     List<UserEntity> findAllByTaskId(Long task);
 
     Page<UserEntity> findAllByTeamId(Long team, Pageable pageable);
