@@ -322,7 +322,7 @@ public class Mutation implements GraphQLMutationResolver {
                     .orElse(0)
                 )
             )
-            .difficulty(taskInputDto.getDifficulty().orElse(0))
+            .difficulty(taskInputDto.getDifficulty().orElse(1))
             .work(workDao.findById(work).get())
             .progress(
                 taskInputDto
