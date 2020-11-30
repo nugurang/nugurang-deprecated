@@ -134,8 +134,9 @@ public class UserResolver implements GraphQLResolver<UserDto> {
         return projectDao
             .findAllByUserId(userDto.getId(), PageRequest.of(page, pageSize))
             .stream()
-            .map((projectEntity) -> projectEntity.getUserEvaluation())
-            .map((entity) -> entity.toDto())
+            .map((projectEntity) -> Optional.ofNullable(projectEntity.getUserEvaluation()))
+            .filter((userEvaluationEntity) -> userEvaluationEntity.isPresent())
+            .map((entity) -> entity.get().toDto())
             .collect(Collectors.toList());
     }
 }
