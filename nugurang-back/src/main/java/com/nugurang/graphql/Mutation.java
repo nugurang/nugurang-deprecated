@@ -604,7 +604,6 @@ public class Mutation implements GraphQLMutationResolver {
         projectEntity.setUserEvaluation(userEvaluationEntity);
 
         projectEntity = projectDao.save(projectEntity);
-        /*
         for (UserEntity userEntity : userDao.findAllByProjectId(projectEntity.getId())) {
             for (TaskEntity taskEntity : taskDao.findAllByUserId(userEntity.getId())) {
 
@@ -637,7 +636,6 @@ public class Mutation implements GraphQLMutationResolver {
                 }
             }
         }
-        */
 
         return true;
     }
