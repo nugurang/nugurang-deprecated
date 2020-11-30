@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 public class MatchTask {
     private final Logger logger = LoggerFactory.getLogger(MatchTask.class);
 
-    @Scheduled(fixedDelay = 1000)
-    private void scheduleTest() {
-        //logger.info("match task");
+    @Scheduled(fixedDelay = 10000)
+    private void matchUsers() {
+        logger.info("match task");
     }
 }

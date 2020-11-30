@@ -3,6 +3,7 @@ package com.nugurang.graphql;
 import com.nugurang.constant.InvitationStatusName;
 import com.nugurang.constant.ProgressName;
 import com.nugurang.constant.RoleName;
+import com.nugurang.constant.UserEvaluationConstant;
 import com.nugurang.dao.ArticleDao;
 import com.nugurang.dao.BoardDao;
 import com.nugurang.dao.EventDao;
@@ -93,6 +94,7 @@ import com.nugurang.service.NotificationService;
 import com.nugurang.service.OAuth2Service;
 import com.nugurang.service.UserService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -206,11 +208,18 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Optional<MatchRequestDto> createMatchRequest(MatchRequestInputDto matchRequestInputDto) {
+        OffsetDateTime now = OffsetDateTime.now();
         return Optional.of(
-            matchRequestDao.save(
+           matchRequestDao.save(
                 MatchRequestEntity
                 .builder()
-                .days(matchRequestInputDto.getDays())
+                .createdAt(now)
+                .expiredAt(
+                    now
+                    .plusDays(matchRequestInputDto.getDays().orElse(1))
+                    .plusHours(matchRequestInputDto.getHours().orElse(0))
+                    .plusMinutes(matchRequestInputDto.getMinutes().orElse(0))
+                )
                 .minTeamSize(matchRequestInputDto.getMinTeamSize())
                 .maxTeamSize(matchRequestInputDto.getMaxTeamSize().orElse(null))
                 .type(matchTypeDao.findById(matchRequestInputDto.getType()).get())
@@ -598,10 +607,12 @@ public class Mutation implements GraphQLMutationResolver {
         if (projectEntity.getFinished())
             return false;
 
+        OffsetDateTime now = OffsetDateTime.now();
         UserEvaluationEntity userEvaluationEntity = userEvaluationDao.save(
             UserEvaluationEntity
             .builder()
-            .days(7)
+            .createdAt(now)
+            .expiredAt(now.plusDays(UserEvaluationConstant.days))
             .build()
         );
 
@@ -615,7 +626,7 @@ public class Mutation implements GraphQLMutationResolver {
             logger.info("task review entities size: " + taskReviewEntities.size());
 
             int honorPerPosition = taskReviewEntities.stream()
-                .map((taskReviewEntity) -> (taskEntity.getDifficulty() * taskReviewEntity.getHonor())
+                .map((taskReviewEntity) -> taskEntity.getDifficulty() * taskReviewEntity.getHonor())
                 .collect(Collectors.summingInt(Integer::intValue));
 
             if (taskReviewEntities.size() > 0)
@@ -638,7 +649,7 @@ public class Mutation implements GraphQLMutationResolver {
                 for (PositionEntity positionEntity : positionEntities) {
                     UserHonorEntity userHonorEntity = userHonorDao.findByUserIdAndPositionId(
                         userEntity.getId(), positionEntity.getId()
-                    ).orElse(
+                    ).orElseGet(() ->
                         UserHonorEntity
                         .builder()
                         .user(userEntity)

@@ -4,7 +4,6 @@ import com.nugurang.dto.UserEvaluationDto;
 import java.time.OffsetDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -13,8 +12,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,26 +19,24 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @Setter
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "user_evaluation")
 public class UserEvaluationEntity implements BaseEntity<UserEvaluationDto> {
     @Id
     @GeneratedValue
     private Long id;
 
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private OffsetDateTime startedAt;
+    @Column(nullable = false)
+    private OffsetDateTime createdAt;
 
     @Column(nullable = false)
-    private Integer days;
+    private OffsetDateTime expiredAt;
 
     public UserEvaluationDto toDto() {
         return UserEvaluationDto
             .builder()
             .id(id)
-            .startedAt(startedAt)
-            .days(days)
+            .createdAt(createdAt)
+            .expiredAt(expiredAt)
             .build();
     }
 }

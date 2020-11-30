@@ -16,7 +16,7 @@ public class MatchRequestDto {
     @NotNull
     private OffsetDateTime createdAt;
     @NotNull
-    private Integer days;
+    private OffsetDateTime expiredAt;
     @NotNull
     private Integer minTeamSize;
     @NotNull

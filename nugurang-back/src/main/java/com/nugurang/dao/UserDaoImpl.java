@@ -81,6 +81,15 @@ public class UserDaoImpl implements UserDaoCustom {
         return new PageImpl<>(results.getResults(), pageable, results.getTotal());
     }
 
+    public List<UserEntity> findAllByProjectIdIn(List<Long> projects) {
+        return queryFactory
+            .selectFrom(userEntity)
+            .innerJoin(xrefUserProjectEntity)
+            .on(userEntity.id.eq(xrefUserProjectEntity.user.id))
+            .where(xrefUserProjectEntity.project.id.in(projects))
+            .fetch();
+    }
+
     public List<UserEntity> findAllByTaskId(Long task) {
         return queryFactory
             .selectFrom(userEntity)

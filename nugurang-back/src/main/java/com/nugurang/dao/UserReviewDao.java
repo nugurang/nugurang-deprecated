@@ -8,7 +8,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserReviewDao extends JpaRepository<UserReviewEntity, Long> {
 
+    List<UserReviewEntity> findAllByToUserId(Long toUser);
+
+    List<UserReviewEntity> findAllByToUserIdIn(List<Long> toUsers);
+
     List<UserReviewEntity> findAllByUserEvaluationId(Long userEvaluation);
+
+    void deleteAllByIdIn(List<Long> ids);
 
     void deleteAllByUserEvaluationIdAndFromUserId(Long userEvaluation, Long fromUser);
 
