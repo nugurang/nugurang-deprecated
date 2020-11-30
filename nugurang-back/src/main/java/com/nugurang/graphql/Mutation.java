@@ -604,24 +604,26 @@ public class Mutation implements GraphQLMutationResolver {
         projectEntity.setUserEvaluation(userEvaluationEntity);
 
         projectEntity = projectDao.save(projectEntity);
-        for (UserEntity userEntity : userDao.findAllByProjectId(projectEntity.getId())) {
-            for (TaskEntity taskEntity : taskDao.findAllByUserId(userEntity.getId())) {
+        for (TaskEntity taskEntity : taskDao.findAllByProjectId(project)) {
+            int honorPerPosition = taskReviewDao
+                .findAllByTaskId(taskEntity.getId())
+                .stream()
+                .map((taskReviewEntity) -> taskEntity.getDifficulty() * taskReviewEntity.getHonor())
+                .collect(Collectors.summingInt(Integer::intValue));
 
-                int honor = taskEntity.getDifficulty() * taskReviewDao
-                    .findAllByTaskId(taskEntity.getId())
-                    .stream()
-                    .map((taskReviewEntity) -> taskReviewEntity.getHonor())
-                    .collect(Collectors.summingInt(Integer::intValue));
+            List<UserEntity> userEntities = userDao.findAllByTaskId(taskEntity.getId());
+            if (userEntities.size() > 0)
+                honorPerPosition /= userEntities.size();
 
+            for (UserEntity userEntity : userEntities) {
                 List<PositionEntity> positionEntities = positionDao.findAllByUserIdAndTaskId(
                     userEntity.getId(), taskEntity.getId()
                 );
 
                 if (positionEntities.size() > 0)
-                    honor /= positionEntities.size();
+                    honorPerPosition /= positionEntities.size();
 
                 for (PositionEntity positionEntity : positionEntities) {
-
                     UserHonorEntity userHonorEntity = userHonorDao.findByUserIdAndPositionId(
                         userEntity.getId(), positionEntity.getId()
                     ).orElse(
@@ -632,7 +634,7 @@ public class Mutation implements GraphQLMutationResolver {
                         .position(positionEntity)
                         .build()
                     );
-                    userHonorEntity.setHonor(userHonorEntity.getHonor() + honor);
+                    userHonorEntity.setHonor(userHonorEntity.getHonor() + honorPerPosition);
                     userHonorDao.save(userHonorEntity);
                 }
             }
