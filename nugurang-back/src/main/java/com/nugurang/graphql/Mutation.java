@@ -617,7 +617,8 @@ public class Mutation implements GraphQLMutationResolver {
                     userEntity.getId(), taskEntity.getId()
                 );
 
-                honor /= positionEntities.size();
+                if (positionEntities.size() > 0)
+                    honor /= positionEntities.size();
 
                 for (PositionEntity positionEntity : positionEntities) {
 
