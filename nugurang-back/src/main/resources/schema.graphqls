@@ -357,6 +357,7 @@ type Query {
     getBoard(id: ID!): Board
     getBoardByName(name: String!): Board
     getBoardsByNames(names: [String]!): [Board]!
+    getEvent(id: ID!): Event
     getImage(id: ID!): Image
     getImageByAddress(address: String!): Image
     getMatchTypeByName(name: String!): MatchType

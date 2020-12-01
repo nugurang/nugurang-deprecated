@@ -2,6 +2,7 @@ package com.nugurang.graphql;
 
 import com.nugurang.dao.ArticleDao;
 import com.nugurang.dao.BoardDao;
+import com.nugurang.dao.EventDao;
 import com.nugurang.dao.ImageDao;
 import com.nugurang.dao.InvitationStatusDao;
 import com.nugurang.dao.MatchRequestDao;
@@ -21,6 +22,7 @@ import com.nugurang.dao.VoteTypeDao;
 import com.nugurang.dao.WorkDao;
 import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.BoardDto;
+import com.nugurang.dto.EventDto;
 import com.nugurang.dto.ImageDto;
 import com.nugurang.dto.InvitationStatusDto;
 import com.nugurang.dto.MatchRequestDto;
@@ -56,6 +58,7 @@ public class Query implements GraphQLQueryResolver {
     private final UserService userService;
     private final ArticleDao articleDao;
     private final BoardDao boardDao;
+    private final EventDao eventDao;
     private final ImageDao imageDao;
     private final InvitationStatusDao invitationStatusDao;
     private final MatchRequestDao matchRequestDao;
@@ -176,6 +179,12 @@ public class Query implements GraphQLQueryResolver {
             .stream()
             .map((entity) -> entity.toDto())
             .collect(Collectors.toList());
+    }
+
+    Optional<EventDto> getEvent(Long id) {
+        return eventDao
+            .findById(id)
+            .map((entity) -> entity.toDto());
     }
 
     Optional<ImageDto> getImage(Long id) {

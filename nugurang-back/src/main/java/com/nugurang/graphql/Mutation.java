@@ -303,8 +303,8 @@ public class Mutation implements GraphQLMutationResolver {
                 );
 
                 notificationService.createProjectInvitationNotification(
-                    projectInvitationEntity,
-                    userEntity
+                    userEntity,
+                    projectInvitationEntity
                 );
                 return projectInvitationEntity.toDto();
             })
@@ -427,7 +427,8 @@ public class Mutation implements GraphQLMutationResolver {
                 );
 
                 notificationService.createTeamInvitationNotification(
-                    teamInvitationEntity, userEntity
+                    userEntity,
+                    teamInvitationEntity
                 );
 
                 return teamInvitationEntity.toDto();
