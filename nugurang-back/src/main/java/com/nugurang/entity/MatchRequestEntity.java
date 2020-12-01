@@ -35,9 +35,6 @@ public class MatchRequestEntity implements BaseEntity<MatchRequestDto> {
     private OffsetDateTime expiredAt;
 
     @Column(nullable = false)
-    private Integer days;
-
-    @Column(nullable = false)
     private Integer minTeamSize;
 
     @Column(nullable = true)

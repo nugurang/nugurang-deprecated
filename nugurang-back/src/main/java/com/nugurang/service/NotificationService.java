@@ -5,6 +5,7 @@ import com.nugurang.dao.NotificationDao;
 import com.nugurang.dao.NotificationDataDao;
 import com.nugurang.dao.NotificationTypeDao;
 import com.nugurang.entity.EventEntity;
+import com.nugurang.entity.MatchRequestEntity;
 import com.nugurang.entity.MatchTypeEntity;
 import com.nugurang.entity.NotificationDataEntity;
 import com.nugurang.entity.NotificationEntity;
@@ -15,6 +16,7 @@ import com.nugurang.entity.UserEntity;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,11 +27,26 @@ public class NotificationService {
     private final NotificationDataDao notificationDataDao;
     private final NotificationTypeDao notificationTypeDao;
 
-    private List<NotificationDataEntity> createNotificationData(
-        NotificationEntity notificationEntity,
+    @Transactional
+    private NotificationEntity createNotification(
+        UserEntity userEntity,
+        NotificationTypeName type,
         List<String> data
     ) {
-        return notificationDataDao.saveAll(
+        val notificationEntity = notificationDao.save(
+            NotificationEntity
+            .builder()
+            .isRead(false)
+            .notificationType(
+                notificationTypeDao
+                .findByName(type.name())
+                .get()
+            )
+            .user(userEntity)
+            .build()
+        );
+
+        notificationDataDao.saveAll(
             data
             .stream()
             .map((datum) ->
@@ -41,85 +58,57 @@ public class NotificationService {
             )
             .collect(Collectors.toList())
         );
+
+        return notificationEntity;
     }
 
-    @Transactional
     public NotificationEntity createProjectInvitationNotification(
         UserEntity userEntity,
         ProjectInvitationEntity projectInvitationEntity
     ) {
-        NotificationEntity notificationEntity = notificationDao.save(
-            NotificationEntity
-            .builder()
-            .isRead(false)
-            .notificationType(
-                notificationTypeDao
-                .findByName(NotificationTypeName.PROJECT_INVITATION.name())
-                .get()
-            )
-            .user(userEntity)
-            .build()
-        );
-
-        createNotificationData(
-            notificationEntity,
+        return createNotification(
+            userEntity,
+            NotificationTypeName.PROJECT_INVITATION,
             List.of(projectInvitationEntity.getId().toString())
         );
-
-        return notificationEntity;
     }
 
-    @Transactional
     public NotificationEntity createTeamInvitationNotification(
         UserEntity userEntity,
         TeamInvitationEntity teamInvitationEntity
     ) {
-        NotificationEntity notificationEntity = notificationDao.save(
-            NotificationEntity
-            .builder()
-            .isRead(false)
-            .notificationType(
-                notificationTypeDao
-                .findByName(NotificationTypeName.TEAM_INVITATION.name())
-                .get()
-            )
-            .user(userEntity)
-            .build()
-        );
-
-        createNotificationData(
-            notificationEntity,
+        return createNotification(
+            userEntity,
+            NotificationTypeName.TEAM_INVITATION,
             List.of(teamInvitationEntity.getId().toString())
         );
-        return notificationEntity;
     }
 
-    @Transactional
     public NotificationEntity createMatchSuccessNotification(
         UserEntity userEntity,
         MatchTypeEntity matchTypeEntity,
         EventEntity eventEntity,
         TeamEntity teamEntity) {
-        NotificationEntity notificationEntity = notificationDao.save(
-            NotificationEntity
-            .builder()
-            .isRead(false)
-            .notificationType(
-                notificationTypeDao
-                .findByName(NotificationTypeName.MATCH_SUCCESS.name())
-                .get()
-            )
-            .user(userEntity)
-            .build()
-        );
-        createNotificationData(
-            notificationEntity,
+        return createNotification(
+            userEntity,
+            NotificationTypeName.MATCH_SUCCESS,
             List.of(
                 matchTypeEntity.getId().toString(),
                 eventEntity.getId().toString(),
                 teamEntity.getId().toString()
             )
         );
-        return notificationEntity;
+    }
+
+    public NotificationEntity createMatchFailureNotification(
+        UserEntity userEntity,
+        MatchRequestEntity matchRequestEntity) {
+        return createNotification(
+            userEntity,
+            NotificationTypeName.MATCH_FAILURE,
+            List.of(
+                matchRequestEntity.getId().toString()
+            )
+        );
     }
 }

@@ -75,7 +75,8 @@ public class DbInit {
         for (String notificationTypeName : List.of(
                 NotificationTypeName.PROJECT_INVITATION.name(),
                 NotificationTypeName.TEAM_INVITATION.name(),
-                NotificationTypeName.MATCH_SUCCESS.name()
+                NotificationTypeName.MATCH_SUCCESS.name(),
+                NotificationTypeName.MATCH_FAILURE.name()
             )) {
             notificationTypeDao.save(
                 NotificationTypeEntity
