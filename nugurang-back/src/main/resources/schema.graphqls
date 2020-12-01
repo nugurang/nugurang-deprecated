@@ -246,7 +246,8 @@ type Team {
     id: ID!
     name: String!
     projects: [Project]!
-    getUsers(page: Int!, pageSize: Int!): [User]!
+    owner: User!
+    getMembers(page: Int!, pageSize: Int!): [User]!
 }
 
 type TeamInvitation {

@@ -97,6 +97,7 @@ import graphql.kickstart.tools.GraphQLMutationResolver;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -485,7 +486,7 @@ public class Mutation implements GraphQLMutationResolver {
                 boardDao.save(
                     BoardEntity
                     .builder()
-                    .name(userInputDto.getName())
+                    .name(UUID.randomUUID().toString())
                     .build()
                 )
             )
