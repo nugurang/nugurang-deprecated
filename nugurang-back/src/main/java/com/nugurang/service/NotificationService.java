@@ -45,7 +45,8 @@ public class NotificationService {
 
     @Transactional
     public NotificationEntity createProjectInvitationNotification(
-        ProjectInvitationEntity projectInvitationEntity, UserEntity userEntity
+        UserEntity userEntity,
+        ProjectInvitationEntity projectInvitationEntity
     ) {
         NotificationEntity notificationEntity = notificationDao.save(
             NotificationEntity
@@ -70,7 +71,8 @@ public class NotificationService {
 
     @Transactional
     public NotificationEntity createTeamInvitationNotification(
-        TeamInvitationEntity teamInvitationEntity, UserEntity userEntity
+        UserEntity userEntity,
+        TeamInvitationEntity teamInvitationEntity
     ) {
         NotificationEntity notificationEntity = notificationDao.save(
             NotificationEntity
@@ -94,9 +96,9 @@ public class NotificationService {
 
     @Transactional
     public NotificationEntity createMatchSuccessNotification(
+        UserEntity userEntity,
         MatchTypeEntity matchTypeEntity,
         EventEntity eventEntity,
-        UserEntity userEntity,
         TeamEntity teamEntity) {
         NotificationEntity notificationEntity = notificationDao.save(
             NotificationEntity
@@ -115,7 +117,6 @@ public class NotificationService {
             List.of(
                 matchTypeEntity.getId().toString(),
                 eventEntity.getId().toString(),
-                userEntity.getId().toString(),
                 teamEntity.getId().toString()
             )
         );
