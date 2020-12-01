@@ -5,7 +5,6 @@ import com.nugurang.dao.NotificationDao;
 import com.nugurang.dao.NotificationDataDao;
 import com.nugurang.dao.NotificationTypeDao;
 import com.nugurang.entity.EventEntity;
-import com.nugurang.entity.MatchRequestEntity;
 import com.nugurang.entity.MatchTypeEntity;
 import com.nugurang.entity.NotificationDataEntity;
 import com.nugurang.entity.NotificationEntity;
@@ -102,12 +101,14 @@ public class NotificationService {
 
     public NotificationEntity createMatchFailureNotification(
         UserEntity userEntity,
-        MatchRequestEntity matchRequestEntity) {
+        EventEntity eventEntity,
+        MatchTypeEntity matchTypeEntity) {
         return createNotification(
             userEntity,
             NotificationTypeName.MATCH_FAILURE,
             List.of(
-                matchRequestEntity.getId().toString()
+                matchTypeEntity.getId().toString(),
+                eventEntity.getId().toString()
             )
         );
     }
