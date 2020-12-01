@@ -142,6 +142,7 @@ type Event {
     eventEnd: DateTime!
     images: [Image]!
     tags: [Tag]!
+    matchRequests: [MatchRequest]!
 }
 
 type MatchRequest {
