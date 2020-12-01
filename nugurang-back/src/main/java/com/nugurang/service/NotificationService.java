@@ -87,7 +87,8 @@ public class NotificationService {
         UserEntity userEntity,
         MatchTypeEntity matchTypeEntity,
         EventEntity eventEntity,
-        TeamEntity teamEntity) {
+        TeamEntity teamEntity
+    ) {
         return createNotification(
             userEntity,
             NotificationTypeName.MATCH_SUCCESS,
@@ -101,8 +102,9 @@ public class NotificationService {
 
     public NotificationEntity createMatchFailureNotification(
         UserEntity userEntity,
-        EventEntity eventEntity,
-        MatchTypeEntity matchTypeEntity) {
+        MatchTypeEntity matchTypeEntity,
+        EventEntity eventEntity
+    ) {
         return createNotification(
             userEntity,
             NotificationTypeName.MATCH_FAILURE,
