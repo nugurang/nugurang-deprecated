@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +23,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "match_request")
+@Table(
+    name = "match_request",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"event", "user"})
+    }
+)
 public class MatchRequestEntity implements BaseEntity<MatchRequestDto> {
     @Id
     @GeneratedValue
