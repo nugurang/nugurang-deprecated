@@ -99,6 +99,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -109,7 +110,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class Mutation implements GraphQLMutationResolver {
 
     private final Logger logger = LoggerFactory.getLogger(Mutation.class);
-
     private final ArticleService articleService;
     private final NotificationService notificationService;
     private final OAuth2Service oauth2Service;
@@ -183,8 +183,8 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Boolean createFollowing(Long user) {
-        UserEntity fromUser = userService.getCurrentUser().get();
-        UserEntity toUser = userDao.findById(user).get();
+        var fromUser = userService.getCurrentUser().get();
+        var toUser = userDao.findById(user).get();
         if (fromUser.getId() == toUser.getId())
             return false;
         followingDao.save(
@@ -198,7 +198,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Optional<ImageDto> createImage(String address) {
-        ImageEntity imageEntity = imageDao.save(
+        val imageEntity = imageDao.save(
             ImageEntity
             .builder()
             .address(address)
@@ -208,7 +208,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Optional<MatchRequestDto> createMatchRequest(MatchRequestInputDto matchRequestInputDto) {
-        OffsetDateTime now = OffsetDateTime.now();
+        var now = OffsetDateTime.now();
         return Optional.of(
            matchRequestDao.save(
                 MatchRequestEntity
@@ -251,7 +251,7 @@ public class Mutation implements GraphQLMutationResolver {
 
     @Transactional
     Optional<ProjectDto> createProject(ProjectInputDto projectInputDto, Long team) {
-        ProjectEntity projectEntity = projectDao.save(
+        val projectEntity = projectDao.save(
             ProjectEntity
             .builder()
             .name(projectInputDto.getName())
@@ -278,7 +278,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     List<ProjectInvitationDto> createProjectInvitations(ProjectInvitationInputDto projectInvitationInputDto) {
-        UserEntity currentUserEntity = userService.getCurrentUser().get();
+        val currentUserEntity = userService.getCurrentUser().get();
         return projectInvitationInputDto
             .getUsers()
             .stream()
@@ -317,7 +317,7 @@ public class Mutation implements GraphQLMutationResolver {
 
     @Transactional
     Optional<TaskDto> createTask(TaskInputDto taskInputDto, Long work) {
-        TaskEntity taskEntity = taskDao.save(
+        val taskEntity = taskDao.save(
             TaskEntity
             .builder()
             .name(taskInputDto.getName())
@@ -379,8 +379,7 @@ public class Mutation implements GraphQLMutationResolver {
 
     @Transactional
     Optional<TeamDto> createTeam(TeamInputDto teamInputDto) {
-
-        TeamEntity teamEntity = teamDao.save(
+        val teamEntity = teamDao.save(
             TeamEntity
             .builder()
             .name(teamInputDto.getName())
@@ -401,7 +400,7 @@ public class Mutation implements GraphQLMutationResolver {
 
     @Transactional
     List<TeamInvitationDto> createTeamInvitations(TeamInvitationInputDto teamInvitationInputDto) {
-        UserEntity currentUserEntity = userService.getCurrentUser().get();
+        val currentUserEntity = userService.getCurrentUser().get();
         return teamInvitationInputDto
             .getUsers()
             .stream()
@@ -438,8 +437,8 @@ public class Mutation implements GraphQLMutationResolver {
 
     @Transactional
     Optional<ThreadDto> createThread(ThreadInputDto threadInputDto, Long board) {
-        UserEntity userEntity = userService.getCurrentUser().get();
-        ThreadEntity threadEntity = threadDao.save(
+        val userEntity = userService.getCurrentUser().get();
+        val threadEntity = threadDao.save(
             ThreadEntity
             .builder()
             .name(threadInputDto.getName())
@@ -565,7 +564,7 @@ public class Mutation implements GraphQLMutationResolver {
 
     @Transactional
     Boolean updateProjectInvitationAccepted(Long projectInvitation) {
-        ProjectInvitationEntity projectInvitationEntity = projectInvitationDao
+        var projectInvitationEntity = projectInvitationDao
             .findById(projectInvitation)
             .get();
 
@@ -589,7 +588,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Boolean updateProjectInvitationDenied(Long projectInvitation) {
-        ProjectInvitationEntity projectInvitationEntity = projectInvitationDao
+        var projectInvitationEntity = projectInvitationDao
             .findById(projectInvitation)
             .get();
 
@@ -604,12 +603,12 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Boolean updateProjectFinish(Long project) {
-        ProjectEntity projectEntity = projectDao.findById(project).get();
+        var projectEntity = projectDao.findById(project).get();
         if (projectEntity.getFinished())
             return false;
 
-        OffsetDateTime now = OffsetDateTime.now();
-        UserEvaluationEntity userEvaluationEntity = userEvaluationDao.save(
+        var now = OffsetDateTime.now();
+        val userEvaluationEntity = userEvaluationDao.save(
             UserEvaluationEntity
             .builder()
             .createdAt(now)
@@ -622,8 +621,7 @@ public class Mutation implements GraphQLMutationResolver {
 
         projectEntity = projectDao.save(projectEntity);
         for (TaskEntity taskEntity : taskDao.findAllByProjectId(project)) {
-            List<TaskReviewEntity> taskReviewEntities = taskReviewDao
-                .findAllByTaskId(taskEntity.getId());
+            val taskReviewEntities = taskReviewDao.findAllByTaskId(taskEntity.getId());
             logger.info("task review entities size: " + taskReviewEntities.size());
 
             int honorPerPosition = taskReviewEntities.stream()
@@ -633,13 +631,13 @@ public class Mutation implements GraphQLMutationResolver {
             if (taskReviewEntities.size() > 0)
                 honorPerPosition /= taskReviewEntities.size();
 
-            List<UserEntity> userEntities = userDao.findAllByTaskId(taskEntity.getId());
+            val userEntities = userDao.findAllByTaskId(taskEntity.getId());
             logger.info("user entities size: " + userEntities.size());
             if (userEntities.size() > 0)
                 honorPerPosition /= userEntities.size();
 
-            for (UserEntity userEntity : userEntities) {
-                List<PositionEntity> positionEntities = positionDao.findAllByTaskId(taskEntity.getId());
+            for (val userEntity : userEntities) {
+                val positionEntities = positionDao.findAllByTaskId(taskEntity.getId());
                 logger.info("position entities size: " + positionEntities.size());
 
                 if (positionEntities.size() > 0)
@@ -647,7 +645,7 @@ public class Mutation implements GraphQLMutationResolver {
 
                 logger.info("honor per position: " + honorPerPosition);
 
-                for (PositionEntity positionEntity : positionEntities) {
+                for (val positionEntity : positionEntities) {
                     UserHonorEntity userHonorEntity = userHonorDao.findByUserIdAndPositionId(
                         userEntity.getId(), positionEntity.getId()
                     ).orElseGet(() ->
@@ -668,7 +666,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
     
     Optional<TaskDto> updateTask(TaskInputDto taskInputDto, Long id) {
-        TaskEntity taskEntity = taskDao.findById(id).get();
+        var taskEntity = taskDao.findById(id).get();
         taskEntity.setName(taskInputDto.getName());
 
         if (taskInputDto.getOrder().isPresent())
@@ -687,8 +685,8 @@ public class Mutation implements GraphQLMutationResolver {
 
     @Transactional
     Boolean updateTaskReview(TaskReviewInputDto taskReviewInputDto) {
-        TaskEntity taskEntity = taskDao.findById(taskReviewInputDto.getTask()).get();
-        UserEntity userEntity = userService.getCurrentUser().get();
+        val taskEntity = taskDao.findById(taskReviewInputDto.getTask()).get();
+        val userEntity = userService.getCurrentUser().get();
 
         taskReviewDao.deleteByTaskIdAndUserId(taskEntity.getId(), userEntity.getId());
 
@@ -706,7 +704,7 @@ public class Mutation implements GraphQLMutationResolver {
 
     @Transactional
     Optional<TeamDto> updateTeam(TeamInputDto teamInputDto, Long id) {
-        TeamEntity teamEntity = teamDao.findById(id).get();
+        var teamEntity = teamDao.findById(id).get();
         teamEntity.setName(teamInputDto.getName());
 
         return Optional.of(
@@ -718,7 +716,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Boolean updateTeamInvitationAccepted(Long teamInvitation) {
-        TeamInvitationEntity teamInvitationEntity = teamInvitationDao
+        var teamInvitationEntity = teamInvitationDao
             .findById(teamInvitation)
             .get();
 
@@ -743,7 +741,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Boolean updateTeamInvitationDenied(Long teamInvitation) {
-        TeamInvitationEntity teamInvitationEntity = teamInvitationDao
+        var teamInvitationEntity = teamInvitationDao
             .findById(teamInvitation)
             .get();
 
@@ -783,11 +781,11 @@ public class Mutation implements GraphQLMutationResolver {
 
     @Transactional
     Boolean updateUserReviews(List<UserReviewInputDto> userReviews, Long userEvaluation) {
-        UserEvaluationEntity userEvaluationEntity = userEvaluationDao
+        val userEvaluationEntity = userEvaluationDao
             .findById(userEvaluation)
             .get();
 
-        UserEntity currentUserEntity = userService.getCurrentUser().get();
+        val currentUserEntity = userService.getCurrentUser().get();
 
         userReviews
             .stream()
