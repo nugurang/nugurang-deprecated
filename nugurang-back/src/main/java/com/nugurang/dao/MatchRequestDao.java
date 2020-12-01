@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MatchRequestDao extends JpaRepository<MatchRequestEntity, Long> {
 
+    List<MatchRequestEntity> findAllByEventId(Long event);
+
     List<MatchRequestEntity> findAllByUserId(Long user);
 
     List<MatchRequestEntity> findAllByExpiredAtLessThan(OffsetDateTime at);
