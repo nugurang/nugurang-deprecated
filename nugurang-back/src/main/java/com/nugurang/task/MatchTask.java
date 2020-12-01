@@ -47,7 +47,8 @@ public class MatchTask {
         for (val expiredMatchRequest : expiredMatchRequestEntities) {
             notificationService.createMatchFailureNotification(
                 expiredMatchRequest.getUser(),
-                expiredMatchRequest
+                expiredMatchRequest.getEvent(),
+                expiredMatchRequest.getType()
             );
             matchRequestDao.deleteById(expiredMatchRequest.getId());
         }
