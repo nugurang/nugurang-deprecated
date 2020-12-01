@@ -144,15 +144,6 @@ type Event {
     tags: [Tag]!
 }
 
-type Match {
-    id: ID!
-    createdAt: DateTime!
-    type: MatchType!
-    event: Event!
-    user: User!
-    team: Team!
-}
-
 type MatchRequest {
     id: ID!
     createdAt: DateTime!
@@ -350,7 +341,6 @@ type Query {
 
     currentUser: User
     currentOAuth2User: OAuth2User
-    matches: [Match]!
     matchRequests: [MatchRequest]!
     # taskReviews: [TaskReview]!
     # userEvaluations: [UserEvaluation]!
