@@ -54,7 +54,7 @@ public class MatchTask {
         }
 
         // https://github.com/MenoData/Time4J/issues/674
-        // should filter by random match
+        // should filter by random match and event
         List<ValueInterval<Moment, MomentInterval, MatchRequestEntity>>
             matchRequestIntervals = matchRequestDao
             .findAll()
