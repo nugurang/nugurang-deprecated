@@ -1,6 +1,8 @@
 package com.nugurang.graphql;
 
+import com.nugurang.constant.RoleName;
 import com.nugurang.dao.ProjectDao;
+import com.nugurang.dao.RoleDao;
 import com.nugurang.dao.UserDao;
 import com.nugurang.dto.ProjectDto;
 import com.nugurang.dto.TeamDto;
@@ -15,8 +17,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class TeamResolver implements GraphQLResolver<TeamDto> {
-    private final UserDao userDao;
+    private final RoleDao roleDao;
     private final ProjectDao projectDao;
+    private final UserDao userDao;
 
     public List<ProjectDto> projects(TeamDto teamDto) {
         return projectDao
@@ -26,9 +29,22 @@ public class TeamResolver implements GraphQLResolver<TeamDto> {
             .collect(Collectors.toList());
     }
 
-    public List<UserDto> getUsers(TeamDto teamDto, Integer page, Integer pageSize) {
+    UserDto owner(TeamDto teamDto) {
+        return userDao.findFirstByTeamIdAndRoleId(
+            teamDto.getId(),
+            roleDao.findByName(RoleName.OWNER.name()).get().getId()
+        )
+        .get()
+        .toDto();
+    }
+
+    public List<UserDto> getMembers(TeamDto teamDto, Integer page, Integer pageSize) {
         return userDao
-            .findAllByTeamId(teamDto.getId(), PageRequest.of(page, pageSize))
+            .findAllByTeamIdAndRoleId(
+                teamDto.getId(),
+                roleDao.findByName(RoleName.MEMBER.name()).get().getId(),
+                PageRequest.of(page, pageSize)
+            )
             .getContent()
             .stream()
             .map((entity) -> entity.toDto())
