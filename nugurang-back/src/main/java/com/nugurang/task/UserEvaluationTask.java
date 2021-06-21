@@ -12,16 +12,15 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class UserEvaluationTask {
-    private final Logger logger = LoggerFactory.getLogger(UserEvaluationTask.class);
     private final ProjectDao projectDao;
     private final UserDao userDao;
     private final UserEvaluationDao userEvaluationDao;
@@ -31,7 +30,7 @@ public class UserEvaluationTask {
     @Scheduled(fixedDelay = 10000)
     @Transactional
     private void evaluateUsers() {
-        logger.info("user evaluation task");
+        log.info("user evaluation task");
         List<UserEvaluationEntity> userEvaluationEntities = userEvaluationDao
             .findAllByExpiredAtGreaterThanEqual(OffsetDateTime.now());
         // should fix

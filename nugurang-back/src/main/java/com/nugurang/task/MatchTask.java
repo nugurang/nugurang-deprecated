@@ -18,21 +18,20 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import net.time4j.Moment;
 import net.time4j.range.IntervalTree;
 import net.time4j.range.MomentInterval;
 import net.time4j.range.ValueInterval;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class MatchTask {
-    private final Logger logger = LoggerFactory.getLogger(MatchTask.class);
     private final NotificationService notificationService;
     private final MatchRequestDao matchRequestDao;
     private final RoleDao roleDao;
@@ -96,7 +95,7 @@ public class MatchTask {
             .collect(Collectors.toList());
         Collections.shuffle(otherMatchRequestIntervals);
 
-        logger.info("intervals " + otherMatchRequestIntervals.size());
+        log.info("intervals " + otherMatchRequestIntervals.size());
 
         val matchRequestEntity = matchRequestInterval.getValue();
         int min = matchRequestEntity.getMinTeamSize();
@@ -117,7 +116,7 @@ public class MatchTask {
             matchedRequestIntervals.add(otherMatchRequestInterval);
         }
 
-        logger.info("matched " + matchedRequestIntervals.size() + " users and min is " + min);
+        log.info("matched " + matchedRequestIntervals.size() + " users and min is " + min);
 
         if (matchedRequestIntervals.size() + 1 < min)
             return;
@@ -163,6 +162,6 @@ public class MatchTask {
             );
             matchRequestDao.deleteById(matchedRequestEntity.getId());
         }
-        logger.info("match task");
+        log.info("match task");
     }
 }
