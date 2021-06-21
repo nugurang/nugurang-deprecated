@@ -100,17 +100,16 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class Mutation implements GraphQLMutationResolver {
 
-    private final Logger logger = LoggerFactory.getLogger(Mutation.class);
     private final ArticleService articleService;
     private final NotificationService notificationService;
     private final OAuth2Service oauth2Service;
@@ -623,7 +622,7 @@ public class Mutation implements GraphQLMutationResolver {
         projectEntity = projectDao.save(projectEntity);
         for (TaskEntity taskEntity : taskDao.findAllByProjectId(project)) {
             val taskReviewEntities = taskReviewDao.findAllByTaskId(taskEntity.getId());
-            logger.info("task review entities size: " + taskReviewEntities.size());
+            log.info("task review entities size: " + taskReviewEntities.size());
 
             int honorPerPosition = taskReviewEntities.stream()
                 .map((taskReviewEntity) -> taskEntity.getDifficulty() * taskReviewEntity.getHonor())
@@ -633,18 +632,18 @@ public class Mutation implements GraphQLMutationResolver {
                 honorPerPosition /= taskReviewEntities.size();
 
             val userEntities = userDao.findAllByTaskId(taskEntity.getId());
-            logger.info("user entities size: " + userEntities.size());
+            log.info("user entities size: " + userEntities.size());
             if (userEntities.size() > 0)
                 honorPerPosition /= userEntities.size();
 
             for (val userEntity : userEntities) {
                 val positionEntities = positionDao.findAllByTaskId(taskEntity.getId());
-                logger.info("position entities size: " + positionEntities.size());
+                log.info("position entities size: " + positionEntities.size());
 
                 if (positionEntities.size() > 0)
                     honorPerPosition /= positionEntities.size();
 
-                logger.info("honor per position: " + honorPerPosition);
+                log.info("honor per position: " + honorPerPosition);
 
                 for (val positionEntity : positionEntities) {
                     UserHonorEntity userHonorEntity = userHonorDao.findByUserIdAndPositionId(
