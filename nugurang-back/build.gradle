@@ -7,6 +7,7 @@ plugins {
     id 'org.springframework.boot' version '2.3.4.RELEASE'
     id 'org.liquibase.gradle' version '2.0.4'
     id 'pmd'
+    id 'com.github.spotbugs' version '4.0.0'
 }
 
 def checkstyleVersion = '8.+'
@@ -101,6 +102,8 @@ dependencies {
         'org.springframework.batch:spring-batch-test',
         'org.springframework.security:spring-security-test'
     )
+
+    spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
 }
 
 test {
@@ -146,4 +149,18 @@ tasks.withType(Pmd) {
         xml.enabled false
         html.enabled true
     }
+}
+
+spotbugs {
+    ignoreFailures = false
+    showProgress = true
+    effort = 'default'
+    reportLevel = 'default'
+    visitors = [ 'FindSqlInjection', 'SwitchFallthrough' ]
+    omitVisitors = [ 'FindNonShortCircuit' ]
+    reportsDir = file("$buildDir/spotbugs")
+    onlyAnalyze = [ 'com.nugurang.*' ]
+    maxHeapSize = '1g'
+    extraArgs = [ '-nested:false' ]
+    jvmArgs = [ '-Duser.language=en' ]
 }
