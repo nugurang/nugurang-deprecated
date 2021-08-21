@@ -15,7 +15,7 @@ def pmdVersion = '6.+'
 
 group = 'com.nugurang'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '14'
+sourceCompatibility = '11'
 
 configurations {
     compileOnly {
