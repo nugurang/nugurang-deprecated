@@ -63,6 +63,17 @@ public class ArticleResolver implements GraphQLResolver<ArticleDto> {
         return null;
     }
 
+    public Long viewCount(ArticleDto articleDto) {
+        return voteDao
+            .countByArticleIdAndVoteTypeId(
+                articleDto.getId(),
+                voteTypeDao
+                .findByName("VIEW")
+                .get()
+                .getId()
+            );
+    }
+
     public Long upCount(ArticleDto articleDto) {
         return voteDao
             .countByArticleIdAndVoteTypeId(

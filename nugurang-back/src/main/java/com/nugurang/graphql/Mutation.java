@@ -93,6 +93,7 @@ import com.nugurang.service.ArticleService;
 import com.nugurang.service.NotificationService;
 import com.nugurang.service.OAuth2Service;
 import com.nugurang.service.UserService;
+import com.nugurang.service.VoteService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -114,6 +115,7 @@ public class Mutation implements GraphQLMutationResolver {
     private final NotificationService notificationService;
     private final OAuth2Service oauth2Service;
     private final UserService userService;
+    private final VoteService voteService;
     private final ArticleDao articleDao;
     private final BoardDao boardDao;
     private final FollowingDao followingDao;
@@ -886,7 +888,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Boolean deleteVote(Long id) {
-        return false;
+        return voteService.deleteVote(id);
     }
 
     Boolean deleteVoteType(Long id) {

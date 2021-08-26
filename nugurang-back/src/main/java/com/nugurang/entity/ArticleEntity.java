@@ -38,9 +38,6 @@ public class ArticleEntity implements BaseEntity<ArticleDto> {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
-    private Long viewCount;
-
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private OffsetDateTime createdAt;
@@ -68,7 +65,6 @@ public class ArticleEntity implements BaseEntity<ArticleDto> {
             .id(id)
             .title(Optional.ofNullable(title))
             .content(content)
-            .viewCount(viewCount)
             .createdAt(getCreatedAt())
             .modifiedAt(getModifiedAt())
             .build();

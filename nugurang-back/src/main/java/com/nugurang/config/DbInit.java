@@ -49,6 +49,7 @@ public class DbInit {
             roleDao.save(RoleEntity.builder().name(roleName).build());
 
         for (String voteTypeName : List.of(
+                VoteTypeName.VIEW.name(),
                 VoteTypeName.UP.name(),
                 VoteTypeName.DOWN.name(),
                 VoteTypeName.STAR.name()

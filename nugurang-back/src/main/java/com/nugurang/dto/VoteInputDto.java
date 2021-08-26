@@ -10,8 +10,6 @@ import lombok.Data;
 @Builder
 public class VoteInputDto {
     @NotNull
-    private Long user;
-    @NotNull
     private Long article;
     @NotNull
     private Long voteType;
