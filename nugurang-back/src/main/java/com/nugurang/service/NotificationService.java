@@ -15,12 +15,14 @@ import com.nugurang.entity.UserEntity;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class NotificationService {
     private final NotificationDao notificationDao;
     private final NotificationDataDao notificationDataDao;
@@ -89,6 +91,7 @@ public class NotificationService {
         EventEntity eventEntity,
         TeamEntity teamEntity
     ) {
+        log.info("Match " + eventEntity.getId() + " successfully created matchmaking.");
         return createNotification(
             userEntity,
             NotificationTypeName.MATCH_SUCCESS,
@@ -105,6 +108,7 @@ public class NotificationService {
         MatchTypeEntity matchTypeEntity,
         EventEntity eventEntity
     ) {
+        log.info("Match " + eventEntity.getId() + " failed to create matchmaking.");
         return createNotification(
             userEntity,
             NotificationTypeName.MATCH_FAILURE,
