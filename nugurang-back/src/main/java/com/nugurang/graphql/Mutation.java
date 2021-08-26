@@ -208,6 +208,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Optional<MatchRequestDto> createMatchRequest(MatchRequestInputDto matchRequestInputDto) {
+        log.info("Creating match request...");
         var now = OffsetDateTime.now();
         return Optional.of(
            matchRequestDao.save(
@@ -473,6 +474,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Optional<UserDto> createUser(UserInputDto userInputDto) {
+        log.info("Creating user...");
         UserEntity userEntity = UserEntity
             .builder()
             .oauth2Provider(oauth2Service.getProvider())
@@ -567,7 +569,6 @@ public class Mutation implements GraphQLMutationResolver {
         var projectInvitationEntity = projectInvitationDao
             .findById(projectInvitation)
             .get();
-
         projectInvitationEntity.setStatus(
             invitationStatusDao.findByName(InvitationStatusName.ACCEPTED.name())
             .get()
@@ -591,7 +592,6 @@ public class Mutation implements GraphQLMutationResolver {
         var projectInvitationEntity = projectInvitationDao
             .findById(projectInvitation)
             .get();
-
         projectInvitationEntity.setStatus(
             invitationStatusDao.findByName(InvitationStatusName.DENIED.name())
             .get()
@@ -622,7 +622,7 @@ public class Mutation implements GraphQLMutationResolver {
         projectEntity = projectDao.save(projectEntity);
         for (TaskEntity taskEntity : taskDao.findAllByProjectId(project)) {
             val taskReviewEntities = taskReviewDao.findAllByTaskId(taskEntity.getId());
-            log.info("task review entities size: " + taskReviewEntities.size());
+           // log.info("task review entities size: " + taskReviewEntities.size());
 
             int honorPerPosition = taskReviewEntities.stream()
                 .map((taskReviewEntity) -> taskEntity.getDifficulty() * taskReviewEntity.getHonor())
@@ -632,18 +632,18 @@ public class Mutation implements GraphQLMutationResolver {
                 honorPerPosition /= taskReviewEntities.size();
 
             val userEntities = userDao.findAllByTaskId(taskEntity.getId());
-            log.info("user entities size: " + userEntities.size());
+            // log.info("user entities size: " + userEntities.size());
             if (userEntities.size() > 0)
                 honorPerPosition /= userEntities.size();
 
             for (val userEntity : userEntities) {
                 val positionEntities = positionDao.findAllByTaskId(taskEntity.getId());
-                log.info("position entities size: " + positionEntities.size());
+                // log.info("position entities size: " + positionEntities.size());
 
                 if (positionEntities.size() > 0)
                     honorPerPosition /= positionEntities.size();
 
-                log.info("honor per position: " + honorPerPosition);
+                // log.info("honor per position: " + honorPerPosition);
 
                 for (val positionEntity : positionEntities) {
                     UserHonorEntity userHonorEntity = userHonorDao.findByUserIdAndPositionId(
