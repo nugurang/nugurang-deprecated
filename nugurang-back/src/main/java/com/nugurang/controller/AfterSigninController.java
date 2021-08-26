@@ -20,7 +20,6 @@ public class AfterSigninController {
     @RequestMapping("/after-signin")
     public void afterSignin(HttpServletResponse response, @CookieValue("JSESSIONID") String jsessionId) throws IOException {
         log.info(jsessionId + "signed in");
-        response.sendRedirect("http://localhost:3000/after-signin/" + jsessionId);
         response.sendRedirect(frontUrl + "/after-signin/" + jsessionId);
     }
 }
