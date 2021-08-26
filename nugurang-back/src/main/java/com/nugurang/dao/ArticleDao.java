@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ArticleDao extends JpaRepository<ArticleEntity, Long> {
 
+    ArticleEntity findFirstByThreadIdOrderByCreatedAtAsc(Long thread);
+
     Long countByThreadId(Long thread);
 
     Page<ArticleEntity> findAllByThreadIdOrderByCreatedAtAsc(Long thread, Pageable pageable);

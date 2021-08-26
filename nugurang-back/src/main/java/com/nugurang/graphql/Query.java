@@ -42,6 +42,7 @@ import com.nugurang.dto.UserDto;
 import com.nugurang.dto.VoteTypeDto;
 import com.nugurang.dto.WorkDto;
 import com.nugurang.service.OAuth2Service;
+import com.nugurang.service.ThreadService;
 import com.nugurang.service.UserService;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import java.util.List;
@@ -57,6 +58,7 @@ public class Query implements GraphQLQueryResolver {
     private final OAuth2Service oauth2Service;
     private final UserService userService;
     private final ArticleDao articleDao;
+    private final ThreadService threadService;
     private final BoardDao boardDao;
     private final EventDao eventDao;
     private final ImageDao imageDao;
@@ -242,9 +244,7 @@ public class Query implements GraphQLQueryResolver {
     }
 
     Optional<ThreadDto> getThread(Long id) {
-        return threadDao
-            .findById(id)
-            .map((entity) -> entity.toDto());
+        return threadService.getThread(id).map((entity) -> entity.toDto());
     }
 
     List<ThreadDto> getThreadsByBoards(List<Long> boards, Integer page, Integer pageSize) {
