@@ -59,8 +59,6 @@ import com.nugurang.dto.TeamInvitationDto;
 import com.nugurang.dto.TeamInvitationInputDto;
 import com.nugurang.dto.ThreadDto;
 import com.nugurang.dto.ThreadInputDto;
-import com.nugurang.dto.UserDto;
-import com.nugurang.dto.UserInputDto;
 import com.nugurang.dto.UserReviewInputDto;
 import com.nugurang.dto.VoteDto;
 import com.nugurang.dto.VoteInputDto;
@@ -79,7 +77,6 @@ import com.nugurang.entity.TaskReviewEntity;
 import com.nugurang.entity.TeamEntity;
 import com.nugurang.entity.TeamInvitationEntity;
 import com.nugurang.entity.ThreadEntity;
-import com.nugurang.entity.UserEntity;
 import com.nugurang.entity.UserEvaluationEntity;
 import com.nugurang.entity.UserHonorEntity;
 import com.nugurang.entity.UserReviewEntity;
@@ -98,7 +95,6 @@ import graphql.kickstart.tools.GraphQLMutationResolver;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -475,28 +471,6 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.of(threadEntity.toDto());
     }
 
-    Optional<UserDto> createUser(UserInputDto userInputDto) {
-        log.info("Creating user...");
-        UserEntity userEntity = UserEntity
-            .builder()
-            .oauth2Provider(oauth2Service.getProvider())
-            .oauth2Id(oauth2Service.getId())
-            .name(userInputDto.getName())
-            .email(userInputDto.getEmail())
-            .biography(userInputDto.getBiography())
-            .image(userInputDto.getImage().flatMap((id) -> imageDao.findById(id)).orElse(null))
-            .blog(
-                boardDao.save(
-                    BoardEntity
-                    .builder()
-                    .name(UUID.randomUUID().toString())
-                    .build()
-                )
-            )
-            .build();
-        userEntity = userDao.save(userEntity);
-        return Optional.of(userEntity.toDto());
-    }
 
     Optional<VoteDto> createVote(VoteInputDto voteInputDto) {
         return Optional.of(
@@ -761,25 +735,6 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.empty();
     }
 
-    Optional<UserDto> updateUser(UserInputDto userInputDto) {
-        return Optional.of(
-            userService
-            .getCurrentUser()
-            .map((userEntity) -> {
-                userEntity.setName(userInputDto.getName());
-                userEntity.setEmail(userInputDto.getEmail());
-                userEntity.setBiography(userInputDto.getBiography());
-                userEntity.setImage(
-                    userInputDto
-                    .getImage()
-                    .flatMap((id) -> imageDao.findById(id)).orElse(null)
-                );
-                return userDao.save(userEntity);
-            })
-            .get()
-            .toDto()
-        );
-    }
 
     @Transactional
     Boolean updateUserReviews(List<UserReviewInputDto> userReviews, Long userEvaluation) {
