@@ -1,10 +1,10 @@
 plugins {
     id 'checkstyle'
-    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-    id "io.freefair.lombok" version "5.2.1"
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id "io.freefair.lombok" version "6.1.0"
     id 'java'
     id 'java-library'
-    id 'org.springframework.boot' version '2.3.4.RELEASE'
+    id 'org.springframework.boot' version '2.5.0'
     id 'org.liquibase.gradle' version '2.0.4'
     id 'pmd'
     id 'com.github.spotbugs' version '4.0.0'
@@ -122,9 +122,11 @@ checkstyle {
     maxErrors = 0
 }
 
+/*
 checkstyleMain {
     logging.setLevel(LogLevel.LIFECYCLE)
 }
+*/
 
 checkstyleTest {
     enabled = false

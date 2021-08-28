@@ -386,7 +386,7 @@ type Mutation {
 
     """CREATE"""
     createArticle(article: ArticleInput!, thread: ID!, parent: ID): Article
-    createBoard(board: BoardInput!): Board
+    createBoard(board: BoardInput!): Board!
     createEvent(event: EventInput!): Event
     createFollowing(user: ID!): Boolean
     createImage(address: String!): Image
@@ -405,7 +405,7 @@ type Mutation {
 
     """UPDATE"""
     updateArticle(article: ArticleInput!, id: ID!): Article
-    updateBoard(board: BoardInput!, id: ID!): Board
+    updateBoard(board: BoardInput!, id: ID!): Board!
     updateEvent(event: EventInput!, id: ID!): Event
     updateProject(project: ProjectInput!, id: ID!): Project
     updateProjectFinish(id: ID!): Boolean!
@@ -435,7 +435,7 @@ type Mutation {
     deleteTeam(id: ID!): Boolean!
     deleteThread(id: ID!): Boolean!
     deleteUser(id: ID!): Boolean!
-    deleteVote(id: ID!): Boolean!
+    deleteVote(id: ID!): ID!
     deleteVoteType(id: ID!): Boolean!
     deleteWork(id: ID!): Boolean!
 }

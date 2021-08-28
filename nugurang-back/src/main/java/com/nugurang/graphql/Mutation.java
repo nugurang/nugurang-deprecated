@@ -35,8 +35,6 @@ import com.nugurang.dao.XrefUserTaskDao;
 import com.nugurang.dao.XrefUserTeamDao;
 import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.ArticleInputDto;
-import com.nugurang.dto.BoardDto;
-import com.nugurang.dto.BoardInputDto;
 import com.nugurang.dto.EventDto;
 import com.nugurang.dto.EventInputDto;
 import com.nugurang.dto.ImageDto;
@@ -64,7 +62,6 @@ import com.nugurang.dto.VoteDto;
 import com.nugurang.dto.VoteInputDto;
 import com.nugurang.dto.WorkDto;
 import com.nugurang.dto.WorkInputDto;
-import com.nugurang.entity.BoardEntity;
 import com.nugurang.entity.EventEntity;
 import com.nugurang.entity.FollowingEntity;
 import com.nugurang.entity.ImageEntity;
@@ -107,13 +104,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class Mutation implements GraphQLMutationResolver {
 
+    private final BoardDao boardDao;
     private final ArticleService articleService;
     private final NotificationService notificationService;
     private final OAuth2Service oauth2Service;
     private final UserService userService;
     private final VoteService voteService;
     private final ArticleDao articleDao;
-    private final BoardDao boardDao;
     private final FollowingDao followingDao;
     private final ImageDao imageDao;
     private final InvitationStatusDao invitationStatusDao;
@@ -153,16 +150,6 @@ public class Mutation implements GraphQLMutationResolver {
         );
     }
 
-    Optional<BoardDto> createBoard(BoardInputDto boardInputDto) {
-        return Optional.of(
-            boardDao.save(
-                BoardEntity
-                .builder()
-                .name(boardInputDto.getName())
-                .build()
-            ).toDto()
-        );
-    }
 
     Optional<EventDto> createEvent(EventInputDto eventInputDto) {
         return Optional.of(
@@ -514,9 +501,6 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.empty();
     }
 
-    Optional<BoardDto> updateBoard(BoardInputDto boardInputDto, Long id) {
-        return Optional.empty();
-    }
 
     Optional<EventDto> updateEvent(EventInputDto eventInputDto, Long id) {
         return Optional.empty();
@@ -798,9 +782,6 @@ public class Mutation implements GraphQLMutationResolver {
         return false;
     }
 
-    Boolean deleteBoard(Long id) {
-        return false;
-    }
 
     Boolean deleteEvent(Long id) {
         return false;
@@ -842,7 +823,7 @@ public class Mutation implements GraphQLMutationResolver {
         return false;
     }
 
-    Boolean deleteVote(Long id) {
+    Long deleteVote(Long id) {
         return voteService.deleteVote(id);
     }
 

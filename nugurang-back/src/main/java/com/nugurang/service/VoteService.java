@@ -35,10 +35,8 @@ public class VoteService {
         );
     }
 
-    public Boolean deleteVote(Long id) {
-        if (!voteDao.existsById(id))
-            return false;
+    public Long deleteVote(Long id) {
         voteDao.deleteById(id);
-        return true;
+        return id;
     }
 }
