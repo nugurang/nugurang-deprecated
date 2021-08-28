@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class UserHonorResolver implements GraphQLResolver<UserHonorDto> {
+public class UserHonorQuery implements GraphQLResolver<UserHonorDto> {
     private final UserHonorDao userHonorDao;
 
     public UserDto user(UserHonorDto userHonorDto) {

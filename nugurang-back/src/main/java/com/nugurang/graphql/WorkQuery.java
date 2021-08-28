@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class WorkResolver implements GraphQLResolver<WorkDto> {
+public class WorkQuery implements GraphQLResolver<WorkDto> {
     private final TaskDao taskDao;
     private final WorkDao workDao;
 

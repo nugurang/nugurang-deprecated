@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class ArticleResolver implements GraphQLResolver<ArticleDto> {
+public class ArticleQuery implements GraphQLResolver<ArticleDto> {
 
     private final ArticleDao articleDao;
     private final ImageDao imageDao;

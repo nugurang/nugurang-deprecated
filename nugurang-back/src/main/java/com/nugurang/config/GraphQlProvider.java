@@ -2,7 +2,6 @@ package com.nugurang.nugurang;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
-import com.nugurang.graphql.BoardResolver;
 import com.nugurang.graphql.Mutation;
 import com.nugurang.graphql.Query;
 import graphql.GraphQL;
@@ -28,7 +27,6 @@ public class GraphQlProvider {
     private GraphQL graphQL;
     private final Query query;
     private final Mutation mutation;
-    private final BoardResolver boardResolver;
 
     @PostConstruct
     public void init() throws IOException {
@@ -45,7 +43,7 @@ public class GraphQlProvider {
         GraphQLSchema graphQLSchema = SchemaParser.newParser()
             .options(schemaParserOptions)
             .file("schema.graphqls")
-            .resolvers(query, mutation, boardResolver)
+            .resolvers(query, mutation)
             .scalars(ExtendedScalars.DateTime)
             .build()
             .makeExecutableSchema();
@@ -75,5 +73,4 @@ public class GraphQlProvider {
     public GraphQLScalarType dateTime() {
         return ExtendedScalars.DateTime;
     }
-
 }

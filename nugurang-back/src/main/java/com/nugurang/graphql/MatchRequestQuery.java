@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class MatchRequestResolver implements GraphQLResolver<MatchRequestDto> {
+public class MatchRequestQuery implements GraphQLResolver<MatchRequestDto> {
     private final MatchRequestDao matchRequestDao;
 
     public MatchTypeDto type(MatchRequestDto matchRequestDto) {

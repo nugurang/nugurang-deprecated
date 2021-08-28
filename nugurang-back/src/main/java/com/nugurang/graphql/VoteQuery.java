@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class VoteResolver implements GraphQLResolver<VoteDto> {
+public class VoteQuery implements GraphQLResolver<VoteDto> {
     private final UserDao userDao;
     private final ArticleDao articledDao;
     private final VoteTypeDao voteTypeDao;

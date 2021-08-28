@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class PositionResolver implements GraphQLResolver<PositionDto> {
+public class PositionQuery implements GraphQLResolver<PositionDto> {
     private final PositionDao positionDao;
 
     public Optional<ImageDto> image(PositionDto positionDto) {

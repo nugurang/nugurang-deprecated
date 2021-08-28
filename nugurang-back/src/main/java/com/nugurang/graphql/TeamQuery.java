@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class TeamResolver implements GraphQLResolver<TeamDto> {
+public class TeamQuery implements GraphQLResolver<TeamDto> {
     private final RoleDao roleDao;
     private final ProjectDao projectDao;
     private final UserDao userDao;

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class ProjectInvitationResolver implements GraphQLResolver<ProjectInvitationDto> {
+public class ProjectInvitationQuery implements GraphQLResolver<ProjectInvitationDto> {
     private final ProjectInvitationDao projectInvitationDao;
 
     public ProjectDto project(ProjectInvitationDto projectInvitationDto) {

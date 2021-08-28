@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class ThreadResolver implements GraphQLResolver<ThreadDto> {
+public class ThreadQuery implements GraphQLResolver<ThreadDto> {
     private final ArticleDao articleDao;
     private final BoardDao boardDao;
     private final TeamDao teamDao;

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class UserReviewResolver implements GraphQLResolver<UserReviewDto> {
+public class UserReviewQuery implements GraphQLResolver<UserReviewDto> {
     private final UserReviewDao userReviewDao;
 
     public PositionDto position(UserReviewDto userReviewDto) {

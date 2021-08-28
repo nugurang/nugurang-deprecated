@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class UserResolver implements GraphQLResolver<UserDto> {
+public class UserQuery implements GraphQLResolver<UserDto> {
     private final ArticleDao articleDao;
     private final BoardDao boardDao;
     private final ImageDao imageDao;

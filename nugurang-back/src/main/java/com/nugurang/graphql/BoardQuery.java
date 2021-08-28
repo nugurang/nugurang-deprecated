@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class BoardResolver implements GraphQLResolver<BoardDto> {
+public class BoardQuery implements GraphQLResolver<BoardDto> {
     private final UserDao userDao;
     private final ThreadDao threadDao;
 

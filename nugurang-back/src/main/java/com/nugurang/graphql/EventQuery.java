@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class EventResolver implements GraphQLResolver<EventDto> {
+public class EventQuery implements GraphQLResolver<EventDto> {
     private final ImageDao imageDao;
     private final MatchRequestDao matchRequestDao;
 
