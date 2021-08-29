@@ -13,19 +13,19 @@ public class UserMutation implements GraphQLMutationResolver {
 
     private final UserService userService;
 
-    UserDto createCurrentUser(UserInputDto userInputDto) {
+    public UserDto createCurrentUser(UserInputDto userInputDto) {
         return userService.createUser(userInputDto).toDto();
     }
 
-    UserDto updateCurrentUser(UserInputDto userInputDto) {
+    public UserDto updateCurrentUser(UserInputDto userInputDto) {
         return userService.updateCurrentUser(userInputDto).toDto();
     }
 
-    Long deleteUser(Long userId) {
+    public Long deleteUser(Long userId) {
         return userService.deleteUser(userId);
     }
 
-    Long deleteCurrentUser() {
+    public Long deleteCurrentUser() {
         return userService.deleteCurrentUser();
     }
 }

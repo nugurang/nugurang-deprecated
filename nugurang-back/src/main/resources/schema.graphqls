@@ -387,56 +387,56 @@ type Mutation {
     """CREATE"""
     createArticle(article: ArticleInput!, thread: ID!, parent: ID): Article!
     createBoard(board: BoardInput!): Board!
-    createEvent(event: EventInput!): Event
-    createFollowing(user: ID!): Boolean
-    createImage(address: String!): Image
-    createMatchRequest(request: MatchRequestInput!): MatchRequest
-    createPosition(position: PositionInput!): Position
-    createProject(project: ProjectInput!, team: ID!): Project
+    createEvent(event: EventInput!): Event!
+    createFollowing(user: ID!): Boolean!
+    createImage(address: String!): Image!
+    createMatchRequest(request: MatchRequestInput!): MatchRequest!
+    createPosition(position: PositionInput!): Position!
+    createProject(project: ProjectInput!, team: ID!): Project!
     createProjectInvitations(invitation: ProjectInvitationInput!): [ProjectInvitation]!
-    createTag(tag: TagInput!): Tag
-    createTask(task: TaskInput!, work: ID!): Task
-    createTeam(team: TeamInput!): Team
+    createTag(tag: TagInput!): Tag!
+    createTask(task: TaskInput!, work: ID!): Task!
+    createTeam(team: TeamInput!): Team!
     createTeamInvitations(invitation: TeamInvitationInput!): [TeamInvitation]!
     createThread(thread: ThreadInput!, board: ID!): Thread!
     createCurrentUser(user: UserInput!): User!
-    createVote(vote: VoteInput!): Vote
-    createWork(work: WorkInput!, project: ID!): Work
+    createVote(vote: VoteInput!): Vote!
+    createWork(work: WorkInput!, project: ID!): Work!
 
     """UPDATE"""
     updateArticle(article: ArticleInput!, id: ID!): Article!
     updateBoard(board: BoardInput!, id: ID!): Board!
-    updateEvent(event: EventInput!, id: ID!): Event
-    updateProject(project: ProjectInput!, id: ID!): Project
+    updateEvent(event: EventInput!, id: ID!): Event!
+    updateProject(project: ProjectInput!, id: ID!): Project!
     updateProjectFinish(id: ID!): Boolean!
     updateProjectInvitationAccepted(id: ID!): Boolean!
     updateProjectInvitationDenied(id: ID!): Boolean!
-    updateTask(task: TaskInput!, id: ID!): Task
+    updateTask(task: TaskInput!, id: ID!): Task!
     updateTaskReview(taskReview: TaskReviewInput!): Boolean!
-    updateTeam(team: TeamInput!, id: ID!): Team
+    updateTeam(team: TeamInput!, id: ID!): Team!
     updateTeamInvitationAccepted(id: ID!): Boolean!
     updateTeamInvitationDenied(id: ID!): Boolean!
     updateThread(thread: ThreadInput!, id: ID!): Thread!
     updateCurrentUser(user: UserInput!): User!
     updateUserReviews(reviews: [UserReviewInput]!, evaluation: ID!): Boolean!
-    updateVote(vote: ID!, voteTypes: [ID]!): Vote
-    updateWork(work: WorkInput!, id: ID!): Work
+    updateVote(vote: VoteInput!, id: ID!): Vote!
+    updateWork(work: WorkInput!, id: ID!): Work!
 
     """DELETE"""
-    deleteArticle(id: ID!): Long!
-    deleteBoard(id: ID!): Boolean!
-    deleteEvent(id: ID!): Boolean!
-    deleteFollowing(id: ID!): Boolean
-    deleteImage(id: ID!): Boolean!
-    deleteProject(id: ID!): Boolean!
-    deleteRole(id: ID!): Boolean!
-    deleteTag(id: ID!): Boolean!
-    deleteTask(id: ID!): Boolean!
-    deleteTeam(id: ID!): Boolean!
+    deleteArticle(id: ID!): ID!
+    deleteBoard(id: ID!): ID!
+    deleteEvent(id: ID!): ID!
+    deleteFollowing(id: ID!): ID!
+    deleteImage(id: ID!): ID!
+    deleteProject(id: ID!): ID!
+    deleteRole(id: ID!): ID!
+    deleteTag(id: ID!): ID!
+    deleteTask(id: ID!): ID!
+    deleteTeam(id: ID!): ID!
     deleteThread(id: ID!): ID!
     deleteCurrentUser: ID!
     deleteUser(id: ID!): ID!
     deleteVote(id: ID!): ID!
-    deleteVoteType(id: ID!): Boolean!
-    deleteWork(id: ID!): Boolean!
+    deleteVoteType(id: ID!): ID!
+    deleteWork(id: ID!): ID!
 }

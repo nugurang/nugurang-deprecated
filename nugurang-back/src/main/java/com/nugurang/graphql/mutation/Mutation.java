@@ -1,7 +1,6 @@
 package com.nugurang.graphql.mutation;
 
 import com.nugurang.constant.InvitationStatusName;
-import com.nugurang.constant.ProgressName;
 import com.nugurang.constant.RoleName;
 import com.nugurang.constant.UserEvaluationConstant;
 import com.nugurang.dao.ArticleDao;
@@ -28,9 +27,7 @@ import com.nugurang.dao.UserReviewDao;
 import com.nugurang.dao.VoteDao;
 import com.nugurang.dao.VoteTypeDao;
 import com.nugurang.dao.WorkDao;
-import com.nugurang.dao.XrefTaskPositionDao;
 import com.nugurang.dao.XrefUserProjectDao;
-import com.nugurang.dao.XrefUserTaskDao;
 import com.nugurang.dao.XrefUserTeamDao;
 import com.nugurang.dto.EventDto;
 import com.nugurang.dto.EventInputDto;
@@ -39,24 +36,16 @@ import com.nugurang.dto.MatchRequestDto;
 import com.nugurang.dto.MatchRequestInputDto;
 import com.nugurang.dto.PositionDto;
 import com.nugurang.dto.PositionInputDto;
-import com.nugurang.dto.ProjectDto;
-import com.nugurang.dto.ProjectInputDto;
 import com.nugurang.dto.ProjectInvitationDto;
 import com.nugurang.dto.ProjectInvitationInputDto;
 import com.nugurang.dto.TagDto;
 import com.nugurang.dto.TagInputDto;
-import com.nugurang.dto.TaskDto;
-import com.nugurang.dto.TaskInputDto;
 import com.nugurang.dto.TaskReviewInputDto;
 import com.nugurang.dto.TeamDto;
 import com.nugurang.dto.TeamInputDto;
 import com.nugurang.dto.TeamInvitationDto;
 import com.nugurang.dto.TeamInvitationInputDto;
 import com.nugurang.dto.UserReviewInputDto;
-import com.nugurang.dto.VoteDto;
-import com.nugurang.dto.VoteInputDto;
-import com.nugurang.dto.WorkDto;
-import com.nugurang.dto.WorkInputDto;
 import com.nugurang.entity.EventEntity;
 import com.nugurang.entity.FollowingEntity;
 import com.nugurang.entity.ImageEntity;
@@ -71,11 +60,7 @@ import com.nugurang.entity.TeamInvitationEntity;
 import com.nugurang.entity.UserEvaluationEntity;
 import com.nugurang.entity.UserHonorEntity;
 import com.nugurang.entity.UserReviewEntity;
-import com.nugurang.entity.VoteEntity;
-import com.nugurang.entity.WorkEntity;
-import com.nugurang.entity.XrefTaskPositionEntity;
 import com.nugurang.entity.XrefUserProjectEntity;
-import com.nugurang.entity.XrefUserTaskEntity;
 import com.nugurang.entity.XrefUserTeamEntity;
 import com.nugurang.service.ArticleService;
 import com.nugurang.service.NotificationService;
@@ -85,7 +70,6 @@ import com.nugurang.service.VoteService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -116,7 +100,6 @@ public class Mutation implements GraphQLMutationResolver {
     private final ProjectInvitationDao projectInvitationDao;
     private final RoleDao roleDao;
     private final TaskDao taskDao;
-    private final XrefTaskPositionDao xrefTaskPositionDao;
     private final TaskReviewDao taskReviewDao;
     private final TeamDao teamDao;
     private final TeamInvitationDao teamInvitationDao;
@@ -129,23 +112,20 @@ public class Mutation implements GraphQLMutationResolver {
     private final EventDao eventDao;
     private final WorkDao workDao;
     private final XrefUserProjectDao xrefUserProjectDao;
-    private final XrefUserTaskDao xrefUserTaskDao;
     private final XrefUserTeamDao xrefUserTeamDao;
 
-    Optional<EventDto> createEvent(EventInputDto eventInputDto) {
-        return Optional.of(
-            eventDao.save(
-                EventEntity
-                .builder()
-                .name(eventInputDto.getName())
-                .description(eventInputDto.getDescription())
-                .recruitingStart(eventInputDto.getRecruitingStart())
-                .recruitingEnd(eventInputDto.getRecruitingEnd())
-                .eventStart(eventInputDto.getEventStart())
-                .eventEnd(eventInputDto.getEventEnd())
-                .build()
-            ).toDto()
-        );
+    EventDto createEvent(EventInputDto eventInputDto) {
+        return eventDao.save(
+            EventEntity
+            .builder()
+            .name(eventInputDto.getName())
+            .description(eventInputDto.getDescription())
+            .recruitingStart(eventInputDto.getRecruitingStart())
+            .recruitingEnd(eventInputDto.getRecruitingEnd())
+            .eventStart(eventInputDto.getEventStart())
+            .eventEnd(eventInputDto.getEventEnd())
+            .build()
+        ).toDto();
     }
 
     Boolean createFollowing(Long user) {
@@ -163,85 +143,53 @@ public class Mutation implements GraphQLMutationResolver {
         return true;
     }
 
-    Optional<ImageDto> createImage(String address) {
+    ImageDto createImage(String address) {
         val imageEntity = imageDao.save(
             ImageEntity
             .builder()
             .address(address)
             .build()
         );
-        return Optional.of(imageEntity.toDto());
+        return imageEntity.toDto();
     }
 
-    Optional<MatchRequestDto> createMatchRequest(MatchRequestInputDto matchRequestInputDto) {
+    MatchRequestDto createMatchRequest(MatchRequestInputDto matchRequestInputDto) {
         log.info("Creating match request...");
         var now = OffsetDateTime.now();
-        return Optional.of(
-           matchRequestDao.save(
-                MatchRequestEntity
-                .builder()
-                .createdAt(now)
-                .expiredAt(
-                    now
-                    .plusDays(matchRequestInputDto.getDays().orElse(1))
-                    .plusHours(matchRequestInputDto.getHours().orElse(0))
-                    .plusMinutes(matchRequestInputDto.getMinutes().orElse(0))
-                )
-                .minTeamSize(matchRequestInputDto.getMinTeamSize())
-                .maxTeamSize(matchRequestInputDto.getMaxTeamSize().orElse(null))
-                .type(matchTypeDao.findById(matchRequestInputDto.getType()).get())
-                .event(eventDao.findById(matchRequestInputDto.getEvent()).get())
-                .user(userService.getCurrentUser().get())
-                .build()
-            )
-            .toDto()
-        );
-    }
-
-    Optional<PositionDto> createPosition(PositionInputDto positionInputDto) {
-        return Optional.of(
-            positionDao.save(
-                PositionEntity
-                .builder()
-                .name(positionInputDto.getName())
-                .description(positionInputDto.getDescription().orElse(null))
-                .image(
-                    positionInputDto
-                    .getImage()
-                    .flatMap((imageId) -> imageDao.findById(imageId))
-                    .orElse(null)
-                )
-                .build()
-            ).toDto()
-        );
-    }
-
-    @Transactional
-    Optional<ProjectDto> createProject(ProjectInputDto projectInputDto, Long team) {
-        val projectEntity = projectDao.save(
-            ProjectEntity
+        return matchRequestDao.save(
+            MatchRequestEntity
             .builder()
-            .name(projectInputDto.getName())
-            .finished(false)
-            .team(teamDao.findById(team).get())
-            .event(
-                projectInputDto
-                .getEvent()
-                .flatMap((id) -> eventDao.findById(id)).orElse(null)
+            .createdAt(now)
+            .expiredAt(
+                now
+                .plusDays(matchRequestInputDto.getDays().orElse(1))
+                .plusHours(matchRequestInputDto.getHours().orElse(0))
+                .plusMinutes(matchRequestInputDto.getMinutes().orElse(0))
             )
-            .build()
-        );
-
-        xrefUserProjectDao.save(
-            XrefUserProjectEntity
-            .builder()
+            .minTeamSize(matchRequestInputDto.getMinTeamSize())
+            .maxTeamSize(matchRequestInputDto.getMaxTeamSize().orElse(null))
+            .type(matchTypeDao.findById(matchRequestInputDto.getType()).get())
+            .event(eventDao.findById(matchRequestInputDto.getEvent()).get())
             .user(userService.getCurrentUser().get())
-            .project(projectEntity)
-            .role(roleDao.findByName(RoleName.OWNER.name()).get())
             .build()
-        );
+        )
+        .toDto();
+    }
 
-        return Optional.of(projectEntity.toDto());
+    PositionDto createPosition(PositionInputDto positionInputDto) {
+        return positionDao.save(
+            PositionEntity
+            .builder()
+            .name(positionInputDto.getName())
+            .description(positionInputDto.getDescription().orElse(null))
+            .image(
+                positionInputDto
+                .getImage()
+                .flatMap((imageId) -> imageDao.findById(imageId))
+                .orElse(null)
+            )
+            .build()
+        ).toDto();
     }
 
     List<ProjectInvitationDto> createProjectInvitations(ProjectInvitationInputDto projectInvitationInputDto) {
@@ -278,74 +226,12 @@ public class Mutation implements GraphQLMutationResolver {
             .collect(Collectors.toList());
     }
 
-    Optional<TagDto> createTag(TagInputDto tagInputDto) {
-        return Optional.empty();
+    TagDto createTag(TagInputDto tagInputDto) {
+        return null;
     }
 
     @Transactional
-    Optional<TaskDto> createTask(TaskInputDto taskInputDto, Long work) {
-        val taskEntity = taskDao.save(
-            TaskEntity
-            .builder()
-            .name(taskInputDto.getName())
-            .order(
-                taskInputDto
-                .getOrder()
-                .orElseGet(() ->
-                    taskDao
-                    .findFirstByOrderByOrderDesc()
-                    .map((prevTaskEntity) -> prevTaskEntity.getOrder() + 1)
-                    .orElse(0)
-                )
-            )
-            .difficulty(taskInputDto.getDifficulty().orElse(1))
-            .work(workDao.findById(work).get())
-            .progress(
-                taskInputDto
-                .getProgress()
-                .map((progressId) -> progressDao.findById(progressId).get())
-                .orElseGet(() -> progressDao.findByName(ProgressName.TODO.name()).get())
-            )
-            .build()
-        );
-
-        xrefUserTaskDao.saveAll(
-            taskInputDto
-            .getUsers()
-            .stream()
-            .map((userId) -> userDao.findById(userId).get())
-            .map((userEntity) ->
-                XrefUserTaskEntity
-                .builder()
-                .user(userEntity)
-                .task(taskEntity)
-                .build()
-            )
-            .collect(Collectors.toList())
-        );
-
-        xrefTaskPositionDao.saveAll(
-            taskInputDto
-            .getPositions()
-            .stream()
-            .map((positionId) ->
-                positionDao.findById(positionId).get()
-            )
-            .map((positionEntity) ->
-                XrefTaskPositionEntity
-                .builder()
-                .task(taskEntity)
-                .position(positionEntity)
-                .build()
-            )
-            .collect(Collectors.toList())
-        );
-
-        return Optional.of(taskEntity.toDto());
-    }
-
-    @Transactional
-    Optional<TeamDto> createTeam(TeamInputDto teamInputDto) {
+    TeamDto createTeam(TeamInputDto teamInputDto) {
         val teamEntity = teamDao.save(
             TeamEntity
             .builder()
@@ -362,7 +248,7 @@ public class Mutation implements GraphQLMutationResolver {
             .build()
         );
 
-        return Optional.of(teamEntity.toDto());
+        return teamEntity.toDto();
     }
 
     @Transactional
@@ -402,65 +288,10 @@ public class Mutation implements GraphQLMutationResolver {
             .collect(Collectors.toList());
     }
 
-    Optional<VoteDto> createVote(VoteInputDto voteInputDto) {
-        return Optional.of(
-            voteDao.save(
-                VoteEntity
-                .builder()
-                .user(userService.getCurrentUser().get())
-                .article(articleDao.findById(voteInputDto.getArticle()).get())
-                .voteType(voteTypeDao.findById(voteInputDto.getVoteType()).get())
-                .build()
-            )
-            .toDto()
-        );
+    EventDto updateEvent(EventInputDto eventInputDto, Long id) {
+        return null;
     }
 
-    Optional<WorkDto> createWork(WorkInputDto workInputDto, Long project) {
-        return Optional.of(
-            workDao.save(
-                WorkEntity
-                .builder()
-                .name(workInputDto.getName())
-                .opened(true)
-                .order(
-                    workInputDto
-                    .getOrder()
-                    .orElseGet(() ->
-                        workDao
-                        .findFirstByOrderByOrderDesc()
-                        .map((prevWorkEntity) -> prevWorkEntity.getOrder() + 1)
-                        .orElse(0)
-                    )
-                )
-                .project(projectDao.findById(project).get())
-                .build()
-            )
-            .toDto()
-        );
-    }
-
-    Optional<EventDto> updateEvent(EventInputDto eventInputDto, Long id) {
-        return Optional.empty();
-    }
-
-    Optional<ProjectDto> updateProject(ProjectInputDto projectInputDto, Long id) {
-        return Optional.of(
-            projectDao
-            .findById(id)
-            .map((projectEntity) -> {
-                projectEntity.setName(projectInputDto.getName());
-                projectEntity.setEvent(
-                    projectInputDto
-                    .getEvent()
-                    .flatMap((eventId) -> eventDao.findById(eventId)).orElse(null)
-                );
-                return projectEntity;
-            })
-            .get()
-            .toDto()
-        );
-    }
 
     @Transactional
     Boolean updateProjectInvitationAccepted(Long projectInvitation) {
@@ -563,23 +394,6 @@ public class Mutation implements GraphQLMutationResolver {
         return true;
     }
     
-    Optional<TaskDto> updateTask(TaskInputDto taskInputDto, Long id) {
-        var taskEntity = taskDao.findById(id).get();
-        taskEntity.setName(taskInputDto.getName());
-
-        if (taskInputDto.getOrder().isPresent())
-            taskEntity.setOrder(taskInputDto.getOrder().get());
-
-        if (taskInputDto.getDifficulty().isPresent())
-            taskEntity.setDifficulty(taskInputDto.getDifficulty().get());
-
-        if (taskInputDto.getProgress().isPresent()) {
-            taskEntity.setProgress(
-                progressDao.findById(taskInputDto.getProgress().get()).get()
-            );
-        }
-        return Optional.of(taskDao.save(taskEntity).toDto());
-    }
 
     @Transactional
     Boolean updateTaskReview(TaskReviewInputDto taskReviewInputDto) {
@@ -601,16 +415,11 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     @Transactional
-    Optional<TeamDto> updateTeam(TeamInputDto teamInputDto, Long id) {
+    TeamDto updateTeam(TeamInputDto teamInputDto, Long id) {
         var teamEntity = teamDao.findById(id).get();
         teamEntity.setName(teamInputDto.getName());
 
-        return Optional.of(
-            teamDao.save(
-                teamEntity
-            )
-            .toDto()
-        );
+        return teamDao.save(teamEntity).toDto();
     }
 
     Boolean updateTeamInvitationAccepted(Long teamInvitation) {
@@ -703,56 +512,32 @@ public class Mutation implements GraphQLMutationResolver {
         return true;
     }
 
-    Optional<VoteDto> updateVote(Long vote, List<Long> voteTypes) {
-        return Optional.empty();
-    }
-
-    Optional<WorkDto> updateWork(WorkInputDto workInputDto, Long id) {
-        return Optional.empty();
-    }
-
-    Boolean deleteEvent(Long id) {
-        return false;
-    }
-
-    Boolean deleteFollowing(Long user) {
-        return false;
-    }
-
-    Boolean deleteImage(Long id) {
-        return false;
-    }
-
-    Boolean deleteProject(Long id) {
-        return false;
-    }
-
-    Boolean deleteRole(Long id) {
-        return false;
-    }
-
-    Boolean deleteTag(Long id) {
-        return false;
-    }
-
-    Boolean deleteTask(Long id) {
-        return false;
-    }
-
-    Boolean deleteTeam(Long id) {
-        return false;
-    }
-
-    Long deleteVote(Long id) {
-        voteService.deleteVote(id);
+    Long deleteEvent(Long id) {
         return id;
     }
 
-    Boolean deleteVoteType(Long id) {
-        return false;
+    Long deleteFollowing(Long user) {
+        return user;
     }
 
-    Boolean deleteWork(Long id) {
-        return false;
+    Long deleteImage(Long id) {
+        return id;
     }
+
+    Long deleteRole(Long id) {
+        return id;
+    }
+
+    Long deleteTag(Long id) {
+        return id;
+    }
+
+    Long deleteTeam(Long id) {
+        return id;
+    }
+
+    Long deleteVoteType(Long id) {
+        return id;
+    }
+
 }

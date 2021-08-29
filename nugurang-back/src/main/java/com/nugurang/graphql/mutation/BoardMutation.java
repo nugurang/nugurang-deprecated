@@ -13,15 +13,15 @@ public class BoardMutation implements GraphQLMutationResolver {
 
     private final BoardService boardService;
 
-    BoardDto createBoard(BoardInputDto boardInputDto) {
+    public BoardDto createBoard(BoardInputDto boardInputDto) {
         return boardService.createBoard(boardInputDto).toDto();
     }
 
-    BoardDto updateBoard(BoardInputDto boardInputDto, Long boardId) {
+    public BoardDto updateBoard(BoardInputDto boardInputDto, Long boardId) {
         return boardService.updateBoard(boardInputDto, boardId).toDto();
     }
 
-    Long deleteBoard(Long boardId) {
+    public Long deleteBoard(Long boardId) {
         boardService.deleteBoard(boardId);
         return boardId;
     }

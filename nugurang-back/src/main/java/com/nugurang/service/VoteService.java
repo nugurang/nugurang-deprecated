@@ -22,17 +22,23 @@ public class VoteService {
         return voteDao.findByUserIdAndArticleIdAndVoteTypeName(userId, articleId, voteTypeName);
     }
 
-    public Optional<VoteEntity> createVote(VoteInputDto voteInputDto) {
-        return Optional.of(
-            voteDao.save(
-                VoteEntity
-                .builder()
-                .user(userService.getCurrentUser().get())
-                .article(articleDao.findById(voteInputDto.getArticle()).get())
-                .voteType(voteTypeDao.findById(voteInputDto.getVoteType()).get())
-                .build()
-            )
+    public VoteEntity createVote(VoteInputDto voteInputDto) {
+        return voteDao.save(
+            VoteEntity
+            .builder()
+            .user(userService.getCurrentUser().get())
+            .article(articleDao.findById(voteInputDto.getArticle()).get())
+            .voteType(voteTypeDao.findById(voteInputDto.getVoteType()).get())
+            .build()
         );
+    }
+
+    public VoteEntity updateVote(VoteInputDto voteInputDto, Long voteId) {
+        VoteEntity voteEntity = voteDao.findById(voteId).get();
+        voteEntity.setUser(userService.getCurrentUser().get());
+        voteEntity.setArticle(articleDao.findById(voteInputDto.getArticle()).get());
+        voteEntity.setVoteType(voteTypeDao.findById(voteInputDto.getVoteType()).get());
+        return voteDao.save(voteEntity);
     }
 
     public void deleteVote(Long id) {
