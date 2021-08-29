@@ -32,8 +32,6 @@ import com.nugurang.dao.XrefTaskPositionDao;
 import com.nugurang.dao.XrefUserProjectDao;
 import com.nugurang.dao.XrefUserTaskDao;
 import com.nugurang.dao.XrefUserTeamDao;
-import com.nugurang.dto.ArticleDto;
-import com.nugurang.dto.ArticleInputDto;
 import com.nugurang.dto.EventDto;
 import com.nugurang.dto.EventInputDto;
 import com.nugurang.dto.ImageDto;
@@ -133,18 +131,6 @@ public class Mutation implements GraphQLMutationResolver {
     private final XrefUserProjectDao xrefUserProjectDao;
     private final XrefUserTaskDao xrefUserTaskDao;
     private final XrefUserTeamDao xrefUserTeamDao;
-
-    Optional<ArticleDto> createArticle(
-        ArticleInputDto articleInputDto,
-        Long thread,
-        Optional<Long> parent
-    ) {
-        return Optional.of(
-            articleService.createArticle(articleInputDto, thread, parent)
-            .toDto()
-        );
-    }
-
 
     Optional<EventDto> createEvent(EventInputDto eventInputDto) {
         return Optional.of(
@@ -454,11 +440,6 @@ public class Mutation implements GraphQLMutationResolver {
         );
     }
 
-    Optional<ArticleDto> updateArticle(ArticleInputDto articleInputDto, Long id)  {
-        return Optional.empty();
-    }
-
-
     Optional<EventDto> updateEvent(EventInputDto eventInputDto, Long id) {
         return Optional.empty();
     }
@@ -730,11 +711,6 @@ public class Mutation implements GraphQLMutationResolver {
         return Optional.empty();
     }
 
-    Boolean deleteArticle(Long id) {
-        return false;
-    }
-
-
     Boolean deleteEvent(Long id) {
         return false;
     }
@@ -764,11 +740,6 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Boolean deleteTeam(Long id) {
-        return false;
-    }
-
-
-    Boolean deleteUser(Long id) {
         return false;
     }
 

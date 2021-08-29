@@ -60,4 +60,13 @@ public class ArticleService {
 
         return articleEntity;
     }
+
+    public ArticleEntity updateArticle(ArticleInputDto articleInputDto, Long id)  {
+        return null;
+    }
+
+    public Long deleteArticle(Long articleId) {
+        articleDao.deleteById(articleId);
+        return articleId;
+    }
 }

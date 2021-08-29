@@ -385,7 +385,7 @@ type Query {
 type Mutation {
 
     """CREATE"""
-    createArticle(article: ArticleInput!, thread: ID!, parent: ID): Article
+    createArticle(article: ArticleInput!, thread: ID!, parent: ID): Article!
     createBoard(board: BoardInput!): Board!
     createEvent(event: EventInput!): Event
     createFollowing(user: ID!): Boolean
@@ -399,12 +399,12 @@ type Mutation {
     createTeam(team: TeamInput!): Team
     createTeamInvitations(invitation: TeamInvitationInput!): [TeamInvitation]!
     createThread(thread: ThreadInput!, board: ID!): Thread!
-    createUser(user: UserInput!): User
+    createCurrentUser(user: UserInput!): User!
     createVote(vote: VoteInput!): Vote
     createWork(work: WorkInput!, project: ID!): Work
 
     """UPDATE"""
-    updateArticle(article: ArticleInput!, id: ID!): Article
+    updateArticle(article: ArticleInput!, id: ID!): Article!
     updateBoard(board: BoardInput!, id: ID!): Board!
     updateEvent(event: EventInput!, id: ID!): Event
     updateProject(project: ProjectInput!, id: ID!): Project
@@ -417,13 +417,13 @@ type Mutation {
     updateTeamInvitationAccepted(id: ID!): Boolean!
     updateTeamInvitationDenied(id: ID!): Boolean!
     updateThread(thread: ThreadInput!, id: ID!): Thread!
-    updateUser(user: UserInput!): User
+    updateCurrentUser(user: UserInput!): User!
     updateUserReviews(reviews: [UserReviewInput]!, evaluation: ID!): Boolean!
     updateVote(vote: ID!, voteTypes: [ID]!): Vote
     updateWork(work: WorkInput!, id: ID!): Work
 
     """DELETE"""
-    deleteArticle(id: ID!): Boolean!
+    deleteArticle(id: ID!): Long!
     deleteBoard(id: ID!): Boolean!
     deleteEvent(id: ID!): Boolean!
     deleteFollowing(id: ID!): Boolean
@@ -434,7 +434,8 @@ type Mutation {
     deleteTask(id: ID!): Boolean!
     deleteTeam(id: ID!): Boolean!
     deleteThread(id: ID!): ID!
-    deleteUser(id: ID!): Boolean!
+    deleteCurrentUser: ID!
+    deleteUser(id: ID!): ID!
     deleteVote(id: ID!): ID!
     deleteVoteType(id: ID!): Boolean!
     deleteWork(id: ID!): Boolean!

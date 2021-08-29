@@ -67,4 +67,19 @@ public class UserService {
     public UserEntity updateCurrentUser(UserInputDto userInputDto) {
         return updateUser(userInputDto, getCurrentUser().get());
     }
+
+    public Long deleteUser(UserEntity userEntity) {
+        Long userId = userEntity.getId();
+        userDao.delete(userEntity);
+        return userId;
+    }
+
+    public Long deleteUser(Long userId) {
+        userDao.deleteById(userId);
+        return userId;
+    }
+
+    public Long deleteCurrentUser() {
+        return deleteUser(getCurrentUser().get());
+    }
 }
