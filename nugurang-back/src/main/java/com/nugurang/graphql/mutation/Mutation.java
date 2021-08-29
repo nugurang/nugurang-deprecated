@@ -3,8 +3,6 @@ package com.nugurang.graphql.mutation;
 import com.nugurang.constant.InvitationStatusName;
 import com.nugurang.constant.RoleName;
 import com.nugurang.constant.UserEvaluationConstant;
-import com.nugurang.dao.ArticleDao;
-import com.nugurang.dao.BoardDao;
 import com.nugurang.dao.EventDao;
 import com.nugurang.dao.FollowingDao;
 import com.nugurang.dao.ImageDao;
@@ -24,13 +22,8 @@ import com.nugurang.dao.UserDao;
 import com.nugurang.dao.UserEvaluationDao;
 import com.nugurang.dao.UserHonorDao;
 import com.nugurang.dao.UserReviewDao;
-import com.nugurang.dao.VoteDao;
-import com.nugurang.dao.VoteTypeDao;
-import com.nugurang.dao.WorkDao;
 import com.nugurang.dao.XrefUserProjectDao;
 import com.nugurang.dao.XrefUserTeamDao;
-import com.nugurang.dto.EventDto;
-import com.nugurang.dto.EventInputDto;
 import com.nugurang.dto.ImageDto;
 import com.nugurang.dto.MatchRequestDto;
 import com.nugurang.dto.MatchRequestInputDto;
@@ -46,7 +39,6 @@ import com.nugurang.dto.TeamInputDto;
 import com.nugurang.dto.TeamInvitationDto;
 import com.nugurang.dto.TeamInvitationInputDto;
 import com.nugurang.dto.UserReviewInputDto;
-import com.nugurang.entity.EventEntity;
 import com.nugurang.entity.FollowingEntity;
 import com.nugurang.entity.ImageEntity;
 import com.nugurang.entity.MatchRequestEntity;
@@ -62,11 +54,8 @@ import com.nugurang.entity.UserHonorEntity;
 import com.nugurang.entity.UserReviewEntity;
 import com.nugurang.entity.XrefUserProjectEntity;
 import com.nugurang.entity.XrefUserTeamEntity;
-import com.nugurang.service.ArticleService;
 import com.nugurang.service.NotificationService;
-import com.nugurang.service.OAuth2Service;
 import com.nugurang.service.UserService;
-import com.nugurang.service.VoteService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -82,13 +71,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class Mutation implements GraphQLMutationResolver {
 
-    private final BoardDao boardDao;
-    private final ArticleService articleService;
     private final NotificationService notificationService;
-    private final OAuth2Service oauth2Service;
     private final UserService userService;
-    private final VoteService voteService;
-    private final ArticleDao articleDao;
+    private final EventDao eventDao;
     private final FollowingDao followingDao;
     private final ImageDao imageDao;
     private final InvitationStatusDao invitationStatusDao;
@@ -107,26 +92,9 @@ public class Mutation implements GraphQLMutationResolver {
     private final UserEvaluationDao userEvaluationDao;
     private final UserHonorDao userHonorDao;
     private final UserReviewDao userReviewDao;
-    private final VoteDao voteDao;
-    private final VoteTypeDao voteTypeDao;
-    private final EventDao eventDao;
-    private final WorkDao workDao;
     private final XrefUserProjectDao xrefUserProjectDao;
     private final XrefUserTeamDao xrefUserTeamDao;
 
-    EventDto createEvent(EventInputDto eventInputDto) {
-        return eventDao.save(
-            EventEntity
-            .builder()
-            .name(eventInputDto.getName())
-            .description(eventInputDto.getDescription())
-            .recruitingStart(eventInputDto.getRecruitingStart())
-            .recruitingEnd(eventInputDto.getRecruitingEnd())
-            .eventStart(eventInputDto.getEventStart())
-            .eventEnd(eventInputDto.getEventEnd())
-            .build()
-        ).toDto();
-    }
 
     Boolean createFollowing(Long user) {
         var fromUser = userService.getCurrentUser().get();
@@ -287,11 +255,6 @@ public class Mutation implements GraphQLMutationResolver {
             })
             .collect(Collectors.toList());
     }
-
-    EventDto updateEvent(EventInputDto eventInputDto, Long id) {
-        return null;
-    }
-
 
     @Transactional
     Boolean updateProjectInvitationAccepted(Long projectInvitation) {
@@ -510,10 +473,6 @@ public class Mutation implements GraphQLMutationResolver {
         );
 
         return true;
-    }
-
-    Long deleteEvent(Long id) {
-        return id;
     }
 
     Long deleteFollowing(Long user) {
