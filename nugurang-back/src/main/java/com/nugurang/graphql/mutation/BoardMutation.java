@@ -22,6 +22,7 @@ public class BoardMutation implements GraphQLMutationResolver {
     }
 
     Long deleteBoard(Long boardId) {
-        return boardService.deleteBoard(boardId);
+        boardService.deleteBoard(boardId);
+        return boardId;
     }
 }

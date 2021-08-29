@@ -45,8 +45,7 @@ public class BoardService {
         return boardDao.save(boardEntity);
     }
 
-    public Long deleteBoard(Long id) {
+    public void deleteBoard(Long id) {
         boardDao.deleteById(id);
-        return id;
     }
 }

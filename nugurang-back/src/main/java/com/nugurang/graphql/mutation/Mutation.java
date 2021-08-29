@@ -773,7 +773,8 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Long deleteVote(Long id) {
-        return voteService.deleteVote(id);
+        voteService.deleteVote(id);
+        return id;
     }
 
     Boolean deleteVoteType(Long id) {

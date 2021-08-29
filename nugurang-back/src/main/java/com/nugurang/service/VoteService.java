@@ -35,8 +35,7 @@ public class VoteService {
         );
     }
 
-    public Long deleteVote(Long id) {
+    public void deleteVote(Long id) {
         voteDao.deleteById(id);
-        return id;
     }
 }

@@ -102,4 +102,12 @@ public class ThreadService {
             .findAllByBoardNameInOrderByCreatedAtDesc(boards, PageRequest.of(page, pageSize))
             .getContent();
     }
+
+    public ThreadEntity updateThread(ThreadInputDto threadInputDto, Long id) {
+        return null;
+    }
+
+    public void deleteThread(Long id) {
+        threadDao.deleteById(id);
+    }
 }

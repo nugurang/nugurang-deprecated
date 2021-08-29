@@ -416,7 +416,7 @@ type Mutation {
     updateTeam(team: TeamInput!, id: ID!): Team
     updateTeamInvitationAccepted(id: ID!): Boolean!
     updateTeamInvitationDenied(id: ID!): Boolean!
-    updateThread(thread: ThreadInput!, id: ID!): Thread
+    updateThread(thread: ThreadInput!, id: ID!): Thread!
     updateUser(user: UserInput!): User
     updateUserReviews(reviews: [UserReviewInput]!, evaluation: ID!): Boolean!
     updateVote(vote: ID!, voteTypes: [ID]!): Vote
@@ -433,7 +433,7 @@ type Mutation {
     deleteTag(id: ID!): Boolean!
     deleteTask(id: ID!): Boolean!
     deleteTeam(id: ID!): Boolean!
-    deleteThread(id: ID!): Boolean!
+    deleteThread(id: ID!): ID!
     deleteUser(id: ID!): Boolean!
     deleteVote(id: ID!): ID!
     deleteVoteType(id: ID!): Boolean!
