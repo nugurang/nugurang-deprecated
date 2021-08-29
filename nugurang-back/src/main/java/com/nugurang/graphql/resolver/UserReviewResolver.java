@@ -1,4 +1,4 @@
-package com.nugurang.graphql;
+package com.nugurang.graphql.resolver;
 
 import com.nugurang.dao.UserReviewDao;
 import com.nugurang.dto.PositionDto;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class UserReviewQuery implements GraphQLResolver<UserReviewDto> {
+public class UserReviewResolver implements GraphQLResolver<UserReviewDto> {
     private final UserReviewDao userReviewDao;
 
     public PositionDto position(UserReviewDto userReviewDto) {

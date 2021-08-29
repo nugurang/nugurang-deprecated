@@ -1,4 +1,4 @@
-package com.nugurang.graphql;
+package com.nugurang.graphql.resolver;
 
 import com.nugurang.dao.PositionDao;
 import com.nugurang.dto.ImageDto;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class PositionQuery implements GraphQLResolver<PositionDto> {
+public class PositionResolver implements GraphQLResolver<PositionDto> {
     private final PositionDao positionDao;
 
     public Optional<ImageDto> image(PositionDto positionDto) {

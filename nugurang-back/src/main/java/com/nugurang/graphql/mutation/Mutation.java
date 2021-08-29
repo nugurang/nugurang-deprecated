@@ -21,7 +21,6 @@ import com.nugurang.dao.TaskDao;
 import com.nugurang.dao.TaskReviewDao;
 import com.nugurang.dao.TeamDao;
 import com.nugurang.dao.TeamInvitationDao;
-import com.nugurang.dao.ThreadDao;
 import com.nugurang.dao.UserDao;
 import com.nugurang.dao.UserEvaluationDao;
 import com.nugurang.dao.UserHonorDao;
@@ -55,8 +54,6 @@ import com.nugurang.dto.TeamDto;
 import com.nugurang.dto.TeamInputDto;
 import com.nugurang.dto.TeamInvitationDto;
 import com.nugurang.dto.TeamInvitationInputDto;
-import com.nugurang.dto.ThreadDto;
-import com.nugurang.dto.ThreadInputDto;
 import com.nugurang.dto.UserReviewInputDto;
 import com.nugurang.dto.VoteDto;
 import com.nugurang.dto.VoteInputDto;
@@ -73,7 +70,6 @@ import com.nugurang.entity.TaskEntity;
 import com.nugurang.entity.TaskReviewEntity;
 import com.nugurang.entity.TeamEntity;
 import com.nugurang.entity.TeamInvitationEntity;
-import com.nugurang.entity.ThreadEntity;
 import com.nugurang.entity.UserEvaluationEntity;
 import com.nugurang.entity.UserHonorEntity;
 import com.nugurang.entity.UserReviewEntity;
@@ -126,7 +122,6 @@ public class Mutation implements GraphQLMutationResolver {
     private final TaskReviewDao taskReviewDao;
     private final TeamDao teamDao;
     private final TeamInvitationDao teamInvitationDao;
-    private final ThreadDao threadDao;
     private final UserDao userDao;
     private final UserEvaluationDao userEvaluationDao;
     private final UserHonorDao userHonorDao;
@@ -421,44 +416,6 @@ public class Mutation implements GraphQLMutationResolver {
             .collect(Collectors.toList());
     }
 
-    @Transactional
-    Optional<ThreadDto> createThread(ThreadInputDto threadInputDto, Long board) {
-        val userEntity = userService.getCurrentUser().get();
-        val threadEntity = threadDao.save(
-            ThreadEntity
-            .builder()
-            .name(threadInputDto.getName())
-            .board(boardDao.findById(board).get())
-            .xrefUserTeam(
-                threadInputDto
-                .getTeam()
-                .map((teamId) ->
-                    xrefUserTeamDao
-                    .findByUserIdAndTeamId(userEntity.getId(), teamId)
-                    .get()
-                )
-                .orElse(null)
-            )
-            .event(
-                threadInputDto
-                .getEvent()
-                .flatMap((eventId) -> eventDao.findById(eventId))
-                .orElse(null)
-            )
-            .user(userEntity)
-            .build()
-        );
-
-        articleService.createArticle(
-            threadInputDto.getFirstArticle(),
-            threadEntity.getId(),
-            Optional.empty()
-        );
-
-        return Optional.of(threadEntity.toDto());
-    }
-
-
     Optional<VoteDto> createVote(VoteInputDto voteInputDto) {
         return Optional.of(
             voteDao.save(
@@ -715,11 +672,6 @@ public class Mutation implements GraphQLMutationResolver {
         return true;
     }
 
-    Optional<ThreadDto> updateThread(ThreadInputDto threadInputDto, Long id) {
-        return Optional.empty();
-    }
-
-
     @Transactional
     Boolean updateUserReviews(List<UserReviewInputDto> userReviews, Long userEvaluation) {
         val userEvaluationEntity = userEvaluationDao
@@ -815,9 +767,6 @@ public class Mutation implements GraphQLMutationResolver {
         return false;
     }
 
-    Boolean deleteThread(Long id) {
-        return false;
-    }
 
     Boolean deleteUser(Long id) {
         return false;

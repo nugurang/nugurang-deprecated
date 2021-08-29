@@ -1,4 +1,4 @@
-package com.nugurang.graphql;
+package com.nugurang.graphql.resolver;
 
 import com.nugurang.dao.PositionDao;
 import com.nugurang.dao.ProgressDao;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class TaskQuery implements GraphQLResolver<TaskDto> {
+public class TaskResolver implements GraphQLResolver<TaskDto> {
     private final WorkDao workerDao;
     private final ProgressDao progressDao;
     private final PositionDao positionDao;

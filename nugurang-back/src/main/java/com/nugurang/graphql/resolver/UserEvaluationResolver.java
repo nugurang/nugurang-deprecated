@@ -1,4 +1,4 @@
-package com.nugurang.graphql;
+package com.nugurang.graphql.resolver;
 
 
 import com.nugurang.dao.ProjectDao;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class UserEvaluationQuery implements GraphQLResolver<UserEvaluationDto> {
+public class UserEvaluationResolver implements GraphQLResolver<UserEvaluationDto> {
     private final ProjectDao projectDao;
     private final UserReviewDao userReviewDao;
 

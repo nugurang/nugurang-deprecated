@@ -1,12 +1,15 @@
 package com.nugurang.service;
 
-
 import com.nugurang.dao.ArticleDao;
+import com.nugurang.dao.EventDao;
 import com.nugurang.dao.ThreadDao;
 import com.nugurang.dao.VoteTypeDao;
+import com.nugurang.dao.XrefUserTeamDao;
+import com.nugurang.dto.ThreadInputDto;
 import com.nugurang.dto.VoteInputDto;
 import com.nugurang.entity.ArticleEntity;
 import com.nugurang.entity.ThreadEntity;
+import com.nugurang.entity.UserEntity;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +19,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ThreadService {
 
-    private final VoteService voteService;
+    private final ArticleService articleService;
+    private final BoardService boardService;
     private final UserService userService;
+    private final VoteService voteService;
     private final ArticleDao articleDao;
+    private final EventDao eventDao;
     private final ThreadDao threadDao;
     private final VoteTypeDao voteTypeDao;
+    private final XrefUserTeamDao xrefUserTeamDao;
 
     @Transactional
     public Optional<ThreadEntity> getThread(Long id) {
@@ -37,6 +44,43 @@ public class ThreadService {
             .voteType(voteTypeDao.findByName("VIEW").get().getId())
             .build()
         );
+        return threadEntity;
+    }
+
+    @Transactional
+    public ThreadEntity createThread(ThreadInputDto threadInputDto, Long board) {
+        UserEntity userEntity = userService.getCurrentUser().get();
+        ThreadEntity threadEntity = threadDao.save(
+            ThreadEntity
+            .builder()
+            .name(threadInputDto.getName())
+            .board(boardService.getBoard(board).get())
+            .xrefUserTeam(
+                threadInputDto
+                .getTeam()
+                .map((teamId) ->
+                    xrefUserTeamDao
+                    .findByUserIdAndTeamId(userEntity.getId(), teamId)
+                    .get()
+                )
+                .orElse(null)
+            )
+            .event(
+                threadInputDto
+                .getEvent()
+                .map((eventId) -> eventDao.getById(eventId))
+                .orElse(null)
+            )
+            .user(userEntity)
+            .build()
+        );
+
+        articleService.createArticle(
+            threadInputDto.getFirstArticle(),
+            threadEntity.getId(),
+            Optional.empty()
+        );
+
         return threadEntity;
     }
 }

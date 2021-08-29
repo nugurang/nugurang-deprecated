@@ -1,4 +1,4 @@
-package com.nugurang.graphql;
+package com.nugurang.graphql.resolver;
 
 import com.nugurang.dao.ProjectInvitationDao;
 import com.nugurang.dto.InvitationStatusDto;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class ProjectInvitationQuery implements GraphQLResolver<ProjectInvitationDto> {
+public class ProjectInvitationResolver implements GraphQLResolver<ProjectInvitationDto> {
     private final ProjectInvitationDao projectInvitationDao;
 
     public ProjectDto project(ProjectInvitationDto projectInvitationDto) {

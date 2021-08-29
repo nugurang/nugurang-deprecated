@@ -1,4 +1,4 @@
-package com.nugurang.graphql;
+package com.nugurang.graphql.resolver;
 
 import com.nugurang.dao.ArticleDao;
 import com.nugurang.dao.ImageDao;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class ArticleQuery implements GraphQLResolver<ArticleDto> {
+public class ArticleResolver implements GraphQLResolver<ArticleDto> {
 
     private final ArticleDao articleDao;
     private final ImageDao imageDao;

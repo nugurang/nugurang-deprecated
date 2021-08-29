@@ -1,4 +1,4 @@
-package com.nugurang.graphql;
+package com.nugurang.graphql.resolver;
 
 import com.nugurang.constant.RoleName;
 import com.nugurang.dao.ProjectDao;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class TeamQuery implements GraphQLResolver<TeamDto> {
+public class TeamResolver implements GraphQLResolver<TeamDto> {
     private final RoleDao roleDao;
     private final ProjectDao projectDao;
     private final UserDao userDao;

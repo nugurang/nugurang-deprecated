@@ -1,7 +1,6 @@
-package com.nugurang.graphql;
+package com.nugurang.graphql.query;
 
 import com.nugurang.dao.ArticleDao;
-import com.nugurang.dao.BoardDao;
 import com.nugurang.dao.EventDao;
 import com.nugurang.dao.ImageDao;
 import com.nugurang.dao.InvitationStatusDao;
@@ -21,7 +20,6 @@ import com.nugurang.dao.UserDao;
 import com.nugurang.dao.VoteTypeDao;
 import com.nugurang.dao.WorkDao;
 import com.nugurang.dto.ArticleDto;
-import com.nugurang.dto.BoardDto;
 import com.nugurang.dto.EventDto;
 import com.nugurang.dto.ImageDto;
 import com.nugurang.dto.InvitationStatusDto;
@@ -59,7 +57,6 @@ public class Query implements GraphQLQueryResolver {
     private final UserService userService;
     private final ArticleDao articleDao;
     private final ThreadService threadService;
-    private final BoardDao boardDao;
     private final EventDao eventDao;
     private final ImageDao imageDao;
     private final InvitationStatusDao invitationStatusDao;
@@ -103,13 +100,6 @@ public class Query implements GraphQLQueryResolver {
 
     List<MatchRequestDto> matchRequests() {
         return matchRequestDao.findAllByUserId(userService.getCurrentUser().get().getId())
-            .stream()
-            .map((entity) -> entity.toDto())
-            .collect(Collectors.toList());
-    }
-
-    List<BoardDto> boards() {
-        return boardDao.findAll()
             .stream()
             .map((entity) -> entity.toDto())
             .collect(Collectors.toList());
@@ -161,26 +151,6 @@ public class Query implements GraphQLQueryResolver {
         return articleDao
             .findById(id)
             .map((entity) -> entity.toDto());
-    }
-
-    Optional<BoardDto> getBoard(Long id) {
-        return boardDao
-            .findById(id)
-            .map((entity) -> entity.toDto());
-    }
-
-    Optional<BoardDto> getBoardByName(String name) {
-        return boardDao
-            .findByName(name)
-            .map((entity) -> entity.toDto());
-    }
-
-    List<BoardDto> getBoardsByNames(List<String> names) {
-        return boardDao
-            .findAllByNameIn(names)
-            .stream()
-            .map((entity) -> entity.toDto())
-            .collect(Collectors.toList());
     }
 
     Optional<EventDto> getEvent(Long id) {

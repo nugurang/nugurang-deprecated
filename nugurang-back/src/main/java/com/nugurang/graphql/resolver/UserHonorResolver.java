@@ -1,4 +1,4 @@
-package com.nugurang.graphql;
+package com.nugurang.graphql.resolver;
 
 import com.nugurang.dao.UserHonorDao;
 import com.nugurang.dto.PositionDto;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class UserHonorQuery implements GraphQLResolver<UserHonorDto> {
+public class UserHonorResolver implements GraphQLResolver<UserHonorDto> {
     private final UserHonorDao userHonorDao;
 
     public UserDto user(UserHonorDto userHonorDto) {

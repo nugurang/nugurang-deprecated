@@ -1,4 +1,4 @@
-package com.nugurang.graphql;
+package com.nugurang.graphql.resolver;
 
 import com.nugurang.dao.EventDao;
 import com.nugurang.dao.ProjectDao;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class ProjectQuery implements GraphQLResolver<ProjectDto> {
+public class ProjectResolver implements GraphQLResolver<ProjectDto> {
     private final ProjectDao projectDao;
     private final TeamDao teamDao;
     private final UserDao userDao;

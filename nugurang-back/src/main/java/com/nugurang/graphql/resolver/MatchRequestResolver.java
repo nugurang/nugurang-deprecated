@@ -1,4 +1,4 @@
-package com.nugurang.graphql;
+package com.nugurang.graphql.resolver;
 
 import com.nugurang.dao.MatchRequestDao;
 import com.nugurang.dto.EventDto;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class MatchRequestQuery implements GraphQLResolver<MatchRequestDto> {
+public class MatchRequestResolver implements GraphQLResolver<MatchRequestDto> {
     private final MatchRequestDao matchRequestDao;
 
     public MatchTypeDto type(MatchRequestDto matchRequestDto) {

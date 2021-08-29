@@ -1,4 +1,4 @@
-package com.nugurang.graphql;
+package com.nugurang.graphql.resolver;
 
 import com.nugurang.dao.TeamInvitationDao;
 import com.nugurang.dto.InvitationStatusDto;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class TeamInvitationQuery implements GraphQLResolver<TeamInvitationDto> {
+public class TeamInvitationResolver implements GraphQLResolver<TeamInvitationDto> {
     private final TeamInvitationDao teamInvitationDao;
 
     public TeamDto team(TeamInvitationDto teamInvitationDto) {

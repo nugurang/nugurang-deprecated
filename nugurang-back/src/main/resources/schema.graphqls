@@ -398,7 +398,7 @@ type Mutation {
     createTask(task: TaskInput!, work: ID!): Task
     createTeam(team: TeamInput!): Team
     createTeamInvitations(invitation: TeamInvitationInput!): [TeamInvitation]!
-    createThread(thread: ThreadInput!, board: ID!): Thread
+    createThread(thread: ThreadInput!, board: ID!): Thread!
     createUser(user: UserInput!): User
     createVote(vote: VoteInput!): Vote
     createWork(work: WorkInput!, project: ID!): Work

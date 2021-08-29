@@ -1,4 +1,4 @@
-package com.nugurang.graphql;
+package com.nugurang.graphql.resolver;
 
 import com.nugurang.dao.NotificationDao;
 import com.nugurang.dao.NotificationDataDao;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class NotificationQuery implements GraphQLResolver<NotificationDto> {
+public class NotificationResolver implements GraphQLResolver<NotificationDto> {
     private final NotificationDao notificationDao;
     private final NotificationDataDao notificationDataDao;
 

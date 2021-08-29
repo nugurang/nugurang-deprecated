@@ -1,4 +1,4 @@
-package com.nugurang.graphql;
+package com.nugurang.graphql.resolver;
 
 import com.nugurang.dao.ArticleDao;
 import com.nugurang.dao.UserDao;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class VoteQuery implements GraphQLResolver<VoteDto> {
+public class VoteResolver implements GraphQLResolver<VoteDto> {
     private final UserDao userDao;
     private final ArticleDao articledDao;
     private final VoteTypeDao voteTypeDao;
