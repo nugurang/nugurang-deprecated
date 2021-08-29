@@ -2,8 +2,8 @@ package com.nugurang.nugurang;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
-import com.nugurang.graphql.Mutation;
-import com.nugurang.graphql.Query;
+//import com.nugurang.graphql.Mutation;
+//import com.nugurang.graphql.Query;
 import graphql.GraphQL;
 //import graphql.kickstart.tools.SchemaParser;
 //import graphql.kickstart.tools.SchemaParserOptions;
@@ -25,8 +25,8 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class GraphQlProvider {
     private GraphQL graphQL;
-    private final Query query;
-    private final Mutation mutation;
+    //private final Query query;
+    //private final Mutation mutation;
 
     @PostConstruct
     public void init() throws IOException {

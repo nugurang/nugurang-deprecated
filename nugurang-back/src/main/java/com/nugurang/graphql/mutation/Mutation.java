@@ -1,4 +1,4 @@
-package com.nugurang.graphql;
+package com.nugurang.graphql.mutation;
 
 import com.nugurang.constant.InvitationStatusName;
 import com.nugurang.constant.ProgressName;
