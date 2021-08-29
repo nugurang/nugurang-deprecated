@@ -10,9 +10,11 @@ import com.nugurang.dto.VoteInputDto;
 import com.nugurang.entity.ArticleEntity;
 import com.nugurang.entity.ThreadEntity;
 import com.nugurang.entity.UserEntity;
+import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,24 +30,6 @@ public class ThreadService {
     private final ThreadDao threadDao;
     private final VoteTypeDao voteTypeDao;
     private final XrefUserTeamDao xrefUserTeamDao;
-
-    @Transactional
-    public Optional<ThreadEntity> getThread(Long id) {
-        Optional<ThreadEntity> threadEntity = threadDao.findById(id);
-        if (!threadEntity.isPresent())
-            return Optional.empty();
-        
-        ArticleEntity articleEntity = articleDao.findFirstByThreadIdOrderByCreatedAtAsc(threadEntity.get().getId());
-        if (voteService.getVote(userService.getCurrentUser().get().getId(), articleEntity.getId(), "VIEW").isPresent())
-            return threadEntity;
-        voteService.createVote(VoteInputDto
-            .builder()
-            .article(articleEntity.getId())
-            .voteType(voteTypeDao.findByName("VIEW").get().getId())
-            .build()
-        );
-        return threadEntity;
-    }
 
     @Transactional
     public ThreadEntity createThread(ThreadInputDto threadInputDto, Long board) {
@@ -82,5 +66,40 @@ public class ThreadService {
         );
 
         return threadEntity;
+    }
+
+    @Transactional
+    public Optional<ThreadEntity> getThread(Long id) {
+        Optional<ThreadEntity> threadEntity = threadDao.findById(id);
+        if (!threadEntity.isPresent())
+            return Optional.empty();
+        ArticleEntity articleEntity = articleDao.findFirstByThreadIdOrderByCreatedAtAsc(threadEntity.get().getId());
+        if (voteService.getVote(userService.getCurrentUser().get().getId(), articleEntity.getId(), "VIEW").isPresent())
+            return threadEntity;
+        voteService.createVote(VoteInputDto
+            .builder()
+            .article(articleEntity.getId())
+            .voteType(voteTypeDao.findByName("VIEW").get().getId())
+            .build()
+        );
+        return threadEntity;
+    }
+
+    public List<ThreadEntity> getThreadsByBoards(List<Long> boards, Integer page, Integer pageSize) {
+        return threadDao
+            .findAllByBoardIdInOrderByCreatedAtDesc(boards, PageRequest.of(page, pageSize))
+            .getContent();
+    }
+
+    public List<ThreadEntity> getThreadsByBoardNames(List<String> boards, Integer page, Integer pageSize) {
+        return threadDao
+            .findAllByBoardNameInOrderByCreatedAtDesc(boards, PageRequest.of(page, pageSize))
+            .getContent();
+    }
+
+    public List<ThreadEntity> getHotThreadsByBoardNames(List<String> boards, Integer page, Integer pageSize) {
+        return threadDao
+            .findAllByBoardNameInOrderByCreatedAtDesc(boards, PageRequest.of(page, pageSize))
+            .getContent();
     }
 }

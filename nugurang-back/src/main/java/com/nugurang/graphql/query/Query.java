@@ -15,7 +15,6 @@ import com.nugurang.dao.ProjectInvitationDao;
 import com.nugurang.dao.TaskDao;
 import com.nugurang.dao.TeamDao;
 import com.nugurang.dao.TeamInvitationDao;
-import com.nugurang.dao.ThreadDao;
 import com.nugurang.dao.UserDao;
 import com.nugurang.dao.VoteTypeDao;
 import com.nugurang.dao.WorkDao;
@@ -35,7 +34,6 @@ import com.nugurang.dto.ProjectInvitationDto;
 import com.nugurang.dto.TaskDto;
 import com.nugurang.dto.TeamDto;
 import com.nugurang.dto.TeamInvitationDto;
-import com.nugurang.dto.ThreadDto;
 import com.nugurang.dto.UserDto;
 import com.nugurang.dto.VoteTypeDto;
 import com.nugurang.dto.WorkDto;
@@ -71,7 +69,6 @@ public class Query implements GraphQLQueryResolver {
     private final TaskDao taskDao;
     private final TeamDao teamDao;
     private final TeamInvitationDao teamInvitationDao;
-    private final ThreadDao threadDao;
     private final UserDao userDao;
     private final VoteTypeDao voteTypeDao;
     private final WorkDao workDao;
@@ -211,37 +208,6 @@ public class Query implements GraphQLQueryResolver {
         return teamInvitationDao
             .findById(id)
             .map((entity) -> entity.toDto());
-    }
-
-    Optional<ThreadDto> getThread(Long id) {
-        return threadService.getThread(id).map((entity) -> entity.toDto());
-    }
-
-    List<ThreadDto> getThreadsByBoards(List<Long> boards, Integer page, Integer pageSize) {
-        return threadDao
-            .findAllByBoardIdInOrderByCreatedAtDesc(boards, PageRequest.of(page, pageSize))
-            .getContent()
-            .stream()
-            .map((entity) -> entity.toDto())
-            .collect(Collectors.toList());
-    }
-
-    List<ThreadDto> getThreadsByBoardNames(List<String> boards, Integer page, Integer pageSize) {
-        return threadDao
-            .findAllByBoardNameInOrderByCreatedAtDesc(boards, PageRequest.of(page, pageSize))
-            .getContent()
-            .stream()
-            .map((entity) -> entity.toDto())
-            .collect(Collectors.toList());
-    }
-
-    List<ThreadDto> getHotThreadsByBoardNames(List<String> boards, Integer page, Integer pageSize) {
-        return threadDao
-            .findAllByBoardNameInOrderByCreatedAtDesc(boards, PageRequest.of(page, pageSize))
-            .getContent()
-            .stream()
-            .map((entity) -> entity.toDto())
-            .collect(Collectors.toList());
     }
 
     Optional<TaskDto> getTask(Long id) {
