@@ -3,6 +3,7 @@ package com.nugurang.service;
 import com.nugurang.dao.EventDao;
 import com.nugurang.dto.EventInputDto;
 import com.nugurang.entity.EventEntity;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,10 @@ public class EventService {
             .eventEnd(eventInputDto.getEventEnd())
             .build()
         );
+    }
+
+    public Optional<EventEntity> getEvent(Long eventId) {
+        return eventDao.findById(eventId);
     }
 
     public EventEntity updateEvent(EventInputDto eventInputDto, Long eventId) {

@@ -1,6 +1,5 @@
 package com.nugurang.graphql.query;
 
-import com.nugurang.dao.EventDao;
 import com.nugurang.dao.ImageDao;
 import com.nugurang.dao.InvitationStatusDao;
 import com.nugurang.dao.MatchRequestDao;
@@ -11,7 +10,6 @@ import com.nugurang.dao.ProgressDao;
 import com.nugurang.dao.ProjectInvitationDao;
 import com.nugurang.dao.TeamInvitationDao;
 import com.nugurang.dao.VoteTypeDao;
-import com.nugurang.dto.EventDto;
 import com.nugurang.dto.ImageDto;
 import com.nugurang.dto.InvitationStatusDto;
 import com.nugurang.dto.MatchRequestDto;
@@ -37,7 +35,6 @@ import org.springframework.stereotype.Service;
 public class Query implements GraphQLQueryResolver {
     private final OAuth2Service oauth2Service;
     private final UserService userService;
-    private final EventDao eventDao;
     private final ImageDao imageDao;
     private final InvitationStatusDao invitationStatusDao;
     private final MatchRequestDao matchRequestDao;
@@ -112,12 +109,6 @@ public class Query implements GraphQLQueryResolver {
             .stream()
             .map((entity) -> entity.toDto())
             .collect(Collectors.toList());
-    }
-
-    Optional<EventDto> getEvent(Long id) {
-        return eventDao
-            .findById(id)
-            .map((entity) -> entity.toDto());
     }
 
     Optional<ImageDto> getImage(Long id) {
