@@ -370,6 +370,7 @@ type Query {
     # getTaskReviewByTask(id: ID!): TaskReview!
     getTeam(id: ID!): Team
     getTeamByName(name: String!): Team
+    getTeamsByName(name: String!, page: Int!, pageSize: Int!): [Team]!
     getTeamInvitation(id: ID!): TeamInvitation
     getThread(id: ID!): Thread
     getThreadsByBoards(boards: [ID]!, page: Int!, pageSize: Int!): [Thread]!

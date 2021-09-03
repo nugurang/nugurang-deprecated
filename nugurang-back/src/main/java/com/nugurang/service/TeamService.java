@@ -7,7 +7,10 @@ import com.nugurang.dao.XrefUserTeamDao;
 import com.nugurang.dto.TeamInputDto;
 import com.nugurang.entity.TeamEntity;
 import com.nugurang.entity.XrefUserTeamEntity;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +42,18 @@ public class TeamService {
         );
 
         return teamEntity;
+    }
+
+    public Optional<TeamEntity> getTeam(Long teamId) {
+        return teamDao.findById(teamId);
+    }
+
+    public Optional<TeamEntity> getTeam(String teamName) {
+        return teamDao.findByName(teamName);
+    }
+
+    public List<TeamEntity> getTeams(String teamName, Pageable pageable) {
+        return teamDao.findAllByNameContainingIgnoreCase(teamName, pageable).getContent();
     }
 
     public TeamEntity updateTeam(TeamInputDto teamInputDto, Long id) {

@@ -1,6 +1,5 @@
 package com.nugurang.graphql.query;
 
-import com.nugurang.dao.ArticleDao;
 import com.nugurang.dao.EventDao;
 import com.nugurang.dao.ImageDao;
 import com.nugurang.dao.InvitationStatusDao;
@@ -9,14 +8,9 @@ import com.nugurang.dao.MatchTypeDao;
 import com.nugurang.dao.NotificationTypeDao;
 import com.nugurang.dao.PositionDao;
 import com.nugurang.dao.ProgressDao;
-import com.nugurang.dao.ProjectDao;
 import com.nugurang.dao.ProjectInvitationDao;
-import com.nugurang.dao.TaskDao;
-import com.nugurang.dao.TeamDao;
 import com.nugurang.dao.TeamInvitationDao;
 import com.nugurang.dao.VoteTypeDao;
-import com.nugurang.dao.WorkDao;
-import com.nugurang.dto.ArticleDto;
 import com.nugurang.dto.EventDto;
 import com.nugurang.dto.ImageDto;
 import com.nugurang.dto.InvitationStatusDto;
@@ -26,15 +20,10 @@ import com.nugurang.dto.NotificationTypeDto;
 import com.nugurang.dto.OAuth2UserDto;
 import com.nugurang.dto.PositionDto;
 import com.nugurang.dto.ProgressDto;
-import com.nugurang.dto.ProjectDto;
 import com.nugurang.dto.ProjectInvitationDto;
-import com.nugurang.dto.TaskDto;
-import com.nugurang.dto.TeamDto;
 import com.nugurang.dto.TeamInvitationDto;
 import com.nugurang.dto.VoteTypeDto;
-import com.nugurang.dto.WorkDto;
 import com.nugurang.service.OAuth2Service;
-import com.nugurang.service.ThreadService;
 import com.nugurang.service.UserService;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import java.util.List;
@@ -48,8 +37,6 @@ import org.springframework.stereotype.Service;
 public class Query implements GraphQLQueryResolver {
     private final OAuth2Service oauth2Service;
     private final UserService userService;
-    private final ArticleDao articleDao;
-    private final ThreadService threadService;
     private final EventDao eventDao;
     private final ImageDao imageDao;
     private final InvitationStatusDao invitationStatusDao;
@@ -58,13 +45,9 @@ public class Query implements GraphQLQueryResolver {
     private final NotificationTypeDao notificationTypeDao;
     private final PositionDao positionDao;
     private final ProgressDao progressDao;
-    private final ProjectDao projectDao;
     private final ProjectInvitationDao projectInvitationDao;
-    private final TaskDao taskDao;
-    private final TeamDao teamDao;
     private final TeamInvitationDao teamInvitationDao;
     private final VoteTypeDao voteTypeDao;
-    private final WorkDao workDao;
 
     String ping() {
         return "pong";
@@ -131,12 +114,6 @@ public class Query implements GraphQLQueryResolver {
             .collect(Collectors.toList());
     }
 
-    Optional<ArticleDto> getArticle(Long id) {
-        return articleDao
-            .findById(id)
-            .map((entity) -> entity.toDto());
-    }
-
     Optional<EventDto> getEvent(Long id) {
         return eventDao
             .findById(id)
@@ -161,27 +138,9 @@ public class Query implements GraphQLQueryResolver {
             .map((entity) -> entity.toDto());
     }
 
-    Optional<ProjectDto> getProject(Long id) {
-        return projectDao
-            .findById(id)
-            .map((entity) -> entity.toDto());
-    }
-
     Optional<ProjectInvitationDto> getProjectInvitation(Long id) {
         return projectInvitationDao
             .findById(id)
-            .map((entity) -> entity.toDto());
-    }
-
-    Optional<TeamDto> getTeam(Long id) {
-        return teamDao
-            .findById(id)
-            .map((entity) -> entity.toDto());
-    }
-
-    Optional<TeamDto> getTeamByName(String name) {
-        return teamDao
-            .findByName(name)
             .map((entity) -> entity.toDto());
     }
 
@@ -191,22 +150,9 @@ public class Query implements GraphQLQueryResolver {
             .map((entity) -> entity.toDto());
     }
 
-    Optional<TaskDto> getTask(Long id) {
-        return taskDao
-            .findById(id)
-            .map((entity) -> entity.toDto());
-    }
-
     Optional<VoteTypeDto> getVoteTypeByName(String name) {
         return voteTypeDao
             .findByName(name)
             .map((entity) -> entity.toDto());
     }
-
-    Optional<WorkDto> getWork(Long id) {
-        return workDao
-            .findById(id)
-            .map((entity) -> entity.toDto());
-    }
-
 }

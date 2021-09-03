@@ -12,6 +12,7 @@ import com.nugurang.dto.TaskInputDto;
 import com.nugurang.entity.TaskEntity;
 import com.nugurang.entity.XrefTaskPositionEntity;
 import com.nugurang.entity.XrefUserTaskEntity;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -91,8 +92,12 @@ public class TaskService {
         return taskEntity;
     }
 
-    public TaskEntity updateTask(TaskInputDto taskInputDto, Long id) {
-        TaskEntity taskEntity = taskDao.findById(id).get();
+    public Optional<TaskEntity> getTask(Long taskId) {
+        return taskDao.findById(taskId);
+    }
+
+    public TaskEntity updateTask(TaskInputDto taskInputDto, Long taskId) {
+        TaskEntity taskEntity = taskDao.findById(taskId).get();
 
         taskEntity.setName(taskInputDto.getName());
 
@@ -111,6 +116,7 @@ public class TaskService {
     }
 
     public Long deleteTask(Long taskId) {
+        taskDao.deleteById(taskId);
         return taskId;
     }
 }

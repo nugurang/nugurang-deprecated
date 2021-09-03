@@ -9,6 +9,7 @@ import com.nugurang.dao.XrefUserProjectDao;
 import com.nugurang.dto.ProjectInputDto;
 import com.nugurang.entity.ProjectEntity;
 import com.nugurang.entity.XrefUserProjectEntity;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +51,10 @@ public class ProjectService {
         );
 
         return projectEntity;
+    }
+
+    public Optional<ProjectEntity> getProject(Long projectId) {
+        return projectDao.findById(projectId);
     }
 
     @Transactional

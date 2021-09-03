@@ -4,6 +4,7 @@ import com.nugurang.dao.ProjectDao;
 import com.nugurang.dao.WorkDao;
 import com.nugurang.dto.WorkInputDto;
 import com.nugurang.entity.WorkEntity;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,10 @@ public class WorkService {
             .project(projectDao.findById(project).get())
             .build()
         );
+    }
+
+    public Optional<WorkEntity> getWork(Long workId) {
+        return workDao.findById(workId);
     }
 
     public WorkEntity updateWork(WorkInputDto workInputDto, Long workId) {

@@ -61,6 +61,10 @@ public class ArticleService {
         return articleEntity;
     }
 
+    public Optional<ArticleEntity> getArticle(Long articleId) {
+        return articleDao.findById(articleId);
+    }
+
     public ArticleEntity updateArticle(ArticleInputDto articleInputDto, Long id)  {
         return null;
     }
