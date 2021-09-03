@@ -24,7 +24,6 @@ import com.nugurang.dao.UserHonorDao;
 import com.nugurang.dao.UserReviewDao;
 import com.nugurang.dao.XrefUserProjectDao;
 import com.nugurang.dao.XrefUserTeamDao;
-import com.nugurang.dto.ImageDto;
 import com.nugurang.dto.MatchRequestDto;
 import com.nugurang.dto.MatchRequestInputDto;
 import com.nugurang.dto.PositionDto;
@@ -38,7 +37,6 @@ import com.nugurang.dto.TeamInvitationDto;
 import com.nugurang.dto.TeamInvitationInputDto;
 import com.nugurang.dto.UserReviewInputDto;
 import com.nugurang.entity.FollowingEntity;
-import com.nugurang.entity.ImageEntity;
 import com.nugurang.entity.MatchRequestEntity;
 import com.nugurang.entity.PositionEntity;
 import com.nugurang.entity.ProjectEntity;
@@ -93,7 +91,6 @@ public class Mutation implements GraphQLMutationResolver {
     private final XrefUserProjectDao xrefUserProjectDao;
     private final XrefUserTeamDao xrefUserTeamDao;
 
-
     Boolean createFollowing(Long user) {
         var fromUser = userService.getCurrentUser().get();
         var toUser = userDao.findById(user).get();
@@ -107,16 +104,6 @@ public class Mutation implements GraphQLMutationResolver {
             .build()
         );
         return true;
-    }
-
-    ImageDto createImage(String address) {
-        val imageEntity = imageDao.save(
-            ImageEntity
-            .builder()
-            .address(address)
-            .build()
-        );
-        return imageEntity.toDto();
     }
 
     MatchRequestDto createMatchRequest(MatchRequestInputDto matchRequestInputDto) {
@@ -446,10 +433,6 @@ public class Mutation implements GraphQLMutationResolver {
 
     Long deleteFollowing(Long user) {
         return user;
-    }
-
-    Long deleteImage(Long id) {
-        return id;
     }
 
     Long deleteRole(Long id) {

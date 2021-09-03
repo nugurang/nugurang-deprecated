@@ -10,7 +10,6 @@ import com.nugurang.dao.ProgressDao;
 import com.nugurang.dao.ProjectInvitationDao;
 import com.nugurang.dao.TeamInvitationDao;
 import com.nugurang.dao.VoteTypeDao;
-import com.nugurang.dto.ImageDto;
 import com.nugurang.dto.InvitationStatusDto;
 import com.nugurang.dto.MatchRequestDto;
 import com.nugurang.dto.MatchTypeDto;
@@ -109,18 +108,6 @@ public class Query implements GraphQLQueryResolver {
             .stream()
             .map((entity) -> entity.toDto())
             .collect(Collectors.toList());
-    }
-
-    Optional<ImageDto> getImage(Long id) {
-        return imageDao
-            .findById(id)
-            .map((entity) -> entity.toDto());
-    }
-
-    Optional<ImageDto> getImageByAddress(String address) {
-        return imageDao
-            .findByAddress(address)
-            .map((entity) -> entity.toDto());
     }
 
     Optional<MatchTypeDto> getMatchTypeByName(String name) {
