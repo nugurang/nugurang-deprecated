@@ -35,54 +35,29 @@ public class DbInit {
 
     @PostConstruct
     public void init() {
-        for (String invitationStatusName : List.of(
-                InvitationStatusName.UNACCEPTED.name(),
-                InvitationStatusName.DENIED.name(),
-                InvitationStatusName.ACCEPTED.name()
-            )) {
+        for (InvitationStatusName invitationStatusName : InvitationStatusName.values()) {
             invitationStatusDao.save(
-                InvitationStatusEntity.builder().name(invitationStatusName).build()
+                InvitationStatusEntity.builder().name(invitationStatusName.name()).build()
             );
         }
 
         for (String roleName : List.of(RoleName.OWNER.name(), RoleName.MEMBER.name()))
             roleDao.save(RoleEntity.builder().name(roleName).build());
 
-        for (String voteTypeName : List.of(
-                VoteTypeName.VIEW.name(),
-                VoteTypeName.UP.name(),
-                VoteTypeName.DOWN.name(),
-                VoteTypeName.STAR.name()
-            )) {
-            voteTypeDao.save(VoteTypeEntity.builder().name(voteTypeName).build());
-        }
+        for (VoteTypeName voteTypeName : VoteTypeName.values())
+            voteTypeDao.save(VoteTypeEntity.builder().name(voteTypeName.name()).build());
 
-        for (String progressName : List.of(
-            ProgressName.TODO.name(),
-            ProgressName.DOING.name(),
-            ProgressName.DONE.name())
-        ) {
-            progressDao.save(ProgressEntity.builder().name(progressName).build());
-        }
+        for (ProgressName progressName : ProgressName.values())
+            progressDao.save(ProgressEntity.builder().name(progressName.name()).build());
 
-        for (String matchTypeName : List.of(
-            MatchTypeName.RANDOM.name(),
-            MatchTypeName.HONOR.name(),
-            MatchTypeName.PERSONALITY.name())
-        ) {
-            matchTypeDao.save(MatchTypeEntity.builder().name(matchTypeName).build());
-        }
+        for (MatchTypeName matchTypeName : MatchTypeName.values())
+            matchTypeDao.save(MatchTypeEntity.builder().name(matchTypeName.name()).build());
 
-        for (String notificationTypeName : List.of(
-                NotificationTypeName.PROJECT_INVITATION.name(),
-                NotificationTypeName.TEAM_INVITATION.name(),
-                NotificationTypeName.MATCH_SUCCESS.name(),
-                NotificationTypeName.MATCH_FAILURE.name()
-            )) {
+        for (NotificationTypeName notificationTypeName : NotificationTypeName.values()) {
             notificationTypeDao.save(
                 NotificationTypeEntity
                 .builder()
-                .name(notificationTypeName)
+                .name(notificationTypeName.name())
                 .build()
             );
         }

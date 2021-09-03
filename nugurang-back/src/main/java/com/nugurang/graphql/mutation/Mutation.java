@@ -34,8 +34,6 @@ import com.nugurang.dto.ProjectInvitationInputDto;
 import com.nugurang.dto.TagDto;
 import com.nugurang.dto.TagInputDto;
 import com.nugurang.dto.TaskReviewInputDto;
-import com.nugurang.dto.TeamDto;
-import com.nugurang.dto.TeamInputDto;
 import com.nugurang.dto.TeamInvitationDto;
 import com.nugurang.dto.TeamInvitationInputDto;
 import com.nugurang.dto.UserReviewInputDto;
@@ -199,27 +197,6 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     @Transactional
-    TeamDto createTeam(TeamInputDto teamInputDto) {
-        val teamEntity = teamDao.save(
-            TeamEntity
-            .builder()
-            .name(teamInputDto.getName())
-            .build()
-        );
-
-        xrefUserTeamDao.save(
-            XrefUserTeamEntity
-            .builder()
-            .user(userService.getCurrentUser().get())
-            .team(teamEntity)
-            .role(roleDao.findByName(RoleName.OWNER.name()).get())
-            .build()
-        );
-
-        return teamEntity.toDto();
-    }
-
-    @Transactional
     List<TeamInvitationDto> createTeamInvitations(TeamInvitationInputDto teamInvitationInputDto) {
         val currentUserEntity = userService.getCurrentUser().get();
         return teamInvitationInputDto
@@ -377,14 +354,6 @@ public class Mutation implements GraphQLMutationResolver {
         return true;
     }
 
-    @Transactional
-    TeamDto updateTeam(TeamInputDto teamInputDto, Long id) {
-        var teamEntity = teamDao.findById(id).get();
-        teamEntity.setName(teamInputDto.getName());
-
-        return teamDao.save(teamEntity).toDto();
-    }
-
     Boolean updateTeamInvitationAccepted(Long teamInvitation) {
         var teamInvitationEntity = teamInvitationDao
             .findById(teamInvitation)
@@ -488,10 +457,6 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     Long deleteTag(Long id) {
-        return id;
-    }
-
-    Long deleteTeam(Long id) {
         return id;
     }
 
