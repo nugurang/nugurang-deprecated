@@ -13,6 +13,7 @@ import com.nugurang.entity.TeamEntity;
 import com.nugurang.entity.TeamInvitationEntity;
 import com.nugurang.entity.UserEntity;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -117,5 +118,9 @@ public class NotificationService {
                 eventEntity.getId().toString()
             )
         );
+    }
+
+    public Optional<NotificationEntity> getNotification(Long notificationId) {
+        return notificationDao.findById(notificationId);
     }
 }

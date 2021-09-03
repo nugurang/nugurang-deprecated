@@ -6,7 +6,6 @@ import com.nugurang.dao.ImageDao;
 import com.nugurang.dao.InvitationStatusDao;
 import com.nugurang.dao.MatchRequestDao;
 import com.nugurang.dao.MatchTypeDao;
-import com.nugurang.dao.NotificationDao;
 import com.nugurang.dao.NotificationTypeDao;
 import com.nugurang.dao.PositionDao;
 import com.nugurang.dao.ProgressDao;
@@ -23,7 +22,6 @@ import com.nugurang.dto.ImageDto;
 import com.nugurang.dto.InvitationStatusDto;
 import com.nugurang.dto.MatchRequestDto;
 import com.nugurang.dto.MatchTypeDto;
-import com.nugurang.dto.NotificationDto;
 import com.nugurang.dto.NotificationTypeDto;
 import com.nugurang.dto.OAuth2UserDto;
 import com.nugurang.dto.PositionDto;
@@ -57,7 +55,6 @@ public class Query implements GraphQLQueryResolver {
     private final InvitationStatusDao invitationStatusDao;
     private final MatchRequestDao matchRequestDao;
     private final MatchTypeDao matchTypeDao;
-    private final NotificationDao notificationDao;
     private final NotificationTypeDao notificationTypeDao;
     private final PositionDao positionDao;
     private final ProgressDao progressDao;
@@ -161,12 +158,6 @@ public class Query implements GraphQLQueryResolver {
     Optional<MatchTypeDto> getMatchTypeByName(String name) {
         return matchTypeDao
             .findByName(name)
-            .map((entity) -> entity.toDto());
-    }
-
-    Optional<NotificationDto> getNotification(Long id) {
-        return notificationDao
-            .findById(id)
             .map((entity) -> entity.toDto());
     }
 
