@@ -6,9 +6,11 @@ import com.nugurang.dao.UserDao;
 import com.nugurang.dto.UserInputDto;
 import com.nugurang.entity.BoardEntity;
 import com.nugurang.entity.UserEntity;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -41,11 +43,27 @@ public class UserService {
         );
     }
 
+    public Optional<UserEntity> getUser(Long userId) {
+        return userDao.findById(userId);
+    }
+
+    public Optional<UserEntity> getUser(String userName) {
+        return userDao.findByName(userName);
+    }
+
     public Optional<UserEntity> getCurrentUser() {
         return userDao.findByOauth2ProviderAndOauth2Id(
             oauth2Service.getProvider(),
             oauth2Service.getId()
         );
+    }
+
+    public List<UserEntity> getUsers(Pageable pageable) {
+        return userDao.findAll(pageable).getContent();
+    }
+
+    public List<UserEntity> getUsers(String userName, Pageable pageable) {
+        return userDao.findAllByNameContainingIgnoreCase(userName, pageable).getContent();
     }
 
     private UserEntity updateUser(UserInputDto userInputDto, UserEntity userEntity) {

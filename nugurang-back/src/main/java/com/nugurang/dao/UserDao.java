@@ -12,6 +12,8 @@ public interface UserDao extends JpaRepository<UserEntity, Long>, UserDaoCustom 
 
     Page<UserEntity> findAll(Pageable pageable);
 
+    Page<UserEntity> findAllByNameContainingIgnoreCase(String name, Pageable pageable);
+
     Optional<UserEntity> findByOauth2ProviderAndOauth2Id(String oauth2Provider, String oauth2Id);
 
     Optional<UserEntity> findByName(String name);

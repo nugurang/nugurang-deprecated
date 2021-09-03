@@ -15,7 +15,6 @@ import com.nugurang.dao.ProjectInvitationDao;
 import com.nugurang.dao.TaskDao;
 import com.nugurang.dao.TeamDao;
 import com.nugurang.dao.TeamInvitationDao;
-import com.nugurang.dao.UserDao;
 import com.nugurang.dao.VoteTypeDao;
 import com.nugurang.dao.WorkDao;
 import com.nugurang.dto.ArticleDto;
@@ -34,7 +33,6 @@ import com.nugurang.dto.ProjectInvitationDto;
 import com.nugurang.dto.TaskDto;
 import com.nugurang.dto.TeamDto;
 import com.nugurang.dto.TeamInvitationDto;
-import com.nugurang.dto.UserDto;
 import com.nugurang.dto.VoteTypeDto;
 import com.nugurang.dto.WorkDto;
 import com.nugurang.service.OAuth2Service;
@@ -45,7 +43,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -69,18 +66,11 @@ public class Query implements GraphQLQueryResolver {
     private final TaskDao taskDao;
     private final TeamDao teamDao;
     private final TeamInvitationDao teamInvitationDao;
-    private final UserDao userDao;
     private final VoteTypeDao voteTypeDao;
     private final WorkDao workDao;
 
     String ping() {
         return "pong";
-    }
-
-    Optional<UserDto> currentUser() {
-        return userService
-            .getCurrentUser()
-            .map((entity) -> entity.toDto());
     }
 
     Optional<OAuth2UserDto> currentOAuth2User() {
@@ -214,27 +204,6 @@ public class Query implements GraphQLQueryResolver {
         return taskDao
             .findById(id)
             .map((entity) -> entity.toDto());
-    }
-
-    Optional<UserDto> getUser(Long id) {
-        return userDao
-            .findById(id)
-            .map((entity) -> entity.toDto());
-    }
-
-    Optional<UserDto> getUserByName(String name) {
-        return userDao
-            .findByName(name)
-            .map((entity) -> entity.toDto());
-    }
-
-    List<UserDto> getUsers(Integer page, Integer pageSize) {
-        return userDao
-            .findAll(PageRequest.of(page, pageSize))
-            .getContent()
-            .stream()
-            .map((entity) -> entity.toDto())
-            .collect(Collectors.toList());
     }
 
     Optional<VoteTypeDto> getVoteTypeByName(String name) {

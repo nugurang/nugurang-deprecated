@@ -378,6 +378,7 @@ type Query {
     getUser(id: ID!): User
     getUserByName(name: String!): User
     getUsers(page: Int!, pageSize: Int!): [User]!
+    getUsersByName(name: String!, page: Int!, pageSize: Int!): [User]!
     getVoteTypeByName(name: String!): VoteType
     getWork(id: ID!): Work
 }
