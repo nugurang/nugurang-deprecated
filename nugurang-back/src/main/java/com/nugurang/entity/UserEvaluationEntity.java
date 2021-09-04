@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +32,15 @@ public class UserEvaluationEntity implements BaseEntity<UserEvaluationDto> {
 
     @Column(nullable = false)
     private OffsetDateTime expiredAt;
+
+    @OneToOne(mappedBy = "userEvaluation")
+    private ProjectEntity project;
+
+    @PreRemove
+    private void preRemove() {
+        if (project != null)
+            project.setUserEvaluation(null);
+    }
 
     public UserEvaluationDto toDto() {
         return UserEvaluationDto
