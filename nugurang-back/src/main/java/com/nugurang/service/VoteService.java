@@ -23,6 +23,7 @@ public class VoteService {
     }
 
     public VoteEntity createVote(VoteInputDto voteInputDto) {
+        // TODO: Prevent users vote their own articles
         return voteDao.save(
             VoteEntity
             .builder()
