@@ -1,6 +1,7 @@
 package com.nugurang.graphql.query;
 
 import com.nugurang.dto.BoardDto;
+import com.nugurang.exception.NotFoundException;
 import com.nugurang.service.BoardService;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import java.util.List;
@@ -16,7 +17,11 @@ public class BoardQuery implements GraphQLQueryResolver {
     private final BoardService boardService;
 
     Optional<BoardDto> getBoard(Long id) {
-        return boardService.getBoard(id).map((entity) -> entity.toDto());
+        try {
+            return Optional.of(boardService.getBoard(id).toDto());
+        } catch (NotFoundException nfe) {
+            return Optional.empty();
+        }
     }
 
     Optional<BoardDto> getBoardByName(String name) {

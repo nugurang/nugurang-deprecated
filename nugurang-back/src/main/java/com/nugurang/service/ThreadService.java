@@ -10,6 +10,7 @@ import com.nugurang.dto.VoteInputDto;
 import com.nugurang.entity.ArticleEntity;
 import com.nugurang.entity.ThreadEntity;
 import com.nugurang.entity.UserEntity;
+import com.nugurang.exception.NotFoundException;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -32,13 +33,13 @@ public class ThreadService {
     private final XrefUserTeamDao xrefUserTeamDao;
 
     @Transactional
-    public ThreadEntity createThread(ThreadInputDto threadInputDto, Long board) {
+    public ThreadEntity createThread(ThreadInputDto threadInputDto, Long board) throws NotFoundException {
         UserEntity userEntity = userService.getCurrentUser().get();
         ThreadEntity threadEntity = threadDao.save(
             ThreadEntity
             .builder()
             .name(threadInputDto.getName())
-            .board(boardService.getBoard(board).get())
+            .board(boardService.getBoard(board))
             .xrefUserTeam(
                 threadInputDto
                 .getTeam()

@@ -2,6 +2,7 @@ package com.nugurang.graphql.mutation;
 
 import com.nugurang.dto.ThreadDto;
 import com.nugurang.dto.ThreadInputDto;
+import com.nugurang.exception.NotFoundException;
 import com.nugurang.service.ThreadService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,15 @@ public class ThreadMutation implements GraphQLMutationResolver {
     private final ThreadService threadService;
 
     public ThreadDto createThread(ThreadInputDto threadInputDto, Long board) {
-        return threadService.createThread(threadInputDto, board).toDto();
+        try {
+            return threadService.createThread(threadInputDto, board).toDto();
+        } catch (NotFoundException nfe) {
+            throw com.nugurang.graphql.exception.NotFoundException
+                .builder()
+                .message(nfe.getMessage())
+                .objectName(nfe.getObjectName())
+                .build();
+        }
     }
 
     public ThreadDto updateThread(ThreadInputDto threadInputDto, Long id) {
