@@ -25,7 +25,11 @@ public class BoardQuery implements GraphQLQueryResolver {
     }
 
     Optional<BoardDto> getBoardByName(String name) {
-        return boardService.getBoard(name).map((entity) -> entity.toDto());
+        try {
+            return Optional.of(boardService.getBoard(name).toDto());
+        } catch (NotFoundException nfe) {
+            return Optional.empty();
+        }
     }
 
     List<BoardDto> boards() {

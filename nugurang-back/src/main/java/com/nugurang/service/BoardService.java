@@ -5,7 +5,6 @@ import com.nugurang.dto.BoardInputDto;
 import com.nugurang.entity.BoardEntity;
 import com.nugurang.exception.NotFoundException;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +26,23 @@ public class BoardService {
     public BoardEntity getBoard(Long id) throws NotFoundException {
         return boardDao
             .findById(id)
-            .orElseThrow(() -> NotFoundException.builder().message("Board not found").objectName("Board").build());
+            .orElseThrow(() -> NotFoundException
+                .builder()
+                .message("Board not found")
+                .objectName("Board")
+                .build()
+            );
     }
 
-    public Optional<BoardEntity> getBoard(String name) {
-        return boardDao.findByName(name);
+    public BoardEntity getBoard(String name) throws NotFoundException {
+        return boardDao
+            .findByName(name)
+            .orElseThrow(() -> NotFoundException
+                .builder()
+                .message("Board not found")
+                .objectName("Board")
+                .build()
+            );
     }
 
     public List<BoardEntity> getBoards() {
