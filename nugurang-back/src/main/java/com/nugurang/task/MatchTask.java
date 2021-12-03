@@ -19,7 +19,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import net.time4j.Moment;
 import net.time4j.range.IntervalTree;
 import net.time4j.range.MomentInterval;
@@ -41,9 +40,9 @@ public class MatchTask {
     @Scheduled(fixedDelay = 10000)
     @Transactional
     private void matchRequests() {
-        val expiredMatchRequestEntities = matchRequestDao
+        final var expiredMatchRequestEntities = matchRequestDao
             .findAllByExpiredAtLessThan(OffsetDateTime.now());
-        for (val expiredMatchRequestEntity : expiredMatchRequestEntities) {
+        for (final var expiredMatchRequestEntity : expiredMatchRequestEntities) {
             notificationService.createMatchFailureNotification(
                 expiredMatchRequestEntity.getUser(),
                 expiredMatchRequestEntity.getType(),
@@ -84,7 +83,7 @@ public class MatchTask {
         IntervalTree<Moment, ValueInterval<Moment, MomentInterval, MatchRequestEntity>>
             intervalTree = IntervalTree.onMomentAxis(matchRequestIntervals);
 
-        val matchRequestInterval = matchRequestIntervals.get(0);
+        final var matchRequestInterval = matchRequestIntervals.get(0);
 
         var otherMatchRequestIntervals = intervalTree
             .findIntersections(matchRequestInterval)
@@ -97,14 +96,14 @@ public class MatchTask {
 
         log.info("intervals " + otherMatchRequestIntervals.size());
 
-        val matchRequestEntity = matchRequestInterval.getValue();
+        final var matchRequestEntity = matchRequestInterval.getValue();
         int min = matchRequestEntity.getMinTeamSize();
         int max = Optional.ofNullable(matchRequestEntity.getMaxTeamSize())
             .orElse(Integer.MAX_VALUE);
 
         List<ValueInterval<Moment, MomentInterval, MatchRequestEntity>> matchedRequestIntervals = new LinkedList<>();
-        for (val otherMatchRequestInterval : otherMatchRequestIntervals) {
-            val otherMatchRequestEntity = otherMatchRequestInterval.getValue();
+        for (final var otherMatchRequestInterval : otherMatchRequestIntervals) {
+            final var otherMatchRequestEntity = otherMatchRequestInterval.getValue();
             int currentMin = otherMatchRequestEntity.getMinTeamSize();
             int currentMax = Optional.ofNullable(
                 otherMatchRequestEntity.getMaxTeamSize()
@@ -145,7 +144,7 @@ public class MatchTask {
         );
 
         for (ValueInterval<Moment, MomentInterval, MatchRequestEntity> matchedRequestInterval : matchedRequestIntervals) {
-            val matchedRequestEntity = matchedRequestInterval.getValue();
+            final var matchedRequestEntity = matchedRequestInterval.getValue();
             notificationService.createMatchSuccessNotification(
                 matchedRequestEntity.getUser(),
                 matchedRequestEntity.getType(),

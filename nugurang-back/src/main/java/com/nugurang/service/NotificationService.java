@@ -17,7 +17,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +34,7 @@ public class NotificationService {
         NotificationTypeName type,
         List<String> data
     ) {
-        val notificationEntity = notificationDao.save(
+        final var notificationEntity = notificationDao.save(
             NotificationEntity
             .builder()
             .isRead(false)

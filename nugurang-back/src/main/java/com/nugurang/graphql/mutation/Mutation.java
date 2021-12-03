@@ -58,7 +58,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -146,7 +145,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     List<ProjectInvitationDto> createProjectInvitations(ProjectInvitationInputDto projectInvitationInputDto) {
-        val currentUserEntity = userService.getCurrentUser().get();
+        final var currentUserEntity = userService.getCurrentUser().get();
         return projectInvitationInputDto
             .getUsers()
             .stream()
@@ -185,7 +184,7 @@ public class Mutation implements GraphQLMutationResolver {
 
     @Transactional
     List<TeamInvitationDto> createTeamInvitations(TeamInvitationInputDto teamInvitationInputDto) {
-        val currentUserEntity = userService.getCurrentUser().get();
+        final var currentUserEntity = userService.getCurrentUser().get();
         return teamInvitationInputDto
             .getUsers()
             .stream()
@@ -264,7 +263,7 @@ public class Mutation implements GraphQLMutationResolver {
             return false;
 
         var now = OffsetDateTime.now();
-        val userEvaluationEntity = userEvaluationDao.save(
+        final var userEvaluationEntity = userEvaluationDao.save(
             UserEvaluationEntity
             .builder()
             .createdAt(now)
@@ -277,7 +276,7 @@ public class Mutation implements GraphQLMutationResolver {
 
         projectEntity = projectDao.save(projectEntity);
         for (TaskEntity taskEntity : taskDao.findAllByProjectId(project)) {
-            val taskReviewEntities = taskReviewDao.findAllByTaskId(taskEntity.getId());
+            final var taskReviewEntities = taskReviewDao.findAllByTaskId(taskEntity.getId());
            // log.info("task review entities size: " + taskReviewEntities.size());
 
             int honorPerPosition = taskReviewEntities.stream()
@@ -287,13 +286,13 @@ public class Mutation implements GraphQLMutationResolver {
             if (taskReviewEntities.size() > 0)
                 honorPerPosition /= taskReviewEntities.size();
 
-            val userEntities = userDao.findAllByTaskId(taskEntity.getId());
+            final var userEntities = userDao.findAllByTaskId(taskEntity.getId());
             // log.info("user entities size: " + userEntities.size());
             if (userEntities.size() > 0)
                 honorPerPosition /= userEntities.size();
 
-            for (val userEntity : userEntities) {
-                val positionEntities = positionDao.findAllByTaskId(taskEntity.getId());
+            for (final var userEntity : userEntities) {
+                final var positionEntities = positionDao.findAllByTaskId(taskEntity.getId());
                 // log.info("position entities size: " + positionEntities.size());
 
                 if (positionEntities.size() > 0)
@@ -301,7 +300,7 @@ public class Mutation implements GraphQLMutationResolver {
 
                 // log.info("honor per position: " + honorPerPosition);
 
-                for (val positionEntity : positionEntities) {
+                for (final var positionEntity : positionEntities) {
                     UserHonorEntity userHonorEntity = userHonorDao.findByUserIdAndPositionId(
                         userEntity.getId(), positionEntity.getId()
                     ).orElseGet(() ->
@@ -324,8 +323,8 @@ public class Mutation implements GraphQLMutationResolver {
 
     @Transactional
     Boolean updateTaskReview(TaskReviewInputDto taskReviewInputDto) {
-        val taskEntity = taskDao.findById(taskReviewInputDto.getTask()).get();
-        val userEntity = userService.getCurrentUser().get();
+        final var taskEntity = taskDao.findById(taskReviewInputDto.getTask()).get();
+        final var userEntity = userService.getCurrentUser().get();
 
         taskReviewDao.deleteByTaskIdAndUserId(taskEntity.getId(), userEntity.getId());
 
@@ -383,11 +382,11 @@ public class Mutation implements GraphQLMutationResolver {
 
     @Transactional
     Boolean updateUserReviews(List<UserReviewInputDto> userReviews, Long userEvaluation) {
-        val userEvaluationEntity = userEvaluationDao
+        final var userEvaluationEntity = userEvaluationDao
             .findById(userEvaluation)
             .get();
 
-        val currentUserEntity = userService.getCurrentUser().get();
+        final var currentUserEntity = userService.getCurrentUser().get();
 
         userReviews
             .stream()
