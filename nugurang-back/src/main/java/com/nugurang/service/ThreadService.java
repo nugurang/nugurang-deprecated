@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +33,7 @@ public class ThreadService {
     private final VoteTypeDao voteTypeDao;
     private final XrefUserTeamDao xrefUserTeamDao;
 
+    @PreAuthorize("hasPermission(#board, 'com.nugurang.entity.BoardEntity', 'WRITE')")
     @Transactional
     public ThreadEntity createThread(ThreadInputDto threadInputDto, Long board) throws NotFoundException {
         UserEntity userEntity = userService.getCurrentUser().get();

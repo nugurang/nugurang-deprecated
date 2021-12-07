@@ -77,9 +77,11 @@ dependencies {
         'org.springframework.boot:spring-boot-starter-security',
         'org.springframework.boot:spring-boot-starter-validation',
         'org.springframework.boot:spring-boot-starter-web',
+        'org.springframework.security:spring-security-acl',
         'net.time4j:time4j-base:5.7',
         'net.time4j:time4j-sqlxml:5.7',
-        'net.time4j:time4j-tzdata:5.0-2020a'
+        'net.time4j:time4j-tzdata:5.0-2020a',
+        'net.sf.ehcache:ehcache-core:2.+'
     )
 
     liquibaseRuntime(

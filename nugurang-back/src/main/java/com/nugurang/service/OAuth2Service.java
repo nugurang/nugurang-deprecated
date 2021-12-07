@@ -47,14 +47,6 @@ public class OAuth2Service {
 
     private final OAuth2AuthorizedClientService authorizedClientService;
 
-    private OAuth2AuthenticationToken getOAuth2AuthToken() {
-        OAuth2AuthenticationToken oauth2AuthToken = (OAuth2AuthenticationToken)
-            SecurityContextHolder
-            .getContext()
-            .getAuthentication();
-        return oauth2AuthToken;
-    }
-
     private OAuth2AuthorizedClient getOAuth2Client() {
         OAuth2AuthenticationToken oauth2AuthToken = getOAuth2AuthToken();
         return authorizedClientService.loadAuthorizedClient(
@@ -78,6 +70,12 @@ public class OAuth2Service {
         default:
             return null;
         }
+    }
+
+    public OAuth2AuthenticationToken getOAuth2AuthToken() {
+        return (OAuth2AuthenticationToken) SecurityContextHolder
+            .getContext()
+            .getAuthentication();
     }
 
     public String getProvider() {
