@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
-public class DbInit {
+public class DbInitConfig {
     private final InvitationStatusDao invitationStatusDao;
     private final MatchTypeDao matchTypeDao;
     private final NotificationTypeDao notificationTypeDao;

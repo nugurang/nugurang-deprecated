@@ -1,4 +1,4 @@
-package com.nugurang.controller;
+package com.nugurang.rest.controller;
 
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;

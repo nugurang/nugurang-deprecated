@@ -1,11 +1,13 @@
-package com.nugurang.controller;
+package com.nugurang.rest.controller;
 
-import java.time.Instant;
-import java.util.HashMap;
+import com.nugurang.dto.RestResponseDto;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,18 +15,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-//import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -88,36 +86,30 @@ public class HomeController {
             String.valueOf(principal instanceof UserDetails),
             String.valueOf(principal instanceof OAuth2User),
             auth.getDetails() != null ? auth.getDetails().toString() : "null",
-            client != null ? client.getAccessToken().getTokenValue() : "null"
+            client != null ? client.getAccessToken().getTokenValue() : "null",
+            client != null ? client.getAccessToken().getIssuedAt().toString() : "null",
+            client != null ? client.getAccessToken().getExpiresAt().toString() : "null"
         );
     }
 
-    @RequestMapping("/test")
-    public OAuth2User test(
-        HttpServletRequest request,
-        @RequestParam(name = "client_registration_id", defaultValue = "github") String clientRegistrationId,
-        @RequestParam(name = "token_value") String tokenValue) {
-        //OAuth2UserService<OAuth2UserRequest, OAuth2User> userService = new DefaultOAuth2UserService();
-        ClientRegistration clientRegistration = this.clientRegistrationRepository.findByRegistrationId(clientRegistrationId);
-        Map<String, Object> additionalParameters = new HashMap<>();
-        OAuth2AccessToken accessToken = new OAuth2AccessToken(
-            OAuth2AccessToken.TokenType.BEARER,
-            tokenValue,
-            Instant.now(),
-            Instant.MAX,
-            Set.of("test")
+    @GetMapping("/test")
+    public ResponseEntity<RestResponseDto> test() {
+        return new ResponseEntity<>(
+            RestResponseDto
+            .builder()
+            .data(Optional.empty())
+            .errors(Optional.of(List.of(
+                RestResponseDto
+                .Error
+                .builder()
+                .message("Signin Required")
+                .extensions(Optional.of(
+                    RestResponseDto.Error.ErrorExtension.builder().type("UnAuthorized").build()
+                ))
+                .build()
+            )))
+            .build(),
+            HttpStatus.UNAUTHORIZED
         );
-        OAuth2User oauth2User = null;
-        try {
-            oauth2User = userService.loadUser(new OAuth2UserRequest(clientRegistration, accessToken, additionalParameters));
-            var oauth2AuthenticationToken = new OAuth2AuthenticationToken(oauth2User, oauth2User.getAuthorities(), clientRegistrationId);
-            oauth2AuthenticationToken.setDetails(authenticationDetailsSource.buildDetails(request));
-            SecurityContextHolder
-                .getContext()
-                .setAuthentication(oauth2AuthenticationToken);
-        } catch (OAuth2AuthenticationException e) {
-            e.printStackTrace();
-        }
-        return oauth2User;
     }
 }

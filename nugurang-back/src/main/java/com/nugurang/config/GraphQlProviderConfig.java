@@ -1,4 +1,4 @@
-package com.nugurang.nugurang;
+package com.nugurang.config;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
-public class GraphQlProvider {
+public class GraphQlProviderConfig {
     private GraphQL graphQLObject;
 
     @PostConstruct
